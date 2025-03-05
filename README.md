@@ -11,7 +11,7 @@ This repository contains the relevant Docker builds to run your own node on the 
 [![GitHub contributors](https://img.shields.io/github/contributors/base/node)](https://github.com/base/node/graphs/contributors)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/w/base/node)](https://github.com/base/node/graphs/commit-activity)
 [![GitHub Stars](https://img.shields.io/github/stars/base/node.svg)](https://github.com/base/node/stargazers)
-![GitHub repo size](https://img.shields.io/github/repo-size/base/node)
+[![GitHub repo size](https://img.shields.io/github/repo-size/base/node)](https://github.com/base/node?tab=readme-ov-file)
 [![GitHub](https://img.shields.io/github/license/base/node?color=blue)](https://github.com/base/node/blob/main/LICENSE)
 
 <!-- Badge row 2 - links and profiles -->
