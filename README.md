@@ -8,6 +8,7 @@ This repository contains the relevant Docker builds to run your own node on the 
 
 <!-- Badge row 1 - status -->
 
+[![Pull Requests](https://github.com/base/node/actions/workflows/pr.yml/badge.svg)](https://github.com/base/node/actions)
 [![GitHub contributors](https://img.shields.io/github/contributors/base/node)](https://github.com/base/node/graphs/contributors)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/w/base/node)](https://github.com/base/node/graphs/commit-activity)
 [![GitHub Stars](https://img.shields.io/github/stars/base/node.svg)](https://github.com/base/node/stargazers)
