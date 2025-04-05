@@ -3,8 +3,8 @@ FROM golang:1.22 AS op
 WORKDIR /app
 
 ENV REPO=https://github.com/ethereum-optimism/optimism.git
-ENV VERSION=v1.12.1
-ENV COMMIT=d3b8eadd80457c74d9c4251948ac11e8d14a9c9c
+ENV VERSION=op-node/v1.13.0
+ENV COMMIT=5f003211aed7469eed7df666291a62c025d1c46c
 RUN git clone $REPO --branch op-node/$VERSION --single-branch . && \
     git switch -c branch-$VERSION && \
     bash -c '[ "$(git rev-parse HEAD)" = "$COMMIT" ]'
@@ -22,8 +22,8 @@ WORKDIR /app
 RUN apt-get update && apt-get -y upgrade && apt-get install -y git libclang-dev pkg-config curl build-essential
 
 ENV REPO=https://github.com/paradigmxyz/reth.git
-ENV VERSION=v1.3.0
-ENV COMMIT=a38c991c363d241894867a89324b8670be2f6a44
+ENV VERSION=v1.3.7
+ENV COMMIT=ed7da87da4de340a437bf46f39a7e1397ac82065
 RUN git clone $REPO --branch $VERSION --single-branch . && \
     git switch -c branch-$VERSION && \
     bash -c '[ "$(git rev-parse HEAD)" = "$COMMIT" ]'
