@@ -16,7 +16,7 @@ jobs:
     runs-on: ${{ matrix.settings.runs-on }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
@@ -44,7 +44,7 @@ jobs:
     runs-on: ${{ matrix.settings.runs-on}}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Set up Docker Buildx
@@ -70,7 +70,7 @@ jobs:
     runs-on: ${{ matrix.settings.runs-on}}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Set up Docker Buildx
