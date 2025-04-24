@@ -38,7 +38,6 @@ RUN apt-get update && apt-get -y upgrade && \
     apt-get install -y git libclang-dev pkg-config curl build-essential && \
     rm -rf /var/lib/apt/lists/*
 
-# Base node-reth repository configuration
 ENV REPO=https://github.com/base/node-reth.git
 ENV VERSION=main
 ENV COMMIT=c23179dc3531a988e483b05d306539cca99f9a5c
@@ -46,7 +45,6 @@ RUN git clone $REPO --branch $VERSION --single-branch . && \
     git switch -c branch-$VERSION && \
     bash -c '[ "$(git rev-parse HEAD)" = "$COMMIT" ]' || (echo "Commit hash verification failed" && exit 1)
 
-# Build the base-reth-node binary
 RUN cargo build --bin base-reth-node --release
 
 FROM ubuntu:22.04

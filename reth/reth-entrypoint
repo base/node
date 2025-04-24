@@ -15,7 +15,7 @@ fi
 
 # Add Flashblocks support for base mode
 if [[ "$NODE_TYPE" == "base" && -n "$RETH_FB_WEBSOCKET_URL" ]]; then
-    ADDITIONAL_ARGS="--flashblocks-fb-websocket-url=$RETH_FB_WEBSOCKET_URL"
+    ADDITIONAL_ARGS="--websocket-url=$RETH_FB_WEBSOCKET_URL"
     echo "Enabling Flashblocks support with endpoint: $RETH_FB_WEBSOCKET_URL"
 fi
 

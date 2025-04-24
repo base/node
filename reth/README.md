@@ -4,10 +4,7 @@ This is a unified implementation of the Reth node set up that supports running b
 
 ## Setup
 
-### Prerequisites
-
-- Docker and Docker Compose
-- Same requirements as the master README
+- See hardware requirements mentioned in the master README
 - For Base Reth mode: Access to a Flashblocks websocket endpoint (for `RETH_FB_WEBSOCKET_URL`)
   - We provide public websocket endpoints for mainnet and devnet, included in `.env.mainnet` and `.env.sepolia`
 
