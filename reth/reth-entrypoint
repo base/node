@@ -40,5 +40,4 @@ exec ./op-reth node \
   --chain "$RETH_CHAIN" \
   --rollup.sequencer-http=$OP_RETH_SEQUENCER_HTTP \
   --rollup.disable-tx-pool-gossip \
-  $ADDITIONAL_ARGS # intentionally unquoted, so that arguments are split
-      $ADDITIONAL_ARGS # intentionally unquoted
+  $ADDITIONAL_ARGS # intentionally unquoted
