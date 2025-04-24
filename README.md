@@ -32,6 +32,9 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 
    # To use a specific client (optional):
    CLIENT=reth docker compose up --build
+
+   # For testnet with a specific client:
+   NETWORK_ENV=.env.sepolia CLIENT=reth docker compose up --build
    ```
 
 ### Supported Clients
@@ -98,6 +101,10 @@ The following are the hardware specifications we use in production:
 - Snap Sync (experimental)
 
 For full configuration options, see the `.env.mainnet` file.
+
+## Snapshots
+
+Snapshots are available to help you sync your node more quickly. See [docs.base.org](https://docs.base.org/chain/run-a-base-node#snapshots) for links and more details on how to restore from a snapshot.
 
 ## Supported Networks
 
