@@ -43,11 +43,29 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 
 ## Requirements
 
+### Minimum Requirements
+
 - Modern multi-core CPU
 - 16 GB RAM (32 GB recommended)
 - NVMe SSD drive
 - Storage: (2 \* current_chain_size) + snapshot_size + 20% buffer
 - Docker and Docker Compose
+
+### Production Hardware Specifications
+
+The following are the hardware specifications we use in production:
+
+#### Geth Full Node
+
+- **Instance**: AWS i4i.12xlarge
+- **Storage**: RAID 0 of all local NVMe drives (`/dev/nvme*`)
+- **Filesystem**: ext4
+
+#### Reth Archive Node
+
+- **Instance**: AWS i7ie.6xlarge
+- **Storage**: RAID 0 of all local NVMe drives (`/dev/nvme*`)
+- **Filesystem**: ext4
 
 ## Configuration
 
