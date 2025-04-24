@@ -77,6 +77,17 @@ The following are the hardware specifications we use in production:
   - `OP_NODE_L1_ETH_RPC`: Your Ethereum L1 node RPC endpoint
   - `OP_NODE_L1_BEACON`: Your L1 beacon node endpoint
   - `OP_NODE_L1_BEACON_ARCHIVER`: Your L1 beacon archiver endpoint
+  - `OP_NODE_L1_RPC_KIND`: The type of RPC provider being used (default: "debug_geth"). Supported values:
+    - `alchemy`: Alchemy RPC provider
+    - `quicknode`: QuickNode RPC provider
+    - `infura`: Infura RPC provider
+    - `parity`: Parity RPC provider
+    - `nethermind`: Nethermind RPC provider
+    - `debug_geth`: Debug Geth RPC provider
+    - `erigon`: Erigon RPC provider
+    - `basic`: Basic RPC provider (standard receipt fetching only)
+    - `any`: Any available RPC method
+    - `standard`: Standard RPC methods including newer optimized methods
 
 ### Network Settings
 
