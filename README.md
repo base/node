@@ -74,9 +74,8 @@ docker compose up --build
 > 
 > Supported clients:
 > - geth
-> - reth
+> - reth (with Flashblocks support option)
 > - nethermind
-> - base-reth-node (Flashblocks node)
 
 4. You should now be able to `curl` your Base node:
 

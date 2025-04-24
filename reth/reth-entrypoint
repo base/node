@@ -51,4 +51,5 @@ exec $BINARY node \
   --metrics=0.0.0.0:"$METRICS_PORT" \
   --chain "$RETH_CHAIN" \
   --rollup.sequencer-http=$RETH_SEQUENCER_HTTP \
-  --rollup.disable-tx-pool-gossip
+  --rollup.disable-tx-pool-gossip \
+  $ADDITIONAL_ARGS
