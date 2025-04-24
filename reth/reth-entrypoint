@@ -1,11 +1,13 @@
 #!/bin/bash
 set -eu
 
+IPC_PATH="/data/reth.ipc"
 RETH_DATA_DIR=/data
 RPC_PORT="${RPC_PORT:-8545}"
 WS_PORT="${WS_PORT:-8546}"
 AUTHRPC_PORT="${AUTHRPC_PORT:-8551}"
 METRICS_PORT="${METRICS_PORT:-6060}"
+ADDITIONAL_ARGS=""
 
 if [[ -z "$RETH_CHAIN" ]]; then
     echo "expected RETH_CHAIN to be set" 1>&2
@@ -18,7 +20,7 @@ echo "$OP_NODE_L2_ENGINE_AUTH_RAW" > "$OP_NODE_L2_ENGINE_AUTH"
 exec ./op-reth node \
   -vvv \
   --datadir="$RETH_DATA_DIR" \
-  --log.stdout.format log-fmt \
+  --log.stdout.format json \
   --ws \
   --ws.origins="*" \
   --ws.addr=0.0.0.0 \
@@ -28,11 +30,15 @@ exec ./op-reth node \
   --http.corsdomain="*" \
   --http.addr=0.0.0.0 \
   --http.port="$RPC_PORT" \
-  --http.api=debug,eth,net,txpool \
+  --http.api=debug,eth,net,txpool,miner \
+  --ipcpath="$IPC_PATH" \
   --authrpc.addr=0.0.0.0 \
   --authrpc.port="$AUTHRPC_PORT" \
   --authrpc.jwtsecret="$OP_NODE_L2_ENGINE_AUTH" \
   --metrics=0.0.0.0:"$METRICS_PORT" \
+  --max-outbound-peers=100 \
   --chain "$RETH_CHAIN" \
-  --rollup.sequencer-http=$RETH_SEQUENCER_HTTP \
-  --rollup.disable-tx-pool-gossip
+  --rollup.sequencer-http=$OP_RETH_SEQUENCER_HTTP \
+  --rollup.disable-tx-pool-gossip \
+  $ADDITIONAL_ARGS # intentionally unquoted, so that arguments are split
+      $ADDITIONAL_ARGS # intentionally unquoted
