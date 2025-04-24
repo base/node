@@ -12,6 +12,8 @@ services:
     command: [ "bash", "./execution-entrypoint" ]
     volumes:
         - ${HOST_DATA_DIR}:/data
+    environment:
+      - NODE_TYPE=${NODE_TYPE:-vanilla}
     env_file:
       - ${NETWORK_ENV:?.env.mainnet}  # Requires NETWORK_ENV to be set, defaults to mainnet
   node:
