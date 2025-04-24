@@ -13,7 +13,7 @@ services:
     volumes:
       - ${HOST_DATA_DIR}:/data
     env_file:
-      - .env.mainnet # Default to mainnet, override with .env.sepolia for testnet
+      - ${NETWORK_ENV:-.env.mainnet} # Use .env.mainnet by default, override with .env.sepolia for testnet
   node:
     build:
       context: .
@@ -28,4 +28,4 @@ services:
       - "6060:6060" # pprof
     command: ["bash", "./op-node-entrypoint"]
     env_file:
-      - .env.mainnet # Default to mainnet, override with .env.sepolia for testnet
+      - ${NETWORK_ENV:-.env.mainnet} # Use .env.mainnet by default, override with .env.sepolia for testnet

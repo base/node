@@ -28,8 +28,7 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
    docker compose up --build
 
    # For testnet:
-   cp .env.sepolia .env.mainnet
-   docker compose up --build
+   NETWORK_ENV=.env.sepolia docker compose up --build
 
    # To use a specific client (optional):
    CLIENT=reth docker compose up --build
@@ -48,7 +47,7 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 - Modern multi-core CPU
 - 16 GB RAM (32 GB recommended)
 - NVMe SSD drive
-- Storage: (2 \* [current_chain_size](https://base.org/stats) + [snapshot_size](https://basechaindata.vercel.app) + 20% buffer (to accomodate future growth)
+- Storage: (2 \* [current chain size](https://base.org/stats) + [snapshot size](https://basechaindata.vercel.app) + 20% buffer (to accomodate future growth)
 - Docker and Docker Compose
 
 ### Production Hardware Specifications
@@ -109,11 +108,7 @@ For full configuration options, see the `.env.mainnet` file.
 
 ## Troubleshooting
 
-For support:
-
-1. Join our [Discord](https://discord.gg/buildonbase)
-2. Connect your GitHub account via `server menu` > `Linked Roles`
-3. Post in `#🛟|developer-support` or `🛠｜node-operators`
+For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
 
 ## Disclaimer
 
