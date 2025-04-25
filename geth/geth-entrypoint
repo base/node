@@ -87,8 +87,4 @@ exec ./geth \
     --cache.gc="$GETH_CACHE_GC" \
     --cache.snapshot="$GETH_CACHE_SNAPSHOT" \
     --cache.trie="$GETH_CACHE_TRIE" \
-    --txpool.globalqueue="$GETH_TXPOOL_GLOBALQUEUE" \
-    --txpool.globalslots="$GETH_TXPOOL_GLOBALSLOTS" \
-    --txpool.lifetime="$GETH_TXPOOL_LIFETIME" \
-    --txpool.pricelimit="$TXPOOL_PRICE_LIMIT" \
     $ADDITIONAL_ARGS # intentionally unquoted
