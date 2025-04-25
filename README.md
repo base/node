@@ -99,11 +99,11 @@ The following are the hardware specifications we use in production:
 ### Performance Settings
 
 - Cache Settings:
-  - `GETH_CACHE=51200`
-  - `GETH_CACHE_DATABASE=8`
-  - `GETH_CACHE_GC=16`
-  - `GETH_CACHE_SNAPSHOT=28`
-  - `GETH_CACHE_TRIE=48`
+  - `GETH_CACHE="20480"` (20GB)
+  - `GETH_CACHE_DATABASE="20"` (4GB)
+  - `GETH_CACHE_GC="12"`
+  - `GETH_CACHE_SNAPSHOT="24"`
+  - `GETH_CACHE_TRIE="44"`
 
 ### Optional Features
 
