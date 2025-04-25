@@ -7,6 +7,7 @@ WS_PORT="${WS_PORT:-8546}"
 AUTHRPC_PORT="${AUTHRPC_PORT:-8551}"
 METRICS_PORT="${METRICS_PORT:-6060}"
 ADDITIONAL_ARGS=""
+NODE_TYPE="${NODE_TYPE:-vanilla}"
 
 if [[ -z "$RETH_CHAIN" ]]; then
     echo "expected RETH_CHAIN to be set" 1>&2
