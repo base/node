@@ -39,7 +39,7 @@ RUN apt-get update && apt-get -y upgrade && \
     rm -rf /var/lib/apt/lists/*
 
 ENV REPO=https://github.com/base/node-reth.git
-ENV VERSION=main
+ENV VERSION=v0.1.0
 ENV COMMIT=3f3d84634cb3fccd429a9df6ea039a77be2b907b
 RUN git clone $REPO --branch $VERSION --single-branch . && \
     git switch -c branch-$VERSION && \
