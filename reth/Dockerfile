@@ -40,7 +40,7 @@ RUN apt-get update && apt-get -y upgrade && \
 
 ENV REPO=https://github.com/base/node-reth.git
 ENV VERSION=main
-ENV COMMIT=c23179dc3531a988e483b05d306539cca99f9a5c
+ENV COMMIT=3f3d84634cb3fccd429a9df6ea039a77be2b907b
 RUN git clone $REPO --branch $VERSION --single-branch . && \
     git switch -c branch-$VERSION && \
     bash -c '[ "$(git rev-parse HEAD)" = "$COMMIT" ]' || (echo "Commit hash verification failed" && exit 1)
