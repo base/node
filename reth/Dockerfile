@@ -41,8 +41,8 @@ RUN apt-get update && apt-get -y upgrade && \
 ENV REPO=https://github.com/base/node-reth.git
 ENV VERSION=v0.1.0
 ENV COMMIT=3f3d84634cb3fccd429a9df6ea039a77be2b907b
-RUN git clone $REPO --branch $VERSION --single-branch . && \
-    git switch -c branch-$VERSION && \
+RUN git clone $REPO . && \
+    git checkout tags/$VERSION && \
     bash -c '[ "$(git rev-parse HEAD)" = "$COMMIT" ]' || (echo "Commit hash verification failed" && exit 1)
 
 RUN cargo build --bin base-reth-node --release
