@@ -4,10 +4,16 @@
 
 Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [OP Stack](https://stack.optimism.io/). This repository contains Docker builds to run your own node on the Base network.
 
+<!-- Badge row 1 - status -->
+
 [![Website base.org](https://img.shields.io/website-up-down-green-red/https/base.org.svg)](https://base.org)
 [![Docs](https://img.shields.io/badge/docs-up-green)](https://docs.base.org/)
 [![Discord](https://img.shields.io/discord/1067165013397213286?label=discord)](https://base.org/discord)
 [![Twitter Base](https://img.shields.io/twitter/follow/Base?style=social)](https://x.com/Base)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/w/base/node)](https://github.com/base/node/graphs/contributors)
+[![GitHub contributors](https://img.shields.io/github/contributors/base/node)](https://github.com/base/node/graphs/contributors)
+[![GitHub pull requests by-label](https://img.shields.io/github/issues-pr-raw/base/node)](https://github.com/base/node/pulls)
+[![GitHub Issues](https://img.shields.io/github/issues-raw/base/node.svg)](https://github.com/base/node/issues)
 
 ## Quick Start
 
