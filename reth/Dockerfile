@@ -15,22 +15,22 @@ RUN curl -sSfL 'https://just.systems/install.sh' | bash -s -- --to /usr/local/bi
 RUN cd op-node && \
     make VERSION=$VERSION op-node
 
-FROM rust:1.85 AS reth
+FROM rust:1.87 AS reth
 
 WORKDIR /app
 
 RUN apt-get update && apt-get -y upgrade && apt-get install -y git libclang-dev pkg-config curl build-essential
 
 ENV REPO=https://github.com/paradigmxyz/reth.git
-ENV VERSION=v1.3.12
-ENV COMMIT=6f8e7258f4733279080e4bd8345ce50538a40d6e
+ENV VERSION=v1.4.3
+ENV COMMIT=fe3653ffe602d4e85ad213e8bd9f06e7b710c0c5
 RUN git clone $REPO --branch $VERSION --single-branch . && \
     git switch -c branch-$VERSION && \
     bash -c '[ "$(git rev-parse HEAD)" = "$COMMIT" ]'
 
 RUN cargo build --bin op-reth --profile maxperf --manifest-path crates/optimism/bin/Cargo.toml
 
-FROM rust:1.85 AS reth-base
+FROM rust:1.87 AS reth-base
 
 WORKDIR /app
 
@@ -39,8 +39,8 @@ RUN apt-get update && apt-get -y upgrade && \
     rm -rf /var/lib/apt/lists/*
 
 ENV REPO=https://github.com/base/node-reth.git
-ENV VERSION=v0.1.0
-ENV COMMIT=3f3d84634cb3fccd429a9df6ea039a77be2b907b
+ENV VERSION=v0.1.1
+ENV COMMIT=cb55e69e3d88f8272ccc523c6c352d00b4ce2bf1
 RUN git clone $REPO . && \
     git checkout tags/$VERSION && \
     bash -c '[ "$(git rev-parse HEAD)" = "$COMMIT" ]' || (echo "Commit hash verification failed" && exit 1)
