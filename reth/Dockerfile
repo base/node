@@ -1,32 +1,29 @@
-FROM golang:1.22 AS op
+FROM golang:1.23 AS op
+
+RUN curl -sSfL 'https://just.systems/install.sh' | bash -s -- --to /usr/local/bin
 
 WORKDIR /app
 
-ENV REPO=https://github.com/ethereum-optimism/optimism.git
-ENV VERSION=v1.13.2
-ENV COMMIT=c8b9f62736a7dad7e569719a84c406605f4472e6
-RUN git clone $REPO --branch op-node/$VERSION --single-branch . && \
-    git switch -c branch-$VERSION && \
-    bash -c '[ "$(git rev-parse HEAD)" = "$COMMIT" ]'
+COPY versions.env /tmp/versions.env
 
-# Install 'just'
-RUN curl -sSfL 'https://just.systems/install.sh' | bash -s -- --to /usr/local/bin
+RUN . /tmp/versions.env && git clone $OP_NODE_REPO --branch $OP_NODE_TAG --single-branch . && \
+    git switch -c branch-$OP_NODE_TAG && \
+    bash -c '[ "$(git rev-parse HEAD)" = "$OP_NODE_COMMIT" ]'
 
-RUN cd op-node && \
-    make VERSION=$VERSION op-node
+RUN . /tmp/versions.env && cd op-node && \
+    make VERSION=$OP_NODE_TAG op-node
 
 FROM rust:1.87 AS reth
 
 WORKDIR /app
 
+COPY versions.env /tmp/versions.env
+
 RUN apt-get update && apt-get -y upgrade && apt-get install -y git libclang-dev pkg-config curl build-essential
 
-ENV REPO=https://github.com/paradigmxyz/reth.git
-ENV VERSION=v1.4.3
-ENV COMMIT=fe3653ffe602d4e85ad213e8bd9f06e7b710c0c5
-RUN git clone $REPO --branch $VERSION --single-branch . && \
-    git switch -c branch-$VERSION && \
-    bash -c '[ "$(git rev-parse HEAD)" = "$COMMIT" ]'
+RUN . /tmp/versions.env && git clone $OP_RETH_REPO --branch $OP_RETH_TAG --single-branch . && \
+    git switch -c branch-$OP_RETH_TAG && \
+    bash -c '[ "$(git rev-parse HEAD)" = "$OP_RETH_COMMIT" ]'
 
 RUN cargo build --bin op-reth --profile maxperf --manifest-path crates/optimism/bin/Cargo.toml
 
@@ -34,16 +31,15 @@ FROM rust:1.87 AS reth-base
 
 WORKDIR /app
 
+COPY versions.env /tmp/versions.env
+
 RUN apt-get update && apt-get -y upgrade && \
     apt-get install -y git libclang-dev pkg-config curl build-essential && \
     rm -rf /var/lib/apt/lists/*
 
-ENV REPO=https://github.com/base/node-reth.git
-ENV VERSION=v0.1.1
-ENV COMMIT=cb55e69e3d88f8272ccc523c6c352d00b4ce2bf1
-RUN git clone $REPO . && \
-    git checkout tags/$VERSION && \
-    bash -c '[ "$(git rev-parse HEAD)" = "$COMMIT" ]' || (echo "Commit hash verification failed" && exit 1)
+RUN . /tmp/versions.env && git clone $BASE_RETH_NODE_REPO . && \
+    git checkout tags/$BASE_RETH_NODE_TAG && \
+    bash -c '[ "$(git rev-parse HEAD)" = "$BASE_RETH_NODE_COMMIT" ]' || (echo "Commit hash verification failed" && exit 1)
 
 RUN cargo build --bin base-reth-node --release
 

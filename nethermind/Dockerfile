@@ -1,19 +1,17 @@
 FROM golang:1.23 AS op
 
-WORKDIR /app
-
-ENV REPO=https://github.com/ethereum-optimism/optimism.git
-ENV VERSION=v1.13.3
-ENV COMMIT=b1e7c63bb2ffea46771c302bcb05f72ba1a7bf61
-RUN git clone $REPO --branch op-node/$VERSION --single-branch . && \
-    git switch -c branch-$VERSION && \
-    bash -c '[ "$(git rev-parse HEAD)" = "$COMMIT" ]'
-
-# Install 'just'
 RUN curl -sSfL 'https://just.systems/install.sh' | bash -s -- --to /usr/local/bin
 
-RUN cd op-node && \
-    just VERSION=$VERSION op-node
+WORKDIR /app
+
+COPY versions.env /tmp/versions.env
+
+RUN . /tmp/versions.env && git clone $OP_NODE_REPO --branch $OP_NODE_TAG --single-branch . && \
+    git switch -c branch-$OP_NODE_TAG && \
+    bash -c '[ "$(git rev-parse HEAD)" = "$OP_NODE_COMMIT" ]'
+
+RUN . /tmp/versions.env && cd op-node && \
+    just VERSION=$OP_NODE_TAG op-node
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0-noble AS build
 
@@ -22,12 +20,12 @@ ARG TARGETARCH
 
 WORKDIR /app
 
-ENV REPO=https://github.com/NethermindEth/nethermind.git
-ENV VERSION=1.31.11
-ENV COMMIT=2be1890ee4f21f921a471de058dcb57937bd9b90
-RUN git clone $REPO --branch $VERSION --single-branch . && \
-    git switch -c $VERSION 
-RUN bash -c '[ "$(git rev-parse HEAD)" = "$COMMIT" ]'
+COPY versions.env /tmp/versions.env
+
+RUN . /tmp/versions.env && git clone $NETHERMIND_REPO --branch $NETHERMIND_TAG --single-branch . && \
+    git switch -c $NETHERMIND_TAG && \
+    bash -c '[ "$(git rev-parse HEAD)" = "$NETHERMIND_COMMIT" ]'
+    
 RUN TARGETARCH=${TARGETARCH#linux/} && \
     arch=$([ "$TARGETARCH" = "amd64" ] && echo "x64" || echo "$TARGETARCH") && \
     echo "Using architecture: $arch" && \
