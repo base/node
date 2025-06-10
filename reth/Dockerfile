@@ -39,8 +39,8 @@ RUN apt-get update && apt-get -y upgrade && \
     rm -rf /var/lib/apt/lists/*
 
 ENV REPO=https://github.com/base/node-reth.git
-ENV VERSION=v0.1.1
-ENV COMMIT=cb55e69e3d88f8272ccc523c6c352d00b4ce2bf1
+ENV VERSION=v0.1.2
+ENV COMMIT=7fe1d4e7c74d322d2cf78df55db40e14f466cfc6
 RUN git clone $REPO . && \
     git checkout tags/$VERSION && \
     bash -c '[ "$(git rev-parse HEAD)" = "$COMMIT" ]' || (echo "Commit hash verification failed" && exit 1)
