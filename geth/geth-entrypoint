@@ -9,6 +9,7 @@ AUTHRPC_PORT="${AUTHRPC_PORT:-8551}"
 METRICS_PORT="${METRICS_PORT:-6060}"
 HOST_IP="" # put your external IP address here and open port 30303 to improve peer connectivity
 P2P_PORT="${P2P_PORT:-30303}"
+DISCOVERY_PORT="${DISCOVERY_PORT:-30303}"
 ADDITIONAL_ARGS=""
 OP_GETH_GCMODE="${OP_GETH_GCMODE:-full}"
 OP_GETH_SYNCMODE="${OP_GETH_SYNCMODE:-full}"
@@ -80,6 +81,7 @@ exec ./geth \
     --rollup.sequencerhttp="$OP_GETH_SEQUENCER_HTTP" \
     --rollup.halt=major \
     --op-network="$OP_NODE_NETWORK" \
+    --discovery.port="$DISCOVERY_PORT" \
     --port="$P2P_PORT" \
     --rollup.disabletxpoolgossip=true \
     --cache="$GETH_CACHE" \

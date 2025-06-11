@@ -11,7 +11,7 @@ WS_PORT="${WS_PORT:-8546}"
 AUTHRPC_PORT="${AUTHRPC_PORT:-8551}"
 METRICS_PORT="${METRICS_PORT:-6060}"
 DISCOVERY_PORT="${DISCOVERY_PORT:-30303}"
-
+P2P_PORT="${P2P_PORT:-30303}"
 JWT_SECRET_FILE=${JWT_SECRET_FILE:-/tmp/jwt/jwtsecret}
 ADDITIONAL_ARGS=""
 
@@ -60,4 +60,6 @@ exec ./nethermind \
     --HealthChecks.Enabled=true \
     --Metrics.Enabled=true \
     --Metrics.ExposePort="$METRICS_PORT" \
+    --Network.P2PPort="$P2P_PORT" \
+    --Network.DiscoveryPort="$DISCOVERY_PORT" \
     $ADDITIONAL_ARGS
