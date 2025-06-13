@@ -13,7 +13,7 @@ RUN . /tmp/versions.env && git clone $OP_NODE_REPO --branch $OP_NODE_TAG --singl
 RUN . /tmp/versions.env && cd op-node && \
     make VERSION=$OP_NODE_TAG op-node
 
-FROM golang:1.22 AS geth
+FROM golang:1.23 AS geth
 
 WORKDIR /app
 
