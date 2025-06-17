@@ -20,7 +20,7 @@
 	  "op_geth": {
 	  	  "repoUrl": "https://github.com/ethereum-optimism/op-geth.git",
 	  	  "tag": "v1.101511.0",
-	  	  "commit": "0849d14d22f33d5ef8a872d7dbcaa68d8b085b96",
+	  	  "commit": "68075997f33907401a93216aa426514c5ddc8870",
 	  	  "commitUrl": "https://api.github.com/repos/ethereum-optimism/op-geth/commits/",
 	  	  "versionUrl": "https://api.github.com/repos/ethereum-optimism/op-geth/releases",
 	  	  "Owner": "ethereum-optimism",
@@ -29,7 +29,7 @@
 	  "op_node": {
 	  	  "repoUrl": "https://github.com/ethereum-optimism/optimism.git",
 	  	  "tag": "op-node/v1.13.3",
-	  	  "commit": "80988e1892a7e8cdb8a35e38cdb4509afc6eec50",
+	  	  "commit": "b1e7c63bb2ffea46771c302bcb05f72ba1a7bf61",
 	  	  "commitUrl": "https://api.github.com/repos/ethereum-optimism/optimism/commits/",
 	  	  "versionUrl": "https://api.github.com/repos/ethereum-optimism/optimism/releases",
 	  	  "tagPrefix": "op-node",
