@@ -7,6 +7,7 @@ import (
 	"github.com/ethereum-optimism/optimism/op-service/retry"
 	"github.com/google/go-github/v72/github"
 	"github.com/urfave/cli/v3"
+	"slices"
 	"time"
 
 	"log"
@@ -74,6 +75,9 @@ func updater(token string, repoPath string) error {
 		return fmt.Errorf("error reading versions JSON: %s", err)
 	}
 
+	client := github.NewClient(nil).WithAuthToken(token)
+	ctx := context.Background()
+
 	var dependencies Dependencies
 
 	err = json.Unmarshal(f, &dependencies)
@@ -84,8 +88,9 @@ func updater(token string, repoPath string) error {
 	for dependency := range dependencies {
 		err := retry.Do0(context.Background(), 3, retry.Fixed(1*time.Second), func() error {
 			return getAndUpdateDependency(
+				ctx,
+				client,
 				dependency,
-				token,
 				repoPath,
 				dependencies,
 			)
@@ -104,12 +109,8 @@ func updater(token string, repoPath string) error {
 	return nil
 }
 
-func getAndUpdateDependency(
-	dependencyType string,
-	token string,
-	repoPath string,
-	dependencies Dependencies) error {
-	version, commit, err := getVersionAndCommit(token, dependencies, dependencyType)
+func getAndUpdateDependency(ctx context.Context, client *github.Client, dependencyType string, repoPath string, dependencies Dependencies) error {
+	version, commit, err := getVersionAndCommit(ctx, client, dependencies, dependencyType)
 	if err != nil {
 		return err
 	}
@@ -122,14 +123,11 @@ func getAndUpdateDependency(
 	return nil
 }
 
-func getVersionAndCommit(token string, dependencies Dependencies, dependencyType string) (string, string, error) {
-	client := github.NewClient(nil).WithAuthToken(token)
-	ctx := context.Background()
+func getVersionAndCommit(ctx context.Context, client *github.Client, dependencies Dependencies, dependencyType string) (string, string, error) {
 
 	var version *github.RepositoryRelease
 	var err error
 	// handle dependencies with prefix
-	//if dependencies[dependencyType].TagPrefix != nil {
 	releases, _, err := client.Repositories.ListReleases(
 		ctx,
 		dependencies[dependencyType].Owner,
@@ -209,6 +207,8 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 		envLines = append(envLines, fmt.Sprintf("export %s_%s=%s \n\n",
 			dependencyPrefix, "REPO", dependencies[dependency].RepoUrl))
 	}
+
+	slices.Sort(envLines)
 
 	file, err := os.Create(repoPath + "/versions.env")
 	if err != nil {
