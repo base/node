@@ -198,13 +198,13 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 	for dependency := range dependencies {
 		dependencyPrefix := strings.ToUpper(dependency)
 
-		envLines = append(envLines, fmt.Sprintf("export %s_%s=%s \n",
+		envLines = append(envLines, fmt.Sprintf("export %s_%s=%s",
 			dependencyPrefix, "TAG", dependencies[dependency].Tag))
 
-		envLines = append(envLines, fmt.Sprintf("export %s_%s=%s \n",
+		envLines = append(envLines, fmt.Sprintf("export %s_%s=%s",
 			dependencyPrefix, "COMMIT", dependencies[dependency].Commit))
 
-		envLines = append(envLines, fmt.Sprintf("export %s_%s=%s \n\n",
+		envLines = append(envLines, fmt.Sprintf("export %s_%s=%s",
 			dependencyPrefix, "REPO", dependencies[dependency].RepoUrl))
 	}
 
@@ -216,7 +216,7 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 	}
 	defer file.Close()
 
-	_, err = file.WriteString(strings.Join(envLines, " "))
+	_, err = file.WriteString(strings.Join(envLines, "\n"))
 	if err != nil {
 		return fmt.Errorf("error writing to versions.env file: %s", err)
 	}
