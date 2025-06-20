@@ -143,9 +143,7 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 		if dependencies[dependencyType].TagPrefix == "" {
 			version = releases[0]
 			break
-		} else if resp.NextPage == 0 {
-			break
-		} else {
+		} else if dependencies[dependencyType].TagPrefix != ""{
 			for release := range releases {
 				if strings.HasPrefix(*releases[release].TagName, dependencies[dependencyType].TagPrefix) {
 					version = releases[release]
@@ -157,6 +155,8 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 				break
 			}
 			options.Page = resp.NextPage
+		} else if resp.NextPage == 0 {
+			break
 		}
 	}
 
