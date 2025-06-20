@@ -124,28 +124,39 @@ func getAndUpdateDependency(ctx context.Context, client *github.Client, dependen
 }
 
 func getVersionAndCommit(ctx context.Context, client *github.Client, dependencies Dependencies, dependencyType string) (string, string, error) {
-
 	var version *github.RepositoryRelease
 	var err error
-	// handle dependencies with prefix
-	releases, _, err := client.Repositories.ListReleases(
-		ctx,
-		dependencies[dependencyType].Owner,
-		dependencies[dependencyType].Repo,
-		nil)
+	foundPrefixVersion := false
+	options := &github.ListOptions{Page: 1}
 
-	if err != nil {
-		return "", "", fmt.Errorf("error getting releases: %s", err)
-	}
+	for {
+		releases, resp, err := client.Repositories.ListReleases(
+			ctx,
+			dependencies[dependencyType].Owner,
+			dependencies[dependencyType].Repo,
+			options)
 
-	if dependencies[dependencyType].TagPrefix == "" {
-		version = releases[0]
-	} else {
-		for release := range releases {
-			if strings.HasPrefix(*releases[release].TagName, dependencies[dependencyType].TagPrefix) {
-				version = releases[release]
+		if err != nil {
+			return "", "", fmt.Errorf("error getting releases: %s", err)
+		}
+
+		if dependencies[dependencyType].TagPrefix == "" {
+			version = releases[0]
+			break
+		} else if resp.NextPage == 0 {
+			break
+		} else {
+			for release := range releases {
+				if strings.HasPrefix(*releases[release].TagName, dependencies[dependencyType].TagPrefix) {
+					version = releases[release]
+					foundPrefixVersion = true
+					break
+				}
+			}
+			if foundPrefixVersion {
 				break
 			}
+			options.Page = resp.NextPage
 		}
 	}
 
