@@ -1,6 +1,6 @@
 ![Base](logo.webp)
 
-# Base Node
+# 🚀 Base Node
 
 Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [OP Stack](https://stack.optimism.io/). This repository contains Docker builds to run your own node on the Base network.
 
@@ -9,7 +9,7 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 [![Discord](https://img.shields.io/discord/1067165013397213286?label=discord)](https://base.org/discord)
 [![Twitter Base](https://img.shields.io/twitter/follow/Base?style=social)](https://x.com/Base)
 
-## Quick Start
+## ⚡ Quick Start
 
 1. Ensure you have an Ethereum L1 full node RPC available
 2. Choose your network:
@@ -37,15 +37,15 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
    NETWORK_ENV=.env.sepolia CLIENT=reth docker compose up --build
    ```
 
-### Supported Clients
+### 🖥️ Supported Clients
 
-- `geth` (default)
-- `reth`
-- `nethermind`
+- 🟢`geth` (default)
+- 🔵`reth`
+- 🟣`nethermind`
 
-## Requirements
+## 💻 Requirements
 
-### Minimum Requirements
+### 📏 Minimum Requirements
 
 - Modern Multicore CPU
 - 32GB RAM (64GB Recommended)
@@ -53,7 +53,7 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 - Storage: (2 \* [current chain size](https://base.org/stats) + [snapshot size](https://basechaindata.vercel.app) + 20% buffer (to accomodate future growth)
 - Docker and Docker Compose
 
-### Production Hardware Specifications
+### 🏭 Production Hardware Specifications
 
 The following are the hardware specifications we use in production:
 
@@ -78,9 +78,9 @@ Supported clients:
  - reth (with Flashblocks support option, see [Reth Node README](./reth/README.md))
  - nethermind
 
-## Configuration
+## ⚙️ Configuration
 
-### Required Settings
+### 🔧 Required Settings
 
 - L1 Configuration:
   - `OP_NODE_L1_ETH_RPC`: Your Ethereum L1 node RPC endpoint
@@ -98,14 +98,14 @@ Supported clients:
     - `any`: Any available RPC method
     - `standard`: Standard RPC methods including newer optimized methods
 
-### Network Settings
+### 🌐 Network Settings
 
 - Mainnet:
   - `RETH_CHAIN=base`
   - `OP_NODE_NETWORK=base-mainnet`
   - Sequencer: `https://mainnet-sequencer.base.org`
 
-### Performance Settings
+### 🛠️ Performance Settings
 
 - Cache Settings:
   - `GETH_CACHE="20480"` (20GB)
@@ -114,7 +114,7 @@ Supported clients:
   - `GETH_CACHE_SNAPSHOT="24"`
   - `GETH_CACHE_TRIE="44"`
 
-### Optional Features
+### 🔍 Optional Features
 
 - EthStats Monitoring (uncomment to enable)
 - Trusted RPC Mode (uncomment to enable)
@@ -122,22 +122,22 @@ Supported clients:
 
 For full configuration options, see the `.env.mainnet` file.
 
-## Snapshots
+## 📸 Snapshots
 
 Snapshots are available to help you sync your node more quickly. See [docs.base.org](https://docs.base.org/chain/run-a-base-node#snapshots) for links and more details on how to restore from a snapshot.
 
-## Supported Networks
+## 🌐 Supported Networks
 
 | Network | Status |
 | ------- | ------ |
 | Mainnet | ✅     |
 | Testnet | ✅     |
 
-## Troubleshooting
+## 🛠 Troubleshooting
 
 For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
 
-## Disclaimer
+## ⚠️ Disclaimer
 
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
 
