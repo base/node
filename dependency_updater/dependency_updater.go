@@ -16,11 +16,8 @@ import (
 )
 
 type Info struct {
-	RepoUrl    string `json:"repoUrl"`
 	Tag        string `json:"tag"`
 	Commit     string `json:"commit"`
-	CommitUrl  string `json:"commitUrl"`
-	VersionUrl string `json:"versionUrl"`
 	TagPrefix  string `json:"tagPrefix,omitempty"`
 	Owner      string `json:"owner`
 	Repo       string `json:"repo`
@@ -124,28 +121,39 @@ func getAndUpdateDependency(ctx context.Context, client *github.Client, dependen
 }
 
 func getVersionAndCommit(ctx context.Context, client *github.Client, dependencies Dependencies, dependencyType string) (string, string, error) {
-
 	var version *github.RepositoryRelease
 	var err error
-	// handle dependencies with prefix
-	releases, _, err := client.Repositories.ListReleases(
-		ctx,
-		dependencies[dependencyType].Owner,
-		dependencies[dependencyType].Repo,
-		nil)
+	foundPrefixVersion := false
+	options := &github.ListOptions{Page: 1}
 
-	if err != nil {
-		return "", "", fmt.Errorf("error getting releases: %s", err)
-	}
+	for {
+		releases, resp, err := client.Repositories.ListReleases(
+			ctx,
+			dependencies[dependencyType].Owner,
+			dependencies[dependencyType].Repo,
+			options)
 
-	if dependencies[dependencyType].TagPrefix == "" {
-		version = releases[0]
-	} else {
-		for release := range releases {
-			if strings.HasPrefix(*releases[release].TagName, dependencies[dependencyType].TagPrefix) {
-				version = releases[release]
+		if err != nil {
+			return "", "", fmt.Errorf("error getting releases: %s", err)
+		}
+
+		if dependencies[dependencyType].TagPrefix == "" {
+			version = releases[0]
+			break
+		} else if dependencies[dependencyType].TagPrefix != ""{
+			for release := range releases {
+				if strings.HasPrefix(*releases[release].TagName, dependencies[dependencyType].TagPrefix) {
+					version = releases[release]
+					foundPrefixVersion = true
+					break
+				}
+			}
+			if foundPrefixVersion {
 				break
 			}
+			options.Page = resp.NextPage
+		} else if resp.NextPage == 0 {
+			break
 		}
 	}
 
@@ -196,6 +204,10 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 	envLines := []string{}
 
 	for dependency := range dependencies {
+		repoUrl := "https://github.com/" + 
+					dependencies[dependency].Owner + "/" +
+					dependencies[dependency].Repo + ".git"
+
 		dependencyPrefix := strings.ToUpper(dependency)
 
 		envLines = append(envLines, fmt.Sprintf("export %s_%s=%s",
@@ -205,7 +217,7 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 			dependencyPrefix, "COMMIT", dependencies[dependency].Commit))
 
 		envLines = append(envLines, fmt.Sprintf("export %s_%s=%s",
-			dependencyPrefix, "REPO", dependencies[dependency].RepoUrl))
+			dependencyPrefix, "REPO", repoUrl))
 	}
 
 	slices.Sort(envLines)
