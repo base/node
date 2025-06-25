@@ -15,7 +15,7 @@ services:
     environment:
       - NODE_TYPE=${NODE_TYPE:-vanilla}
     env_file:
-      - ${NETWORK_ENV:-.env.mainnet} # Use .env.mainnet by default, override with .env.sepolia for testnet
+      - .env.mainnet
   node:
     build:
       context: .
@@ -30,4 +30,4 @@ services:
       - "6060:6060" # pprof
     command: ["bash", "./op-node-entrypoint"]
     env_file:
-      - ${NETWORK_ENV:-.env.mainnet} # Use .env.mainnet by default, override with .env.sepolia for testnet
+      - .env.mainnet
