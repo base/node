@@ -10,8 +10,8 @@
 	  },
 	  "nethermind": {
 	  	  "repoUrl": "https://github.com/NethermindEth/nethermind.git",
-	  	  "tag": "1.31.11",
-	  	  "commit": "2be1890ee4f21f921a471de058dcb57937bd9b90",
+	  	  "tag": "1.32.0",
+	  	  "commit": "55fe750c2217762c3f4b682ab163e5214a78edfc",
 	  	  "commitUrl": "https://api.github.com/repos/NethermindEth/nethermind/commits/",
 	  	  "versionUrl": "https://api.github.com/repos/NethermindEth/nethermind/releases",
 	  	  "Owner": "NethermindEth",
