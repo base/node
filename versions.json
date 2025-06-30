@@ -1,0 +1,48 @@
+{
+	  "base_reth_node": {
+	  	  "repoUrl": "https://github.com/base/node-reth.git",
+	  	  "tag": "v0.1.2",
+	  	  "commit": "7fe1d4e7c74d322d2cf78df55db40e14f466cfc6",
+	  	  "commitUrl": "https://api.github.com/repos/base/node-reth/commits/",
+	  	  "versionUrl": "https://api.github.com/repos/base/node-reth/releases",
+	  	  "Owner": "base",
+	  	  "Repo": "node-reth"
+	  },
+	  "nethermind": {
+	  	  "repoUrl": "https://github.com/NethermindEth/nethermind.git",
+	  	  "tag": "1.31.11",
+	  	  "commit": "2be1890ee4f21f921a471de058dcb57937bd9b90",
+	  	  "commitUrl": "https://api.github.com/repos/NethermindEth/nethermind/commits/",
+	  	  "versionUrl": "https://api.github.com/repos/NethermindEth/nethermind/releases",
+	  	  "Owner": "NethermindEth",
+	  	  "Repo": "nethermind"
+	  },
+	  "op_geth": {
+	  	  "repoUrl": "https://github.com/ethereum-optimism/op-geth.git",
+	  	  "tag": "v1.101511.0",
+	  	  "commit": "68075997f33907401a93216aa426514c5ddc8870",
+	  	  "commitUrl": "https://api.github.com/repos/ethereum-optimism/op-geth/commits/",
+	  	  "versionUrl": "https://api.github.com/repos/ethereum-optimism/op-geth/releases",
+	  	  "Owner": "ethereum-optimism",
+	  	  "Repo": "op-geth"
+	  },
+	  "op_node": {
+	  	  "repoUrl": "https://github.com/ethereum-optimism/optimism.git",
+	  	  "tag": "op-node/v1.13.3",
+	  	  "commit": "b1e7c63bb2ffea46771c302bcb05f72ba1a7bf61",
+	  	  "commitUrl": "https://api.github.com/repos/ethereum-optimism/optimism/commits/",
+	  	  "versionUrl": "https://api.github.com/repos/ethereum-optimism/optimism/releases",
+	  	  "tagPrefix": "op-node",
+	  	  "Owner": "ethereum-optimism",
+	  	  "Repo": "optimism"
+	  },
+	  "op_reth": {
+	  	  "repoUrl": "https://github.com/paradigmxyz/reth.git",
+	  	  "tag": "v1.4.8",
+	  	  "commit": "127595e23079de2c494048d0821ea1f1107eb624",
+	  	  "commitUrl": "https://api.github.com/repos/paradigmxyz/reth/commits/",
+	  	  "versionUrl": "https://api.github.com/repos/paradigmxyz/reth/releases",
+	  	  "Owner": "paradigmxyz",
+	  	  "Repo": "reth"
+	  }
+}
