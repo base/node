@@ -1,8 +1,8 @@
 {
 	  "base_reth_node": {
 	  	  "repoUrl": "https://github.com/base/node-reth.git",
-	  	  "tag": "v0.1.2",
-	  	  "commit": "7fe1d4e7c74d322d2cf78df55db40e14f466cfc6",
+	  	  "tag": "v0.1.3",
+	  	  "commit": "f28c2751a0737d7617e52253a9e81070b87290b5",
 	  	  "commitUrl": "https://api.github.com/repos/base/node-reth/commits/",
 	  	  "versionUrl": "https://api.github.com/repos/base/node-reth/releases",
 	  	  "Owner": "base",
@@ -10,8 +10,8 @@
 	  },
 	  "nethermind": {
 	  	  "repoUrl": "https://github.com/NethermindEth/nethermind.git",
-	  	  "tag": "1.31.11",
-	  	  "commit": "2be1890ee4f21f921a471de058dcb57937bd9b90",
+	  	  "tag": "1.32.2",
+	  	  "commit": "d3e7eb98b28d0b9c7b58a9fb45e83b640b2e17e6",
 	  	  "commitUrl": "https://api.github.com/repos/NethermindEth/nethermind/commits/",
 	  	  "versionUrl": "https://api.github.com/repos/NethermindEth/nethermind/releases",
 	  	  "Owner": "NethermindEth",
@@ -28,8 +28,8 @@
 	  },
 	  "op_node": {
 	  	  "repoUrl": "https://github.com/ethereum-optimism/optimism.git",
-	  	  "tag": "op-node/v1.13.3",
-	  	  "commit": "b1e7c63bb2ffea46771c302bcb05f72ba1a7bf61",
+	  	  "tag": "op-node/v1.13.4",
+	  	  "commit": "7eedfced77eb30ae72cc8d0e7c793dd2d1b6f161",
 	  	  "commitUrl": "https://api.github.com/repos/ethereum-optimism/optimism/commits/",
 	  	  "versionUrl": "https://api.github.com/repos/ethereum-optimism/optimism/releases",
 	  	  "tagPrefix": "op-node",
@@ -38,8 +38,8 @@
 	  },
 	  "op_reth": {
 	  	  "repoUrl": "https://github.com/paradigmxyz/reth.git",
-	  	  "tag": "v1.4.8",
-	  	  "commit": "127595e23079de2c494048d0821ea1f1107eb624",
+	  	  "tag": "v1.5.0",
+	  	  "commit": "61e38f9af154fe91e776d8f5e449d20a1571e8cf",
 	  	  "commitUrl": "https://api.github.com/repos/paradigmxyz/reth/commits/",
 	  	  "versionUrl": "https://api.github.com/repos/paradigmxyz/reth/releases",
 	  	  "Owner": "paradigmxyz",
