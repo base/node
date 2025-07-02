@@ -128,7 +128,7 @@ func createCommitMessage(updatedDependencies [][]string) error {
 	for _, dependencies := range updatedDependencies {
 		if len(dependencies) != 0 {
 			repo, tag := dependencies[0], dependencies[1]
-			commitDescription += repo + " => " + tag + "\n"
+			commitDescription += repo + " => " + tag + " (" + dependencies[2] + ")" + "\n" 
 		}
 	}
 	cmd := exec.Command("git", "commit", "-am", commitTitle, "-m", commitDescription)
@@ -156,6 +156,7 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 	var version *github.RepositoryRelease
 	var err error
 	var updates []string
+	var diffUrl string
 	foundPrefixVersion := false
 	options := &github.ListOptions{Page: 1}
 
@@ -173,7 +174,12 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 		if dependencies[dependencyType].TagPrefix == "" {
 			version = releases[0]
 			if *version.TagName != dependencies[dependencyType].Tag {
-				updates = append(updates, dependencies[dependencyType].Repo, *version.TagName)
+				diffUrl = "github.com/" + 
+				dependencies[dependencyType].Owner + "/" + 
+				dependencies[dependencyType].Repo + "/compare/" +
+				dependencies[dependencyType].Tag + "..." + *version.TagName
+
+				updates = append(updates, dependencies[dependencyType].Repo, *version.TagName, diffUrl)
 			}
 			break
 		} else if dependencies[dependencyType].TagPrefix != "" {
@@ -182,7 +188,12 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 					version = releases[release]
 					foundPrefixVersion = true
 					if *version.TagName != dependencies[dependencyType].Tag {
-						updates = append(updates, dependencies[dependencyType].Repo, *version.TagName)
+						diffUrl = "github.com/" + 
+						dependencies[dependencyType].Owner + "/" + 
+						dependencies[dependencyType].Repo + "/compare/" +
+						dependencies[dependencyType].Tag + "..." + *version.TagName
+
+						updates = append(updates, dependencies[dependencyType].Repo, *version.TagName, diffUrl)
 					}
 					break
 				}
