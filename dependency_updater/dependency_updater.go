@@ -125,10 +125,10 @@ func updater(token string, repoPath string, commit bool) error {
 func createCommitMessage(updatedDependencies [][]string) error {
 	commitTitle := "chore: updated "
 	var commitDescription = "Updated dependencies for: \n"
-	for _, dependencies := range updatedDependencies {
-		if len(dependencies) != 0 {
-			repo, tag := dependencies[0], dependencies[1]
-			commitDescription += repo + " => " + tag + " (" + dependencies[2] + ")" + "\n"
+	for _, dependency := range updatedDependencies {
+		if len(dependency) != 0 {
+			repo, tag := dependency[0], dependency[1]
+			commitDescription += repo + " => " + tag + " (" + dependency[2] + ")" + "\n"
 			commitTitle += repo + ", "
 		}
 	}
