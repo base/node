@@ -287,5 +287,5 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 }
 
 func generateGithubRepoUrl(dependencies Dependencies, dependencyType string) string {
-	return "https://github.com/" + dependencies[dependencyType].Owner + "/" + dependencies[dependencyType].Repo + "/"
+	return "https://github.com/" + dependencies[dependencyType].Owner + "/" + dependencies[dependencyType].Repo
 }
