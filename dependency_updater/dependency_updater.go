@@ -240,6 +240,7 @@ func updateVersionTagAndCommit(
 	if err != nil {
 		return fmt.Errorf("error writing to versions "+dependencyType+": %s", err)
 	}
+	
 	return nil
 }
 
