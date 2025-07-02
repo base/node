@@ -4,23 +4,25 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/ethereum-optimism/optimism/op-service/retry"
-	"github.com/google/go-github/v72/github"
-	"github.com/urfave/cli/v3"
 	"slices"
 	"time"
 
+	"github.com/ethereum-optimism/optimism/op-service/retry"
+	"github.com/google/go-github/v72/github"
+	"github.com/urfave/cli/v3"
+
 	"log"
 	"os"
+	"os/exec"
 	"strings"
 )
 
 type Info struct {
-	Tag        string `json:"tag"`
-	Commit     string `json:"commit"`
-	TagPrefix  string `json:"tagPrefix,omitempty"`
-	Owner      string `json:"owner`
-	Repo       string `json:"repo`
+	Tag       string `json:"tag"`
+	Commit    string `json:"commit"`
+	TagPrefix string `json:"tagPrefix,omitempty"`
+	Owner     string `json:"owner`
+	Repo      string `json:"repo`
 }
 
 type VersionTag []struct {
@@ -49,9 +51,14 @@ func main() {
 				Usage:    "Specifies repo location to run the version updater on",
 				Required: true,
 			},
+			&cli.BoolFlag{
+				Name:     "commit",
+				Usage:    "Stages updater changes and creates commit message",
+				Required: false,
+			},
 		},
 		Action: func(ctx context.Context, cmd *cli.Command) error {
-			err := updater(string(cmd.String("token")), string(cmd.String("repo")))
+			err := updater(string(cmd.String("token")), string(cmd.String("repo")), cmd.Bool("commit"))
 			if err != nil {
 				return fmt.Errorf("error running updater: %s", err)
 			}
@@ -64,7 +71,7 @@ func main() {
 	}
 }
 
-func updater(token string, repoPath string) error {
+func updater(token string, repoPath string, commit bool) error {
 	var err error
 
 	f, err := os.ReadFile(repoPath + "/versions.json")
@@ -75,6 +82,7 @@ func updater(token string, repoPath string) error {
 	client := github.NewClient(nil).WithAuthToken(token)
 	ctx := context.Background()
 
+	var updatedDependencies [][]string
 	var dependencies Dependencies
 
 	err = json.Unmarshal(f, &dependencies)
@@ -90,11 +98,19 @@ func updater(token string, repoPath string) error {
 				dependency,
 				repoPath,
 				dependencies,
+				&updatedDependencies,
 			)
 		})
 
 		if err != nil {
 			return fmt.Errorf("error getting and updating version/commit for "+dependency+": %s", err)
+		}
+	}
+
+	if commit {
+		err := createCommitMessage(updatedDependencies)
+		if err != nil {
+			return fmt.Errorf("error creating commit message: %s", err)
 		}
 	}
 
@@ -106,8 +122,23 @@ func updater(token string, repoPath string) error {
 	return nil
 }
 
-func getAndUpdateDependency(ctx context.Context, client *github.Client, dependencyType string, repoPath string, dependencies Dependencies) error {
-	version, commit, err := getVersionAndCommit(ctx, client, dependencies, dependencyType)
+func createCommitMessage(updatedDependencies [][]string) error {
+	var commitMessage = "Updated dependencies for: \n"
+	for _, dependencies := range updatedDependencies {
+		if len(dependencies) != 0 {
+			repo, tag := dependencies[0], dependencies[1]
+			commitMessage += repo + " => " + tag + "\n"
+		}
+	}
+	cmd := exec.Command("git", "commit", "-am", commitMessage)
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("error running git commit -m: %s", err)
+	}
+	return nil
+}
+
+func getAndUpdateDependency(ctx context.Context, client *github.Client, dependencyType string, repoPath string, dependencies Dependencies, updatedDependencies *[][]string) error {
+	version, commit, err := getVersionAndCommit(ctx, client, dependencies, dependencyType, updatedDependencies)
 	if err != nil {
 		return err
 	}
@@ -120,9 +151,10 @@ func getAndUpdateDependency(ctx context.Context, client *github.Client, dependen
 	return nil
 }
 
-func getVersionAndCommit(ctx context.Context, client *github.Client, dependencies Dependencies, dependencyType string) (string, string, error) {
+func getVersionAndCommit(ctx context.Context, client *github.Client, dependencies Dependencies, dependencyType string, updatedDependencies *[][]string) (string, string, error) {
 	var version *github.RepositoryRelease
 	var err error
+	var updates []string
 	foundPrefixVersion := false
 	options := &github.ListOptions{Page: 1}
 
@@ -139,12 +171,18 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 
 		if dependencies[dependencyType].TagPrefix == "" {
 			version = releases[0]
+			if *version.TagName != dependencies[dependencyType].Tag {
+				updates = append(updates, dependencies[dependencyType].Repo, *version.TagName)
+			}
 			break
-		} else if dependencies[dependencyType].TagPrefix != ""{
+		} else if dependencies[dependencyType].TagPrefix != "" {
 			for release := range releases {
 				if strings.HasPrefix(*releases[release].TagName, dependencies[dependencyType].TagPrefix) {
 					version = releases[release]
 					foundPrefixVersion = true
+					if *version.TagName != dependencies[dependencyType].Tag {
+						updates = append(updates, dependencies[dependencyType].Repo, *version.TagName)
+					}
 					break
 				}
 			}
@@ -156,6 +194,8 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 			break
 		}
 	}
+
+	*updatedDependencies = append(*updatedDependencies, updates)
 
 	commit, _, err := client.Repositories.GetCommit(
 		ctx,
@@ -204,9 +244,9 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 	envLines := []string{}
 
 	for dependency := range dependencies {
-		repoUrl := "https://github.com/" + 
-					dependencies[dependency].Owner + "/" +
-					dependencies[dependency].Repo + ".git"
+		repoUrl := "https://github.com/" +
+			dependencies[dependency].Owner + "/" +
+			dependencies[dependency].Repo + ".git"
 
 		dependencyPrefix := strings.ToUpper(dependency)
 
@@ -235,3 +275,4 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 
 	return nil
 }
+
