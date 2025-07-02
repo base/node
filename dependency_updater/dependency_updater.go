@@ -130,8 +130,8 @@ func createCommitMessage(updatedDependencies [][]string) error {
 			repo, tag := dependencies[0], dependencies[1]
 			commitDescription += repo + " => " + tag + " (" + dependencies[2] + ")" + "\n"
 			commitTitle += repo
-			if i != len(updatedDependencies){
-				commitTitle += ","
+			if i != len(updatedDependencies) - 1{
+				commitTitle += " ,"
 			}
 		}
 	}
