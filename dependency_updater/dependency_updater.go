@@ -136,8 +136,8 @@ func createCommitMessage(updatedDependencies []VersionUpdateInfo) error {
 	}
 
 	commitTitle += strings.Join(repos, ", ")
-
 	cmd := exec.Command("git", "commit", "-am", commitTitle, "-m", commitDescription)
+	
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("error running git commit -m: %s", err)
 	}
