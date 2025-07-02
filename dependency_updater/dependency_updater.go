@@ -132,7 +132,7 @@ func createCommitMessage(updatedDependencies [][]string) error {
 			commitTitle += repo + ", "
 		}
 	}
-	commitTitle = strings.TrimRight(commitTitle, ",")
+	commitTitle = strings.TrimSuffix(commitTitle, ", ")
 	cmd := exec.Command("git", "commit", "-am", commitTitle, "-m", commitDescription)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("error running git commit -m: %s", err)
