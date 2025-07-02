@@ -89,23 +89,22 @@ func updater(token string, repoPath string, commit bool) error {
 	}
 
 	for dependency := range dependencies {
-		var updatedDependency VersionUpdateInfo
-		err := retry.Do0(context.Background(), 3, retry.Fixed(1*time.Second), func()  error {
-			updatedDependency, err = getAndUpdateDependency(
+		updatedDependency, err := retry.Do(context.Background(), 3, retry.Fixed(1*time.Second), func() (VersionUpdateInfo, error) {
+			return getAndUpdateDependency(
 				ctx,
 				client,
 				dependency,
 				repoPath,
 				dependencies,
 			)
-			return err
-		})
-
+		}) 
 		if err != nil {
 			return fmt.Errorf("error getting and updating version/commit for "+dependency+": %s", err)
 		}
 
-		updatedDependencies = append(updatedDependencies, updatedDependency)
+		if updatedDependency != (VersionUpdateInfo{}) {
+			updatedDependencies = append(updatedDependencies, updatedDependency)
+		}
 	}
 
 	if commit && updatedDependencies != nil {
@@ -129,20 +128,15 @@ func createCommitMessage(updatedDependencies []VersionUpdateInfo) error {
 	commitDescription := "Updated dependencies for: \n"
 
 	for _, dependency := range updatedDependencies {
-		if dependency != (VersionUpdateInfo{}) {
-			repo, tag := dependency.Repo, dependency.To
-			commitDescription += repo + " => " + tag + " (" + dependency.DiffUrl + ")" + "\n"
-			repos = append(repos, repo)
-		}
+		repo, tag := dependency.Repo, dependency.To
+		commitDescription += repo + " => " + tag + " (" + dependency.DiffUrl + ")" + "\n"
+		repos = append(repos, repo)
 	}
 
-	if len(repos) != 0 {
-		commitTitle += strings.Join(repos, ", ")
-		cmd := exec.Command("git", "commit", "-am", commitTitle, "-m", commitDescription)
-		if err := cmd.Run(); err != nil {
-			return fmt.Errorf("error running git commit -m: %s", err)
-		}
-		return nil
+	commitTitle += strings.Join(repos, ", ")
+	cmd := exec.Command("git", "commit", "-am", commitTitle, "-m", commitDescription)
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("error running git commit -m: %s", err)
 	}
 	return nil
 }
@@ -152,10 +146,11 @@ func getAndUpdateDependency(ctx context.Context, client *github.Client, dependen
 	if err != nil {
 		return VersionUpdateInfo{}, err
 	}
-
-	e := updateVersionTagAndCommit(commit, version, dependencyType, repoPath, dependencies)
-	if e != nil {
-		return VersionUpdateInfo{}, fmt.Errorf("error updating version tag and commit: %s", e)
+	if updatedDependency != (VersionUpdateInfo{}){
+		e := updateVersionTagAndCommit(commit, version, dependencyType, repoPath, dependencies)
+		if e != nil {
+			return VersionUpdateInfo{}, fmt.Errorf("error updating version tag and commit: %s", e)
+		}
 	}
 
 	return updatedDependency, nil
