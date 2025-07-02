@@ -123,14 +123,15 @@ func updater(token string, repoPath string, commit bool) error {
 }
 
 func createCommitMessage(updatedDependencies [][]string) error {
-	var commitMessage = "Updated dependencies for: \n"
+	commitTitle := "Update versions"
+	var commitDescription = "Updated dependencies for: \n"
 	for _, dependencies := range updatedDependencies {
 		if len(dependencies) != 0 {
 			repo, tag := dependencies[0], dependencies[1]
-			commitMessage += repo + " => " + tag + "\n"
+			commitDescription += repo + " => " + tag + "\n"
 		}
 	}
-	cmd := exec.Command("git", "commit", "-am", commitMessage)
+	cmd := exec.Command("git", "commit", "-am", commitTitle, "-m", commitDescription)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("error running git commit -m: %s", err)
 	}
