@@ -128,7 +128,7 @@ func createCommitMessage(updatedDependencies [][]string) error {
 	for _, dependencies := range updatedDependencies {
 		if len(dependencies) != 0 {
 			repo, tag := dependencies[0], dependencies[1]
-			commitDescription += repo + " => " + tag + " (" + dependencies[2] + ")" + "\n" 
+			commitDescription += repo + " => " + tag + " (" + dependencies[2] + ")" + "\n"
 		}
 	}
 	cmd := exec.Command("git", "commit", "-am", commitTitle, "-m", commitDescription)
@@ -174,10 +174,10 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 		if dependencies[dependencyType].TagPrefix == "" {
 			version = releases[0]
 			if *version.TagName != dependencies[dependencyType].Tag {
-				diffUrl = "github.com/" + 
-				dependencies[dependencyType].Owner + "/" + 
-				dependencies[dependencyType].Repo + "/compare/" +
-				dependencies[dependencyType].Tag + "..." + *version.TagName
+				diffUrl = "https://github.com/" +
+					dependencies[dependencyType].Owner + "/" +
+					dependencies[dependencyType].Repo + "/compare/" +
+					dependencies[dependencyType].Tag + "..." + *version.TagName
 
 				updates = append(updates, dependencies[dependencyType].Repo, *version.TagName, diffUrl)
 			}
@@ -188,10 +188,10 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 					version = releases[release]
 					foundPrefixVersion = true
 					if *version.TagName != dependencies[dependencyType].Tag {
-						diffUrl = "github.com/" + 
-						dependencies[dependencyType].Owner + "/" + 
-						dependencies[dependencyType].Repo + "/compare/" +
-						dependencies[dependencyType].Tag + "..." + *version.TagName
+						diffUrl = "https://github.com/" +
+							dependencies[dependencyType].Owner + "/" +
+							dependencies[dependencyType].Repo + "/compare/" +
+							dependencies[dependencyType].Tag + "..." + *version.TagName
 
 						updates = append(updates, dependencies[dependencyType].Repo, *version.TagName, diffUrl)
 					}
@@ -287,4 +287,3 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 
 	return nil
 }
-
