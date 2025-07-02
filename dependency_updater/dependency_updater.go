@@ -124,9 +124,10 @@ func updater(token string, repoPath string, commit bool) error {
 }
 
 func createCommitMessage(updatedDependencies []VersionUpdateInfo) error {
-	commitTitle := "chore: updated "
-	var commitDescription = "Updated dependencies for: \n"
 	var repos []string
+	commitTitle := "chore: updated "
+	commitDescription := "Updated dependencies for: \n"
+
 	for _, dependency := range updatedDependencies {
 		if dependency != (VersionUpdateInfo{}) {
 			repo, tag := dependency.Repo, dependency.To
@@ -134,10 +135,14 @@ func createCommitMessage(updatedDependencies []VersionUpdateInfo) error {
 			repos = append(repos, repo)
 		}
 	}
-	commitTitle += strings.Join(repos, ", ")
-	cmd := exec.Command("git", "commit", "-am", commitTitle, "-m", commitDescription)
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("error running git commit -m: %s", err)
+
+	if len(repos) != 0 {
+		commitTitle += strings.Join(repos, ", ")
+		cmd := exec.Command("git", "commit", "-am", commitTitle, "-m", commitDescription)
+		if err := cmd.Run(); err != nil {
+			return fmt.Errorf("error running git commit -m: %s", err)
+		}
+		return nil
 	}
 	return nil
 }
@@ -160,6 +165,7 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 	var version *github.RepositoryRelease
 	var err error
 	var diffUrl string
+	var updatedDependency VersionUpdateInfo
 	foundPrefixVersion := false
 	options := &github.ListOptions{Page: 1}
 
@@ -201,12 +207,14 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 			break
 		}
 	}
-
-	updatedDependency := VersionUpdateInfo{
+	
+	if diffUrl != "" {
+		updatedDependency = VersionUpdateInfo{
 		dependencies[dependencyType].Repo, 
 		dependencies[dependencyType].Tag, 
 		*version.TagName, 
 		diffUrl,
+		}
 	}
 
 	commit, _, err := client.Repositories.GetCommit(
