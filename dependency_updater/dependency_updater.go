@@ -125,11 +125,14 @@ func updater(token string, repoPath string, commit bool) error {
 func createCommitMessage(updatedDependencies [][]string) error {
 	commitTitle := "chore: updated "
 	var commitDescription = "Updated dependencies for: \n"
-	for _, dependencies := range updatedDependencies {
+	for i, dependencies := range updatedDependencies {
 		if len(dependencies) != 0 {
 			repo, tag := dependencies[0], dependencies[1]
 			commitDescription += repo + " => " + tag + " (" + dependencies[2] + ")" + "\n"
-			commitTitle += repo + " "
+			commitTitle += repo
+			if i != len(updatedDependencies){
+				commitTitle += ","
+			}
 		}
 	}
 	cmd := exec.Command("git", "commit", "-am", commitTitle, "-m", commitDescription)
