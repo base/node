@@ -26,9 +26,9 @@ type Info struct {
 }
 
 type VersionUpdateInfo struct {
-    Repo string
-    From string
-    To string
+	Repo    string
+	From    string
+	To      string
 	DiffUrl string
 }
 
@@ -99,7 +99,7 @@ func updater(token string, repoPath string, commit bool) error {
 				dependencies,
 			)
 			return err
-		}) 
+		})
 		if err != nil {
 			return fmt.Errorf("error getting and updating version/commit for "+dependency+": %s", err)
 		}
@@ -149,7 +149,7 @@ func getAndUpdateDependency(ctx context.Context, client *github.Client, dependen
 	if err != nil {
 		return VersionUpdateInfo{}, err
 	}
-	if updatedDependency != (VersionUpdateInfo{}){
+	if updatedDependency != (VersionUpdateInfo{}) {
 		e := updateVersionTagAndCommit(commit, version, dependencyType, repoPath, dependencies)
 		if e != nil {
 			return VersionUpdateInfo{}, fmt.Errorf("error updating version tag and commit: %s", e)
@@ -182,7 +182,7 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 			version = releases[0]
 			if *version.TagName != dependencies[dependencyType].Tag {
 				diffUrl = generateGithubRepoUrl(dependencies, dependencyType) + "/compare/" +
-				dependencies[dependencyType].Tag + "..." + *version.TagName
+					dependencies[dependencyType].Tag + "..." + *version.TagName
 			}
 			break
 		} else if dependencies[dependencyType].TagPrefix != "" {
@@ -192,7 +192,7 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 					foundPrefixVersion = true
 					if *version.TagName != dependencies[dependencyType].Tag {
 						diffUrl = generateGithubRepoUrl(dependencies, dependencyType) + "/compare/" +
-						dependencies[dependencyType].Tag + "..." + *version.TagName
+							dependencies[dependencyType].Tag + "..." + *version.TagName
 					}
 					break
 				}
@@ -205,13 +205,13 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 			break
 		}
 	}
-	
+
 	if diffUrl != "" {
 		updatedDependency = VersionUpdateInfo{
-		dependencies[dependencyType].Repo, 
-		dependencies[dependencyType].Tag, 
-		*version.TagName, 
-		diffUrl,
+			dependencies[dependencyType].Repo,
+			dependencies[dependencyType].Tag,
+			*version.TagName,
+			diffUrl,
 		}
 	}
 
