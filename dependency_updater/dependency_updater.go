@@ -89,14 +89,16 @@ func updater(token string, repoPath string, commit bool) error {
 	}
 
 	for dependency := range dependencies {
-		updatedDependency, err := retry.Do(context.Background(), 3, retry.Fixed(1*time.Second), func() (VersionUpdateInfo, error) {
-			return getAndUpdateDependency(
+		var updatedDependency VersionUpdateInfo
+		err := retry.Do0(context.Background(), 3, retry.Fixed(1*time.Second), func() error {
+			updatedDependency, err = getAndUpdateDependency(
 				ctx,
 				client,
 				dependency,
 				repoPath,
 				dependencies,
 			)
+			return err
 		}) 
 		if err != nil {
 			return fmt.Errorf("error getting and updating version/commit for "+dependency+": %s", err)
