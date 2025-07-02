@@ -174,7 +174,7 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 		if dependencies[dependencyType].TagPrefix == "" {
 			version = releases[0]
 			if *version.TagName != dependencies[dependencyType].Tag {
-				diffUrl = "htttps://github.com/" +
+				diffUrl = "https://github.com/" +
 					dependencies[dependencyType].Owner + "/" +
 					dependencies[dependencyType].Repo + "/compare/" +
 					dependencies[dependencyType].Tag + "..." + *version.TagName
