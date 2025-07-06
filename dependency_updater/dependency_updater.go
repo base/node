@@ -21,8 +21,8 @@ type Info struct {
 	Tag       string `json:"tag"`
 	Commit    string `json:"commit"`
 	TagPrefix string `json:"tagPrefix,omitempty"`
-	Owner     string `json:"owner`
-	Repo      string `json:"repo`
+	Owner     string `json:"owner"`
+	Repo      string `json:"repo"`
 }
 
 type VersionUpdateInfo struct {
