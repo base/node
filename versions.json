@@ -2,32 +2,37 @@
 	  "base_reth_node": {
 	  	  "tag": "v0.1.3",
 	  	  "commit": "f28c2751a0737d7617e52253a9e81070b87290b5",
-	  	  "Owner": "base",
-	  	  "Repo": "node-reth"
+	  	  "owner": "base",
+	  	  "repo": "node-reth",
+	  	  "tracking": "tag"
 	  },
 	  "nethermind": {
 	  	  "tag": "1.32.2",
 	  	  "commit": "d3e7eb98b28d0b9c7b58a9fb45e83b640b2e17e6",
-	  	  "Owner": "NethermindEth",
-	  	  "Repo": "nethermind"
+	  	  "owner": "NethermindEth",
+	  	  "repo": "nethermind",
+	  	  "tracking": "tag"
 	  },
 	  "op_geth": {
 	  	  "tag": "v1.101511.0",
 	  	  "commit": "68075997f33907401a93216aa426514c5ddc8870",
-	  	  "Owner": "ethereum-optimism",
-	  	  "Repo": "op-geth"
+	  	  "owner": "ethereum-optimism",
+	  	  "repo": "op-geth",
+	  	  "tracking": "tag"
 	  },
 	  "op_node": {
 	  	  "tag": "op-node/v1.13.4",
 	  	  "commit": "7eedfced77eb30ae72cc8d0e7c793dd2d1b6f161",
 	  	  "tagPrefix": "op-node",
-	  	  "Owner": "ethereum-optimism",
-	  	  "Repo": "optimism"
+	  	  "owner": "ethereum-optimism",
+	  	  "repo": "optimism",
+	  	  "tracking": "tag"
 	  },
 	  "op_reth": {
 	  	  "tag": "v1.5.0",
 	  	  "commit": "61e38f9af154fe91e776d8f5e449d20a1571e8cf",
-	  	  "Owner": "paradigmxyz",
-	  	  "Repo": "reth"
+	  	  "owner": "paradigmxyz",
+	  	  "repo": "reth",
+	  	  "tracking": "tag"
 	  }
 }
