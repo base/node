@@ -24,7 +24,7 @@ type Info struct {
 	Owner     string `json:"owner"`
 	Repo      string `json:"repo"`
 	Branch    string `json:"branch,omitempty"`
-	Tracking  string   `json:"tracking"`// change to string
+	Tracking  string `json:"tracking"`
 }
 
 type VersionUpdateInfo struct {
