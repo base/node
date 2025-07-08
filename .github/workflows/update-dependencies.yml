@@ -5,7 +5,7 @@ on:
   pull_request:
 
 permissions:
-  pull-requests: write
+  contents: write
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -36,12 +36,11 @@ jobs:
       - name: create pull request
         uses: peter-evans/create-pull-request@v7.0.8
         with:
-          # author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
-          # committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
+          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           title: ${{ env.TITLE }}
           commit-message: ${{ env.TITLE }}
           body: ${{ env.DESC }}
           branch: run-dependency-updater
           delete-branch: true
           base: main
-          token: ${{ secrets.GITHUB_TOKEN }}
