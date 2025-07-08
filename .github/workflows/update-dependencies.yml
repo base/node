@@ -1,8 +1,7 @@
 name: Update Dockerfile Dependencies
 on:
-  # schedule:
-  #   - cron: '0 12 * * * *'
-  pull_request:
+  schedule:
+    - cron: '0 12 * * * *'
 
 permissions:
   pull-requests: write
