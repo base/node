@@ -1,5 +1,5 @@
 name: Update Dockerfile Dependencies
-on: [push]
+on: push
   schedule:
     - cron: '0 12 * * * *'
   push:
