@@ -16,8 +16,9 @@ jobs:
       - name: Load .env file
         uses: aarcangeli/load-dotenv@v1
         with:
-          path: /node/git_commit_message.env
+          path: git_commit_message.env
           filenames: 'git_commit_message.env'
+
       - name: view env
         run: echo ${{ env.TITLE }}
       # - name: build dependency updater
