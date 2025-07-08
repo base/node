@@ -3,4 +3,5 @@
 /reth-data/
 /nethermind-data/
 /dependency_updater/dependency_updater
+/git_commit_message.env
 .DS_Store
