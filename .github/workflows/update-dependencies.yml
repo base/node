@@ -39,5 +39,6 @@ jobs:
           title: ${{ env.TITLE }}
           commit-message: ${{ env.TITLE }}
           body: ${{ env.DESC }}
-          branch: update-dependencies
+          branch: run-dependency-updater
           base: main
+          delete-branch: true
