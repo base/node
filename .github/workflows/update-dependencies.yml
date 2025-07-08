@@ -31,7 +31,7 @@ jobs:
       - name: run dependency updater
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./dependency_updater --repo ~/node --commit true
+        run: cd dependency_updater && ./dependency_updater --repo ~/node --commit true
 
       - name: create pull request
         uses: peter-evans/create-pull-request@v7.0.8
