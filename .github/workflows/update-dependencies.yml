@@ -6,7 +6,7 @@ on:
 
 permissions:
   contents: write
-  pull_requests: write
+  pull_request: write
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
