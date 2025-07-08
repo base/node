@@ -13,6 +13,7 @@ import (
 
 	"log"
 	"os"
+	"os/exec"
 	"strings"
 )
 
@@ -56,9 +57,14 @@ func main() {
 				Usage:    "Stages updater changes and creates commit message",
 				Required: false,
 			},
+			&cli.BoolFlag{
+				Name:     "github-action",
+				Usage:    "Specifies whether tool is being used through github action workflow",
+				Required: false,
+			},
 		},
 		Action: func(ctx context.Context, cmd *cli.Command) error {
-			err := updater(string(cmd.String("token")), string(cmd.String("repo")), cmd.Bool("commit"))
+			err := updater(string(cmd.String("token")), string(cmd.String("repo")), cmd.Bool("commit"), cmd.Bool("github-action"))
 			if err != nil {
 				return fmt.Errorf("error running updater: %s", err)
 			}
@@ -71,7 +77,7 @@ func main() {
 	}
 }
 
-func updater(token string, repoPath string, commit bool) error {
+func updater(token string, repoPath string, commit bool, githubAction bool) error {
 	var err error
 	var dependencies Dependencies
 	var updatedDependencies []VersionUpdateInfo
@@ -110,8 +116,8 @@ func updater(token string, repoPath string, commit bool) error {
 		}
 	}
 
-	if commit && updatedDependencies != nil {
-		err := createCommitMessage(updatedDependencies, repoPath)
+	if (commit && updatedDependencies != nil) || (githubAction && updatedDependencies != nil) {
+		err := createCommitMessage(updatedDependencies, repoPath, githubAction)
 		if err != nil {
 			return fmt.Errorf("error creating commit message: %s", err)
 		}
@@ -125,7 +131,7 @@ func updater(token string, repoPath string, commit bool) error {
 	return nil
 }
 
-func createCommitMessage(updatedDependencies []VersionUpdateInfo, repoPath string) error {
+func createCommitMessage(updatedDependencies []VersionUpdateInfo, repoPath string, githubAction bool) error {
 	var repos []string
 	commitTitle := "chore: updated "
 	commitDescription := "Updated dependencies for: \n"
@@ -137,11 +143,18 @@ func createCommitMessage(updatedDependencies []VersionUpdateInfo, repoPath strin
 	}
 	commitDescription = strings.TrimSuffix(commitDescription, "\n")
 
-	commitTitle += strings.Join(repos, ", ")
-	commitDescription = "\"" + commitDescription + "\""
-	err := createGitMessageEnv(commitTitle, commitDescription, repoPath)
-	if err != nil {
-		return fmt.Errorf("error creating git commit message: %s", err)
+	if githubAction {
+		commitTitle += strings.Join(repos, ", ")
+		commitDescription = "\"" + commitDescription + "\""
+		err := createGitMessageEnv(commitTitle, commitDescription, repoPath)
+		if err != nil {
+			return fmt.Errorf("error creating git commit message: %s", err)
+		}
+	} else if !githubAction {
+		cmd := exec.Command("git", "commit", "-am", commitTitle, "-m", commitDescription)
+		if err := cmd.Run(); err != nil {
+			return fmt.Errorf("error running git commit -m: %s", err)
+		}
 	}
 	return nil
 }
