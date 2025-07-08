@@ -40,4 +40,4 @@ jobs:
           commit-message: ${{ env.TITLE }}
           body: ${{ env.DESC }}
           branch: update-dependencies
-          base: JenabaBa
+          base: main
