@@ -14,10 +14,10 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
       - name: Load .env file
-        uses: xom9ikk/dotenv@v2.3.0
+        uses: aarcangeli/load-dotenv@v1
         with:
           path: ~/node/git_commit_message.env
-          load-mode: strict
+          filenames: 'git_commit_message.env'
       - name: view env
         run: echo ${{ env.TITLE }}
       # - name: build dependency updater
