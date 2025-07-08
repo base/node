@@ -44,4 +44,4 @@ jobs:
           body: ${{ env.DESC }}
           branch: run-dependency-updater
           delete-branch: true
-          base: main
+          base: JenabaBa
