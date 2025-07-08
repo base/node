@@ -1,8 +1,8 @@
 name: Update Dockerfile Dependencies
 on:
-  schedule:
-    - cron: '0 12 * * * *'
-  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 12 * * * *'
+  pull-request:
 
 permissions:
   pull-requests: write
