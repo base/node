@@ -6,31 +6,37 @@ on:
 
 permissions:
   pull-requests: write
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   update:
     name: update
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+
       - name: Load .env file
-        uses: aarcangeli/load-dotenv@v1
+        uses: aarcangeli/load-dotenv@v1.1.0
         with:
-          path: git_commit_message.env
           filenames: 'git_commit_message.env'
 
       - name: view env
         run: echo ${{ env.TITLE }}
-      # - name: build dependency updater
-      #   run: go build ./dependency_updater
-      # - name: build dependency updater
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   run: ./dependency_updater --repo ~/node --commit true
-      # - name: create pull request
-      #   uses: peter-evans/create-pull-request@v7
-      #   with:
-      #     title: ${{ env.TITLE }}
-      #     commit-message: ${{ env.TITLE }}
-      #     body: ${{ env.DESC }}
-      #     branch: update-dependencies
+
+      - name: build dependency updater
+        run: go build ./dependency_updater
+
+      - name: build dependency updater
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./dependency_updater --repo ~/node --commit true
+
+      - name: create pull request
+        uses: peter-evans/create-pull-request@v7.0.8
+        with:
+          title: ${{ env.TITLE }}
+          commit-message: ${{ env.TITLE }}
+          body: ${{ env.DESC }}
+          branch: update-dependencies
