@@ -3,8 +3,7 @@ on:
   # schedule:
   #   - cron: '0 12 * * * *'
   push:
-    branches:
-      - update-dependencies
+
 permissions:
   pull-requests: write
 jobs:
