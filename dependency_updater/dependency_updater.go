@@ -220,11 +220,11 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 
 	if dependencies[dependencyType].Tracking == "tag" {
 		versionCommit, _, err := client.Repositories.GetCommit(
-		ctx,
-		dependencies[dependencyType].Owner,
-		dependencies[dependencyType].Repo,
-		"refs/tags/"+*version.TagName,
-		&github.ListOptions{})
+			ctx,
+			dependencies[dependencyType].Owner,
+			dependencies[dependencyType].Repo,
+			"refs/tags/"+*version.TagName,
+			&github.ListOptions{})
 		if err != nil {
 			return "", "", VersionUpdateInfo{}, fmt.Errorf("error getting commit for "+dependencyType+": %s", err)
 		}
@@ -264,7 +264,7 @@ func updateVersionTagAndCommit(
 	if err != nil {
 		return fmt.Errorf("error writing to versions "+dependencyType+": %s", err)
 	}
-	
+
 	return nil
 }
 
@@ -319,7 +319,7 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 }
 
 func createGitMessageEnv(title string, description string, repoPath string) error {
-	file, err := os.Create(repoPath + "/git_commit_message.env")
+	file, err := os.Create(repoPath + "/commit_message.env")
 	if err != nil {
 		return fmt.Errorf("error creating git_commit_message.env file: %s", err)
 	}
