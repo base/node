@@ -17,31 +17,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: build dependency updater
-        run: cd dependency_updater && go build
-
-      - name: run dependency updater
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: cd dependency_updater && ./dependency_updater --repo ../ --commit true
-
-      - name: Load .env file
-        uses: aarcangeli/load-dotenv@v1.1.0
         with:
-          filenames: 'commit_message.env'
+          ref: main
 
-      - name: view env
-        run: echo ${{ env.TITLE }}
+      - name: make test pr
+        run: echo "this is a test PR" >> test-pr.txt
+
+      # - name: build dependency updater
+      #   run: cd dependency_updater && go build
+
+      # - name: run dependency updater
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: cd dependency_updater && ./dependency_updater --repo ../ --commit true
+
+      # - name: Load .env file
+      #   uses: aarcangeli/load-dotenv@v1.1.0
+      #   with:
+      #     filenames: 'commit_message.env'
+
+      # - name: view env
+      #   run: echo ${{ env.TITLE }}
 
       - name: create pull request
         uses: peter-evans/create-pull-request@v7.0.8
         with:
           author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
           committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
-          title: ${{ env.TITLE }}
-          commit-message: ${{ env.TITLE }}
-          body: ${{ env.DESC }}
+          # title: ${{ env.TITLE }}
+          # commit-message: ${{ env.TITLE }}
+          # body: ${{ env.DESC }}
+          title: "Test PR"
+          commit-message: This is a test PR
+          body: This is a test PR
           branch: run-dependency-updater
           delete-branch: true
-          base:
