@@ -1,8 +1,8 @@
 name: Update Dockerfile Dependencies
 on:
-  schedule:
-    - cron: '0 12 * * * *'
-  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 12 * * * *'
+  pull_request:
 
 permissions:
   pull-requests: write
@@ -17,13 +17,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: build dependency updater
-        run: cd dependency_updater && go build
+      # - name: build dependency updater
+      #   run: cd dependency_updater && go build
 
-      - name: run dependency updater
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: cd dependency_updater && ./dependency_updater --repo ../ --commit true
+      # - name: run dependency updater
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: cd dependency_updater && ./dependency_updater --repo ../ --commit true
 
       - name: Load .env file
         uses: aarcangeli/load-dotenv@v1.1.0
