@@ -44,3 +44,4 @@ jobs:
           branch: run-dependency-updater
           delete-branch: true
           base: main
+          token: ${{ secrets.GITHUB_TOKEN }}
