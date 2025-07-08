@@ -20,26 +20,23 @@ jobs:
       - name: build dependency updater
         run: cd dependency_updater && go build
 
-      - name: test cat
-        run: cat ~/node/versions.json
+      - name: run dependency updater
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: cd dependency_updater && ./dependency_updater --repo . --commit true
 
-      # - name: run dependency updater
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   run: cd dependency_updater && ./dependency_updater --repo ~/node --commit true
+      - name: Load .env file
+        uses: aarcangeli/load-dotenv@v1.1.0
+        with:
+          filenames: 'git_commit_message.env'
 
-      # - name: Load .env file
-      #   uses: aarcangeli/load-dotenv@v1.1.0
-      #   with:
-      #     filenames: 'git_commit_message.env'
+      - name: view env
+        run: echo ${{ env.TITLE }}
 
-      # - name: view env
-      #   run: echo ${{ env.TITLE }}
-
-      # - name: create pull request
-      #   uses: peter-evans/create-pull-request@v7.0.8
-      #   with:
-      #     title: ${{ env.TITLE }}
-      #     commit-message: ${{ env.TITLE }}
-      #     body: ${{ env.DESC }}
-      #     branch: update-dependencies
+      - name: create pull request
+        uses: peter-evans/create-pull-request@v7.0.8
+        with:
+          title: ${{ env.TITLE }}
+          commit-message: ${{ env.TITLE }}
+          body: ${{ env.DESC }}
+          branch: update-dependencies
