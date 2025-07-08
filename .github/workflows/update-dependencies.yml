@@ -17,7 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        ref: main
+        with:
+          ref: main
 
       - name: build dependency updater
         run: cd dependency_updater && go build
