@@ -30,6 +30,9 @@ jobs:
         with:
           filenames: 'commit_message.env'
 
+      - name: remove commit message .env
+        run: rm commit_message.env
+
       - name: create pull request
         uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
         with:
@@ -38,6 +41,3 @@ jobs:
           body: ${{ env.DESC }}
           branch: run-dependency-updater
           delete-branch: true
-
-      - name: remove commit message .env
-        run: rm -rf commit_message.env
