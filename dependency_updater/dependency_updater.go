@@ -116,16 +116,16 @@ func updater(token string, repoPath string, commit bool, githubAction bool) erro
 		}
 	}
 
+	e := createVersionsEnv(repoPath, dependencies)
+	if e != nil {
+		return fmt.Errorf("error creating versions.env: %s", e)
+	}
+
 	if (commit && updatedDependencies != nil) || (githubAction && updatedDependencies != nil) {
 		err := createCommitMessage(updatedDependencies, repoPath, githubAction)
 		if err != nil {
 			return fmt.Errorf("error creating commit message: %s", err)
 		}
-	}
-
-	e := createVersionsEnv(repoPath, dependencies)
-	if e != nil {
-		return fmt.Errorf("error creating versions.env: %s", e)
 	}
 
 	return nil
