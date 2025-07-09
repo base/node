@@ -56,11 +56,13 @@ func main() {
 				Name:     "commit",
 				Usage:    "Stages updater changes and creates commit message",
 				Required: false,
+				Value: false,
 			},
 			&cli.BoolFlag{
 				Name:     "github-action",
 				Usage:    "Specifies whether tool is being used through github action workflow",
 				Required: false,
+				Value: false,
 			},
 		},
 		Action: func(ctx context.Context, cmd *cli.Command) error {
