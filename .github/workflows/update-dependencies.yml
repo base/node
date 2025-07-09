@@ -25,13 +25,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: cd dependency_updater && ./dependency_updater --repo ../ --github-action true
 
-      - name: Load .env file
+      - name: load commit message/title .env file
         uses: aarcangeli/load-dotenv@2afd907c7bb1c0324d22a6192693213867e77443 # v1.1.0
         with:
           filenames: 'commit_message.env'
-
-      - name: view env
-        run: echo ${{ env.TITLE }}
 
       - name: create pull request
         uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
