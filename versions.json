@@ -29,8 +29,8 @@
 	  	  "tracking": "tag"
 	  },
 	  "op_reth": {
-	  	  "tag": "v1.5.0",
-	  	  "commit": "61e38f9af154fe91e776d8f5e449d20a1571e8cf",
+	  	  "tag": "v1.5.1",
+	  	  "commit": "dbe7ee9c21392f360ff01f6307480f5d7dd73a3a",
 	  	  "owner": "paradigmxyz",
 	  	  "repo": "reth",
 	  	  "tracking": "tag"
