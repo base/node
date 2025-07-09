@@ -38,3 +38,6 @@ jobs:
           body: ${{ env.DESC }}
           branch: run-dependency-updater
           delete-branch: true
+
+      - name: remove commit message .env
+        run: rm -rf commit_message.env
