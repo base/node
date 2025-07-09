@@ -142,9 +142,9 @@ func createCommitMessage(updatedDependencies []VersionUpdateInfo, repoPath strin
 		repos = append(repos, repo)
 	}
 	commitDescription = strings.TrimSuffix(commitDescription, "\n")
-
+	commitTitle += strings.Join(repos, ", ")
+	
 	if githubAction {
-		commitTitle += strings.Join(repos, ", ")
 		commitDescription = "\"" + commitDescription + "\""
 		err := createGitMessageEnv(commitTitle, commitDescription, repoPath)
 		if err != nil {
