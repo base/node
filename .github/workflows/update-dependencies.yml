@@ -26,14 +26,17 @@ jobs:
         run: cd dependency_updater && ./dependency_updater --repo ../ --github-action true
 
       - name: load commit message/title .env file
+        if: ${{ hashFiles('commit_message.env') != '' }}
         uses: aarcangeli/load-dotenv@2afd907c7bb1c0324d22a6192693213867e77443 # v1.1.0
         with:
           filenames: 'commit_message.env'
 
       - name: remove commit message .env
+        if: ${{ hashFiles('commit_message.env') != '' }}
         run: rm commit_message.env
 
       - name: create pull request
+        if: ${{ hashFiles('commit_message.env') != '' }}
         uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
         with:
           title: ${{ env.TITLE }}
