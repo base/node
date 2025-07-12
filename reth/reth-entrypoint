@@ -43,12 +43,12 @@ exec $BINARY node \
   --ws.origins="*" \
   --ws.addr=0.0.0.0 \
   --ws.port="$WS_PORT" \
-  --ws.api=debug,eth,net,txpool \
+  --ws.api=web3,debug,eth,net,txpool \
   --http \
   --http.corsdomain="*" \
   --http.addr=0.0.0.0 \
   --http.port="$RPC_PORT" \
-  --http.api=debug,eth,net,txpool,miner \
+  --http.api=web3,debug,eth,net,txpool,miner \
   --ipcpath="$IPC_PATH" \
   --authrpc.addr=0.0.0.0 \
   --authrpc.port="$AUTHRPC_PORT" \
