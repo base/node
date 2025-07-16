@@ -41,7 +41,7 @@ jobs:
         run: rm commit_message.env
 
       - name: create pull request
-        if: ${{ hashFiles('commit_message.env') != '' }}
+        if: ${{ env.TITLE != '' }}
         uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
         with:
           title: ${{ env.TITLE }}
