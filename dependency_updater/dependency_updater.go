@@ -334,14 +334,14 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 func createGitMessageEnv(title string, description string, repoPath string) error {
 	file, err := os.Create(repoPath + "/commit_message.env")
 	if err != nil {
-		return fmt.Errorf("error creating git_commit_message.env file: %s", err)
+		return fmt.Errorf("error creating commit_message.env file: %s", err)
 	}
 	defer file.Close()
 
 	envString := "export TITLE=" + title + "\nexport DESC=" + description
 	_, err = file.WriteString(envString)
 	if err != nil {
-		return fmt.Errorf("error writing to git_commit_message.env file: %s", err)
+		return fmt.Errorf("error writing to commit_message.env file: %s", err)
 	}
 	return nil
 }
