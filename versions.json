@@ -1,14 +1,14 @@
 {
 	  "base_reth_node": {
-	  	  "tag": "v0.1.5",
-	  	  "commit": "6178195df3b73ddd63110a439a0b4da585f85b99",
+	  	  "tag": "v0.1.6",
+	  	  "commit": "329e1ad3707e023a748a4b60019aeeeb9a4ace6f",
 	  	  "owner": "base",
 	  	  "repo": "node-reth",
 	  	  "tracking": "tag"
 	  },
 	  "nethermind": {
-	  	  "tag": "1.31.13",
-	  	  "commit": "1b5487273a16345f262142d4b708793aeec62589",
+	  	  "tag": "1.32.3",
+	  	  "commit": "080637edc24c43fbc9f9fde153f73a240a602163",
 	  	  "owner": "NethermindEth",
 	  	  "repo": "nethermind",
 	  	  "tracking": "tag"
@@ -29,8 +29,8 @@
 	  	  "tracking": "tag"
 	  },
 	  "op_reth": {
-	  	  "tag": "v1.5.1",
-	  	  "commit": "dbe7ee9c21392f360ff01f6307480f5d7dd73a3a",
+	  	  "tag": "v1.6.0",
+	  	  "commit": "d8451e54e7267f9f1634118d6d279b2216f7e2bb",
 	  	  "owner": "paradigmxyz",
 	  	  "repo": "reth",
 	  	  "tracking": "tag"
