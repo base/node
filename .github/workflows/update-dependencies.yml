@@ -1,8 +1,8 @@
 name: Update Dockerfile Dependencies
 on:
-  schedule:
-    - cron: '0 13 * * *'
-  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 13 * * *'
+  pull_request:
 
 permissions:
   contents: write
@@ -20,7 +20,7 @@ jobs:
 
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          ref: main
+          ref: dependency-updater-test
 
       - name: build dependency updater
         run: cd dependency_updater && go build

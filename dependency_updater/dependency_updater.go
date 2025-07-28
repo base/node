@@ -138,7 +138,7 @@ func createCommitMessage(updatedDependencies []VersionUpdateInfo, repoPath strin
 
 	for _, dependency := range updatedDependencies {
 		repo, tag := dependency.Repo, dependency.To
-		commitDescription += repo + " => " + tag + " (" + dependency.DiffUrl + ")" + "\n"
+		commitDescription += repo + " => " + tag + " (" + dependency.DiffUrl + ")"
 		repos = append(repos, repo)
 	}
 	commitDescription = strings.TrimSuffix(commitDescription, "\n")
