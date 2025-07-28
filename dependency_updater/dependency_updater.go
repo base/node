@@ -333,15 +333,15 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 
 func createGitMessageEnv(title string, description string, repoPath string) error {
 	file := os.Getenv("GITHUB_OUTPUT")
-	f, err := os.OpenFile(file, os.O_APPEND, 0644)
+	f, err := os.OpenFile(file, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		return fmt.Errorf("error failed to open GITHUB_OUTPUT file: %s", err)
 	}
 	defer f.Close()
-
-	_, err = f.WriteString("TITLE=" + title + "\n" + "DESC=" + description)
+	titleToWrite := fmt.Sprintf("%s=%s\n", "TITLE", title)
+	_, err = f.WriteString(titleToWrite)
 	if err != nil {
-		return fmt.Errorf("error faile to write to GITHUB_OUTPUT file: %s", err)
+		return fmt.Errorf("error failed to write to GITHUB_OUTPUT file: %s", err)
 	}
 
 	return nil
