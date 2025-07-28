@@ -332,17 +332,18 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 }
 
 func createGitMessageEnv(title string, description string, repoPath string) error {
-	file, err := os.Create(repoPath + "/commit_message.env")
+	file := os.Getenv("GITHUB_OUTPUT")
+	f, err := os.OpenFile(file, os.O_APPEND, 0644)
 	if err != nil {
-		return fmt.Errorf("error creating commit_message.env file: %s", err)
+		return fmt.Errorf("error failed to open GITHUB_OUTPUT file: %s", err)
 	}
-	defer file.Close()
+	defer f.Close()
 
-	envString := "export TITLE=" + title + "\nexport DESC=" + description
-	_, err = file.WriteString(envString)
+	_, err = f.WriteString("TITLE=" + title + "\n" + "DESC=" + description)
 	if err != nil {
-		return fmt.Errorf("error writing to commit_message.env file: %s", err)
+		return fmt.Errorf("error faile to write to GITHUB_OUTPUT file: %s", err)
 	}
+
 	return nil
 }
 
