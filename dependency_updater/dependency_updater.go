@@ -164,7 +164,7 @@ func getAndUpdateDependency(ctx context.Context, client *github.Client, dependen
 	if err != nil {
 		return VersionUpdateInfo{}, err
 	}
-	if updatedDependency != (VersionUpdateInfo{}) || dependencies[dependencyType].Tracking == "branch" {
+	if updatedDependency != (VersionUpdateInfo{}) {
 		e := updateVersionTagAndCommit(commit, version, dependencyType, repoPath, dependencies)
 		if e != nil {
 			return VersionUpdateInfo{}, fmt.Errorf("error updating version tag and commit: %s", e)
@@ -256,6 +256,15 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 			return "", "", VersionUpdateInfo{}, fmt.Errorf("error listing commits for "+dependencyType+": %s", err)
 		}
 		commit = *branchCommit[0].SHA
+		if dependencies[dependencyType].Commit != commit {
+			diff := dependencies[dependencyType].Commit + " => " + commit
+			updatedDependency = VersionUpdateInfo{
+				dependencies[dependencyType].Repo,
+				dependencies[dependencyType].Tag,
+				commit,
+				diff,
+			}
+		}
 	}
 
 	if version != nil {
@@ -344,7 +353,7 @@ func createGitMessageEnv(title string, description string, repoPath string) erro
 	if err != nil {
 		return fmt.Errorf("error failed to write to GITHUB_OUTPUT file: %s", err)
 	}
-	
+
 	descToWrite := fmt.Sprintf("%s=%s\n", "DESC", description)
 	_, err = f.WriteString(descToWrite)
 	if err != nil {
