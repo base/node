@@ -29,10 +29,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: cd dependency_updater && ./dependency_updater --repo ../ --github-action true
 
-      - name: remove commit message .env
-        if: ${{ steps.run_dependency_updater.outputs.TITLE != '' }}
-        run: rm commit_message.env
-
       - name: create pull request
         if: ${{ steps.run_dependency_updater.outputs.TITLE != '' }}
         uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8

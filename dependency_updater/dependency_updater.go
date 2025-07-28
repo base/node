@@ -343,6 +343,11 @@ func createGitMessageEnv(title string, description string, repoPath string) erro
 	if err != nil {
 		return fmt.Errorf("error failed to write to GITHUB_OUTPUT file: %s", err)
 	}
+	descToWrite := fmt.Sprintf("%s=%s\n", "DESC", description)
+	_, err = f.WriteString(descToWrite)
+	if err != nil {
+		return fmt.Errorf("error failed to write to GITHUB_OUTPUT file: %s", err)
+	}
 
 	return nil
 }
