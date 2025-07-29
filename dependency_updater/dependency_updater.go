@@ -4,34 +4,34 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/ethereum-optimism/optimism/op-service/retry"
-	"github.com/google/go-github/v72/github"
-	"github.com/urfave/cli/v3"
 	"slices"
 	"time"
 
+	"github.com/ethereum-optimism/optimism/op-service/retry"
+	"github.com/google/go-github/v72/github"
+	"github.com/urfave/cli/v3"
+
 	"log"
 	"os"
+	"os/exec"
 	"strings"
 )
 
 type Info struct {
-	RepoUrl    string `json:"repoUrl"`
-	Tag        string `json:"tag"`
-	Commit     string `json:"commit"`
-	CommitUrl  string `json:"commitUrl"`
-	VersionUrl string `json:"versionUrl"`
-	TagPrefix  string `json:"tagPrefix,omitempty"`
-	Owner      string `json:"owner`
-	Repo       string `json:"repo`
+	Tag       string `json:"tag,omitempty"`
+	Commit    string `json:"commit"`
+	TagPrefix string `json:"tagPrefix,omitempty"`
+	Owner     string `json:"owner"`
+	Repo      string `json:"repo"`
+	Branch    string `json:"branch,omitempty"`
+	Tracking  string `json:"tracking"`
 }
 
-type VersionTag []struct {
-	Tag string `json:"tag_name"`
-}
-
-type Commit struct {
-	Commit string `json:"sha"`
+type VersionUpdateInfo struct {
+	Repo    string
+	From    string
+	To      string
+	DiffUrl string
 }
 
 type Dependencies = map[string]*Info
@@ -52,9 +52,19 @@ func main() {
 				Usage:    "Specifies repo location to run the version updater on",
 				Required: true,
 			},
+			&cli.BoolFlag{
+				Name:     "commit",
+				Usage:    "Stages updater changes and creates commit message",
+				Required: false,
+			},
+			&cli.BoolFlag{
+				Name:     "github-action",
+				Usage:    "Specifies whether tool is being used through github action workflow",
+				Required: false,
+			},
 		},
 		Action: func(ctx context.Context, cmd *cli.Command) error {
-			err := updater(string(cmd.String("token")), string(cmd.String("repo")))
+			err := updater(string(cmd.String("token")), string(cmd.String("repo")), cmd.Bool("commit"), cmd.Bool("github-action"))
 			if err != nil {
 				return fmt.Errorf("error running updater: %s", err)
 			}
@@ -67,8 +77,10 @@ func main() {
 	}
 }
 
-func updater(token string, repoPath string) error {
+func updater(token string, repoPath string, commit bool, githubAction bool) error {
 	var err error
+	var dependencies Dependencies
+	var updatedDependencies []VersionUpdateInfo
 
 	f, err := os.ReadFile(repoPath + "/versions.json")
 	if err != nil {
@@ -78,26 +90,29 @@ func updater(token string, repoPath string) error {
 	client := github.NewClient(nil).WithAuthToken(token)
 	ctx := context.Background()
 
-	var dependencies Dependencies
-
 	err = json.Unmarshal(f, &dependencies)
 	if err != nil {
 		return fmt.Errorf("error unmarshaling versions JSON to dependencies: %s", err)
 	}
 
 	for dependency := range dependencies {
+		var updatedDependency VersionUpdateInfo
 		err := retry.Do0(context.Background(), 3, retry.Fixed(1*time.Second), func() error {
-			return getAndUpdateDependency(
+			updatedDependency, err = getAndUpdateDependency(
 				ctx,
 				client,
 				dependency,
 				repoPath,
 				dependencies,
 			)
+			return err
 		})
-
 		if err != nil {
 			return fmt.Errorf("error getting and updating version/commit for "+dependency+": %s", err)
+		}
+
+		if updatedDependency != (VersionUpdateInfo{}) {
+			updatedDependencies = append(updatedDependencies, updatedDependency)
 		}
 	}
 
@@ -106,60 +121,148 @@ func updater(token string, repoPath string) error {
 		return fmt.Errorf("error creating versions.env: %s", e)
 	}
 
+	if (commit && updatedDependencies != nil) || (githubAction && updatedDependencies != nil) {
+		err := createCommitMessage(updatedDependencies, repoPath, githubAction)
+		if err != nil {
+			return fmt.Errorf("error creating commit message: %s", err)
+		}
+	}
+
 	return nil
 }
 
-func getAndUpdateDependency(ctx context.Context, client *github.Client, dependencyType string, repoPath string, dependencies Dependencies) error {
-	version, commit, err := getVersionAndCommit(ctx, client, dependencies, dependencyType)
+func createCommitMessage(updatedDependencies []VersionUpdateInfo, repoPath string, githubAction bool) error {
+	var repos []string
+	commitTitle := "chore: updated "
+	commitDescription := "Updated dependencies for: "
+
+	for _, dependency := range updatedDependencies {
+		repo, tag := dependency.Repo, dependency.To
+		commitDescription += repo + " => " + tag + " (" + dependency.DiffUrl + ") "
+		repos = append(repos, repo)
+	}
+	commitDescription = strings.TrimSuffix(commitDescription, "\n")
+	commitTitle += strings.Join(repos, ", ")
+	
+	if githubAction {
+		commitDescription = "\"" + commitDescription + "\""
+		err := createGitMessageEnv(commitTitle, commitDescription, repoPath)
+		if err != nil {
+			return fmt.Errorf("error creating git commit message: %s", err)
+		}
+	} else if !githubAction {
+		cmd := exec.Command("git", "commit", "-am", commitTitle, "-m", commitDescription)
+		if err := cmd.Run(); err != nil {
+			return fmt.Errorf("error running git commit -m: %s", err)
+		}
+	}
+	return nil
+}
+
+func getAndUpdateDependency(ctx context.Context, client *github.Client, dependencyType string, repoPath string, dependencies Dependencies) (VersionUpdateInfo, error) {
+	version, commit, updatedDependency, err := getVersionAndCommit(ctx, client, dependencies, dependencyType)
 	if err != nil {
-		return err
+		return VersionUpdateInfo{}, err
+	}
+	if updatedDependency != (VersionUpdateInfo{}) || dependencies[dependencyType].Tracking == "branch" {
+		e := updateVersionTagAndCommit(commit, version, dependencyType, repoPath, dependencies)
+		if e != nil {
+			return VersionUpdateInfo{}, fmt.Errorf("error updating version tag and commit: %s", e)
+		}
 	}
 
-	e := updateVersionTagAndCommit(commit, version, dependencyType, repoPath, dependencies)
-	if e != nil {
-		return fmt.Errorf("error updating version tag and commit: %s", e)
-	}
-
-	return nil
+	return updatedDependency, nil
 }
 
-func getVersionAndCommit(ctx context.Context, client *github.Client, dependencies Dependencies, dependencyType string) (string, string, error) {
-
+func getVersionAndCommit(ctx context.Context, client *github.Client, dependencies Dependencies, dependencyType string) (string, string, VersionUpdateInfo, error) {
 	var version *github.RepositoryRelease
-	var err error
-	// handle dependencies with prefix
-	releases, _, err := client.Repositories.ListReleases(
-		ctx,
-		dependencies[dependencyType].Owner,
-		dependencies[dependencyType].Repo,
-		nil)
+	var commit string
+	var diffUrl string
+	var updatedDependency VersionUpdateInfo
+	foundPrefixVersion := false
+	options := &github.ListOptions{Page: 1}
+	if dependencies[dependencyType].Tracking == "tag" {
+		for {
+			releases, resp, err := client.Repositories.ListReleases(
+				ctx,
+				dependencies[dependencyType].Owner,
+				dependencies[dependencyType].Repo,
+				options)
 
-	if err != nil {
-		return "", "", fmt.Errorf("error getting releases: %s", err)
-	}
+			if err != nil {
+				return "", "", VersionUpdateInfo{}, fmt.Errorf("error getting releases: %s", err)
+			}
 
-	if dependencies[dependencyType].TagPrefix == "" {
-		version = releases[0]
-	} else {
-		for release := range releases {
-			if strings.HasPrefix(*releases[release].TagName, dependencies[dependencyType].TagPrefix) {
-				version = releases[release]
+			if dependencies[dependencyType].TagPrefix == "" {
+				version = releases[0]
+				if *version.TagName != dependencies[dependencyType].Tag {
+					diffUrl = generateGithubRepoUrl(dependencies, dependencyType) + "/compare/" +
+						dependencies[dependencyType].Tag + "..." + *version.TagName
+				}
+				break
+			} else if dependencies[dependencyType].TagPrefix != "" {
+				for release := range releases {
+					if strings.HasPrefix(*releases[release].TagName, dependencies[dependencyType].TagPrefix) {
+						version = releases[release]
+						foundPrefixVersion = true
+						if *version.TagName != dependencies[dependencyType].Tag {
+							diffUrl = generateGithubRepoUrl(dependencies, dependencyType) + "/compare/" +
+								dependencies[dependencyType].Tag + "..." + *version.TagName
+						}
+						break
+					}
+				}
+				if foundPrefixVersion {
+					break
+				}
+				options.Page = resp.NextPage
+			} else if resp.NextPage == 0 {
 				break
 			}
 		}
 	}
 
-	commit, _, err := client.Repositories.GetCommit(
-		ctx,
-		dependencies[dependencyType].Owner,
-		dependencies[dependencyType].Repo,
-		"refs/tags/"+*version.TagName,
-		&github.ListOptions{})
-	if err != nil {
-		return "", "", fmt.Errorf("error getting commit for "+dependencyType+": %s", err)
+	if diffUrl != "" {
+		updatedDependency = VersionUpdateInfo{
+			dependencies[dependencyType].Repo,
+			dependencies[dependencyType].Tag,
+			*version.TagName,
+			diffUrl,
+		}
 	}
 
-	return *version.TagName, *commit.SHA, nil
+	if dependencies[dependencyType].Tracking == "tag" {
+		versionCommit, _, err := client.Repositories.GetCommit(
+			ctx,
+			dependencies[dependencyType].Owner,
+			dependencies[dependencyType].Repo,
+			"refs/tags/"+*version.TagName,
+			&github.ListOptions{})
+		if err != nil {
+			return "", "", VersionUpdateInfo{}, fmt.Errorf("error getting commit for "+dependencyType+": %s", err)
+		}
+		commit = *versionCommit.SHA
+
+	} else if dependencies[dependencyType].Tracking == "branch" {
+		branchCommit, _, err := client.Repositories.ListCommits(
+			ctx,
+			dependencies[dependencyType].Owner,
+			dependencies[dependencyType].Repo,
+			&github.CommitsListOptions{
+				SHA: dependencies[dependencyType].Branch,
+			},
+		)
+		if err != nil {
+			return "", "", VersionUpdateInfo{}, fmt.Errorf("error listing commits for "+dependencyType+": %s", err)
+		}
+		commit = *branchCommit[0].SHA
+	}
+
+	if version != nil {
+		return *version.TagName, commit, updatedDependency, nil
+	}
+
+	return "", commit, updatedDependency, nil
 }
 
 func updateVersionTagAndCommit(
@@ -170,16 +273,18 @@ func updateVersionTagAndCommit(
 	dependencies Dependencies) error {
 	dependencies[dependencyType].Tag = tag
 	dependencies[dependencyType].Commit = commit
-	err := writeToVersionsEnv(repoPath, dependencies)
+	err := writeToVersionsJson(repoPath, dependencies)
 	if err != nil {
 		return fmt.Errorf("error writing to versions "+dependencyType+": %s", err)
 	}
+
 	return nil
 }
 
-func writeToVersionsEnv(repoPath string, dependencies Dependencies) error {
+func writeToVersionsJson(repoPath string, dependencies Dependencies) error {
 	// formatting json
 	updatedJson, err := json.MarshalIndent(dependencies, "", "	  ")
+	print(dependencies["base_reth_node"].Branch)
 	if err != nil {
 		return fmt.Errorf("error Marshaling dependencies json: %s", err)
 	}
@@ -196,6 +301,8 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 	envLines := []string{}
 
 	for dependency := range dependencies {
+		repoUrl := generateGithubRepoUrl(dependencies, dependency) + ".git"
+
 		dependencyPrefix := strings.ToUpper(dependency)
 
 		envLines = append(envLines, fmt.Sprintf("export %s_%s=%s",
@@ -205,7 +312,7 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 			dependencyPrefix, "COMMIT", dependencies[dependency].Commit))
 
 		envLines = append(envLines, fmt.Sprintf("export %s_%s=%s",
-			dependencyPrefix, "REPO", dependencies[dependency].RepoUrl))
+			dependencyPrefix, "REPO", repoUrl))
 	}
 
 	slices.Sort(envLines)
@@ -222,4 +329,23 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 	}
 
 	return nil
+}
+
+func createGitMessageEnv(title string, description string, repoPath string) error {
+	file, err := os.Create(repoPath + "/commit_message.env")
+	if err != nil {
+		return fmt.Errorf("error creating commit_message.env file: %s", err)
+	}
+	defer file.Close()
+
+	envString := "export TITLE=" + title + "\nexport DESC=" + description
+	_, err = file.WriteString(envString)
+	if err != nil {
+		return fmt.Errorf("error writing to commit_message.env file: %s", err)
+	}
+	return nil
+}
+
+func generateGithubRepoUrl(dependencies Dependencies, dependencyType string) string {
+	return "https://github.com/" + dependencies[dependencyType].Owner + "/" + dependencies[dependencyType].Repo
 }

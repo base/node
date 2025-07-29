@@ -1,0 +1,51 @@
+name: Update Dockerfile Dependencies
+on:
+  schedule:
+    - cron: '0 13 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    name: update
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@6c439dc8bdf85cadbbce9ed30d1c7b959517bc49 # v2.12.2
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: main
+
+      - name: build dependency updater
+        run: cd dependency_updater && go build
+
+      - name: run dependency updater
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: cd dependency_updater && ./dependency_updater --repo ../ --github-action true
+
+      - name: load commit message/title .env file
+        if: ${{ hashFiles('commit_message.env') != '' }}
+        uses: aarcangeli/load-dotenv@2afd907c7bb1c0324d22a6192693213867e77443 # v1.1.0
+        with:
+          filenames: 'commit_message.env'
+
+      - name: remove commit message .env
+        if: ${{ hashFiles('commit_message.env') != '' }}
+        run: rm commit_message.env
+
+      - name: create pull request
+        if: ${{ env.TITLE != '' }}
+        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
+        with:
+          title: ${{ env.TITLE }}
+          commit-message: ${{ env.TITLE }}
+          body: ${{ env.DESC }}
+          branch: run-dependency-updater
+          delete-branch: true
