@@ -66,7 +66,7 @@ func main() {
 		Action: func(ctx context.Context, cmd *cli.Command) error {
 			err := updater(string(cmd.String("token")), string(cmd.String("repo")), cmd.Bool("commit"), cmd.Bool("github-action"))
 			if err != nil {
-				return fmt.Errorf("error running updater: %s", err)
+				return fmt.Errorf("running updater: %s", err)
 			}
 			return nil
 		},
@@ -153,7 +153,7 @@ func createCommitMessage(updatedDependencies []VersionUpdateInfo, repoPath strin
 	} else if !githubAction {
 		cmd := exec.Command("git", "commit", "-am", commitTitle, "-m", commitDescription)
 		if err := cmd.Run(); err != nil {
-			return fmt.Errorf("error running git commit -m: %s", err)
+			return fmt.Errorf("running git commit -m: %s", err)
 		}
 	}
 	return nil
@@ -293,9 +293,8 @@ func updateVersionTagAndCommit(
 func writeToVersionsJson(repoPath string, dependencies Dependencies) error {
 	// formatting json
 	updatedJson, err := json.MarshalIndent(dependencies, "", "	  ")
-	print(dependencies["base_reth_node"].Branch)
 	if err != nil {
-		return fmt.Errorf("error Marshaling dependencies json: %s", err)
+		return fmt.Errorf("error marshaling dependencies json: %s", err)
 	}
 
 	e := os.WriteFile(repoPath+"/versions.json", updatedJson, 0644)
@@ -344,20 +343,20 @@ func createGitMessageEnv(title string, description string, repoPath string) erro
 	file := os.Getenv("GITHUB_OUTPUT")
 	f, err := os.OpenFile(file, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		return fmt.Errorf("error failed to open GITHUB_OUTPUT file: %s", err)
+		return fmt.Errorf("failed to open GITHUB_OUTPUT file: %s", err)
 	}
 	defer f.Close()
 
 	titleToWrite := fmt.Sprintf("%s=%s\n", "TITLE", title)
 	_, err = f.WriteString(titleToWrite)
 	if err != nil {
-		return fmt.Errorf("error failed to write to GITHUB_OUTPUT file: %s", err)
+		return fmt.Errorf("failed to write to GITHUB_OUTPUT file: %s", err)
 	}
 
 	descToWrite := fmt.Sprintf("%s=%s\n", "DESC", description)
 	_, err = f.WriteString(descToWrite)
 	if err != nil {
-		return fmt.Errorf("error failed to write to GITHUB_OUTPUT file: %s", err)
+		return fmt.Errorf("failed to write to GITHUB_OUTPUT file: %s", err)
 	}
 
 	return nil
