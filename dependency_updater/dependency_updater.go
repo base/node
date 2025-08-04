@@ -134,18 +134,17 @@ func updater(token string, repoPath string, commit bool, githubAction bool) erro
 func createCommitMessage(updatedDependencies []VersionUpdateInfo, repoPath string, githubAction bool) error {
 	var repos []string
 	commitTitle := "chore: updated "
-	commitDescription := "Updated dependencies for: \n"
+	commitDescription := "Updated dependencies for: "
 
 	for _, dependency := range updatedDependencies {
 		repo, tag := dependency.Repo, dependency.To
-		commitDescription += repo + " => " + tag + " (" + dependency.DiffUrl + ")\n"
+		commitDescription += repo + " => " + tag + " (" + dependency.DiffUrl + ") "
 		repos = append(repos, repo)
 	}
-	commitDescription = strings.TrimSuffix(commitDescription, "\n")
+	commitDescription = strings.TrimSuffix(commitDescription, " ")
 	commitTitle += strings.Join(repos, ", ")
 	
 	if githubAction {
-		commitDescription = "\"" + commitDescription + "\""
 		err := createGitMessageEnv(commitTitle, commitDescription, repoPath)
 		if err != nil {
 			return fmt.Errorf("error creating git commit message: %s", err)
