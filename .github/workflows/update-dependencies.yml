@@ -1,8 +1,8 @@
 name: Update Dockerfile Dependencies
 on:
-  # schedule:
-  #   - cron: '0 13 * * *'
-  pull_request:
+  schedule:
+    - cron: '0 13 * * *'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -29,15 +29,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: cd dependency_updater && ./dependency_updater --repo ../ --github-action true
 
-      - name: test new formatting
-        run: echo "${{ steps.run_dependency_updater.outputs.DESC }}"
-
-      # - name: create pull request
-      #   if: ${{ steps.run_dependency_updater.outputs.TITLE != '' }}
-      #   uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
-      #   with:
-      #     title: ${{ steps.run_dependency_updater.outputs.TITLE }}
-      #     commit-message: ${{ steps.run_dependency_updater.outputs.TITLE }}
-      #     body: ${{ steps.run_dependency_updater.outputs.DESC }}
-      #     branch: run-dependency-updater
-      #     delete-branch: true
+      - name: create pull request
+        if: ${{ steps.run_dependency_updater.outputs.TITLE != '' }}
+        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
+        with:
+          title: ${{ steps.run_dependency_updater.outputs.TITLE }}
+          commit-message: ${{ steps.run_dependency_updater.outputs.TITLE }}
+          body: "${{ steps.run_dependency_updater.outputs.DESC }}"
+          branch: run-dependency-updater
+          delete-branch: true
