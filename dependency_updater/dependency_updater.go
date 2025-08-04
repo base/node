@@ -145,6 +145,7 @@ func createCommitMessage(updatedDependencies []VersionUpdateInfo, repoPath strin
 	commitTitle += strings.Join(repos, ", ")
 	
 	if githubAction {
+		commitDescription = "\"" + commitDescription + "\""
 		err := createGitMessageEnv(commitTitle, commitDescription, repoPath)
 		if err != nil {
 			return fmt.Errorf("error creating git commit message: %s", err)

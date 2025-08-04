@@ -30,7 +30,7 @@ jobs:
         run: cd dependency_updater && ./dependency_updater --repo ../ --github-action true
 
       - name: test new formatting
-        run: echo ${{ steps.run_dependency_updater.outputs.TITLE }}
+        run: echo ${{ steps.run_dependency_updater.outputs.DESC }}
 
       # - name: create pull request
       #   if: ${{ steps.run_dependency_updater.outputs.TITLE != '' }}
