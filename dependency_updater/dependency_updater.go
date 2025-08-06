@@ -292,7 +292,6 @@ func updateVersionTagAndCommit(
 func writeToVersionsJson(repoPath string, dependencies Dependencies) error {
 	// formatting json
 	updatedJson, err := json.MarshalIndent(dependencies, "", "	  ")
-	print(dependencies["base_reth_node"].Branch)
 	if err != nil {
 		return fmt.Errorf("error Marshaling dependencies json: %s", err)
 	}
