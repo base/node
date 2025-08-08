@@ -10,10 +10,10 @@ RPC_PORT="${RPC_PORT:-8545}"
 WS_PORT="${WS_PORT:-8546}"
 AUTHRPC_PORT="${AUTHRPC_PORT:-8551}"
 HOST_IP="0.0.0.0"
+
 ADDITIONAL_ARGS=""
 
 mkdir -p $GETH_DATA_DIR
-
 if [ ! -d "$GETH_CHAINDATA_DIR" ]; then
 	echo "$GETH_CHAINDATA_DIR missing, running init"
 	echo "Initializing genesis."
