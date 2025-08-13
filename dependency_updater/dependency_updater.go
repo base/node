@@ -66,7 +66,7 @@ func main() {
 		Action: func(ctx context.Context, cmd *cli.Command) error {
 			err := updater(string(cmd.String("token")), string(cmd.String("repo")), cmd.Bool("commit"), cmd.Bool("github-action"))
 			if err != nil {
-				return fmt.Errorf("running updater: %s", err)
+				return fmt.Errorf("failed to run updater: %s", err)
 			}
 			return nil
 		},
@@ -153,7 +153,7 @@ func createCommitMessage(updatedDependencies []VersionUpdateInfo, repoPath strin
 	} else if !githubAction {
 		cmd := exec.Command("git", "commit", "-am", commitTitle, "-m", commitDescription)
 		if err := cmd.Run(); err != nil {
-			return fmt.Errorf("running git commit -m: %s", err)
+			return fmt.Errorf("failed to run git commit -m: %s", err)
 		}
 	}
 	return nil
