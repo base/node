@@ -44,7 +44,7 @@ func main() {
 			&cli.StringFlag{
 				Name:     "token",
 				Usage:    "Auth token used to make requests to the Github API must be set using export",
-				Sources:  cli.EnvVars("GITHUB_TOKEN"),
+				EnvVars: []string{"GITHUB_TOKEN"},
 				Required: true,
 			},
 			&cli.StringFlag{
