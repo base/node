@@ -12,13 +12,13 @@ P2P_PORT="${P2P_PORT:-30303}"
 ADDITIONAL_ARGS=""
 NODE_TYPE="${NODE_TYPE:-vanilla}"
 
-if [[ -z "$RETH_CHAIN" ]]; then
+if [[ -z "${RETH_CHAIN:-}" ]]; then
     echo "expected RETH_CHAIN to be set" 1>&2
     exit 1
 fi
 
 # Add Flashblocks support for base mode
-if [[ "$NODE_TYPE" == "base" && -n "$RETH_FB_WEBSOCKET_URL" ]]; then
+if [[ "$NODE_TYPE" == "base" && -n "${RETH_FB_WEBSOCKET_URL:-}" ]]; then
     ADDITIONAL_ARGS="--websocket-url=$RETH_FB_WEBSOCKET_URL"
     echo "Enabling Flashblocks support with endpoint: $RETH_FB_WEBSOCKET_URL"
 fi
