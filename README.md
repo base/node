@@ -70,7 +70,7 @@ The following are the hardware specifications we use in production:
 - **Storage**: RAID 0 of all local NVMe drives (`/dev/nvme*`)
 - **Filesystem**: ext4
 
-[!NOTE]
+> [!NOTE]
 To run the node using a supported client, you can use the following command:
 `CLIENT=supported_client docker compose up --build`
  
