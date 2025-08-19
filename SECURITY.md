@@ -31,7 +31,7 @@ program, view our [security program policies][7].
 [2]: https://hackerone.com/coinbase?type=team 
 [3]: https://stack.optimism.io/
 [4]: https://immunefi.com/bounty/optimism/
-[5]: https://stack.optimism.io/docs/releases/bedrock/
+[5]: https://docs.optimism.io/stack/getting-started
 [6]: https://hackerone.com/coinbase
 [7]: https://hackerone.com/coinbase?view_policy=true
 
