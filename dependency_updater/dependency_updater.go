@@ -141,12 +141,11 @@ func createCommitMessage(updatedDependencies []VersionUpdateInfo, repoPath strin
 		commitDescription += repo + " => " + tag + " (" + dependency.DiffUrl + ") "
 		repos = append(repos, repo)
 	}
-	commitDescription = strings.TrimSuffix(commitDescription, "\n")
+	commitDescription = strings.TrimSuffix(commitDescription, " ")
 	commitTitle += strings.Join(repos, ", ")
 	
 	if githubAction {
-		commitDescription = "\"" + commitDescription + "\""
-		err := createGitMessageEnv(commitTitle, commitDescription, repoPath)
+		err := writeToGithubOutput(commitTitle, commitDescription, repoPath)
 		if err != nil {
 			return fmt.Errorf("error creating git commit message: %s", err)
 		}
@@ -339,7 +338,7 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 	return nil
 }
 
-func createGitMessageEnv(title string, description string, repoPath string) error {
+func writeToGithubOutput(title string, description string, repoPath string) error {
 	file := os.Getenv("GITHUB_OUTPUT")
 	f, err := os.OpenFile(file, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {

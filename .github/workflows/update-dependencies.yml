@@ -35,6 +35,6 @@ jobs:
         with:
           title: ${{ steps.run_dependency_updater.outputs.TITLE }}
           commit-message: ${{ steps.run_dependency_updater.outputs.TITLE }}
-          body: ${{ steps.run_dependency_updater.outputs.DESC }}
+          body: "${{ steps.run_dependency_updater.outputs.DESC }}"
           branch: run-dependency-updater
           delete-branch: true
