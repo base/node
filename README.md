@@ -51,7 +51,7 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 - Modern Multicore CPU
 - 32GB RAM (64GB Recommended)
 - NVMe SSD drive
-- Storage: (2 \* [current chain size](https://base.org/stats) + [snapshot size](https://basechaindata.vercel.app) + 20% buffer (to accommodate future growth)
+- Storage: (2 \* [current chain size](https://base.org/stats) + [snapshot size](https://basechaindata.vercel.app) + 20% buffer) (to accommodate future growth)
 - Docker and Docker Compose
 
 ### Production Hardware Specifications
@@ -70,7 +70,7 @@ The following are the hardware specifications we use in production:
 - **Storage**: RAID 0 of all local NVMe drives (`/dev/nvme*`)
 - **Filesystem**: ext4
 
-[!NOTE]
+**NOTE**
 To run the node using a supported client, you can use the following command:
 `CLIENT=supported_client docker compose up --build`
  
@@ -136,7 +136,7 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 
 ## Troubleshooting
 
-For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
+For support please join our [Discord](https://discord.gg/buildonbase), post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
 
 ## Disclaimer
 
