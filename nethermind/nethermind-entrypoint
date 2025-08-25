@@ -32,7 +32,7 @@ fi
 echo "$OP_NODE_L2_ENGINE_AUTH_RAW" > "$OP_NODE_L2_ENGINE_AUTH"
 
 # Additional arguments based on environment variables
-if [ "${OP_NETHERMIND_BOOTNODES+x}" = x ]; then
+if [[ -n "${OP_NETHERMIND_BOOTNODES:-}" ]]; then
     ADDITIONAL_ARGS="$ADDITIONAL_ARGS --Network.Bootnodes=$OP_NETHERMIND_BOOTNODES"
 fi
 
