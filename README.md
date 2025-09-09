@@ -12,17 +12,23 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 
 ## Quick Start
 
-1. Ensure you have an Ethereum L1 full node RPC available
-2. Choose your network:
+1. **Prerequisites**: Ensure you have an Ethereum L1 full node RPC available
+2. **Choose your network**:
    - For mainnet: Use `.env.mainnet`
    - For testnet: Use `.env.sepolia`
-3. Configure your L1 endpoints in the appropriate `.env` file:
+3. **Set up data directory**:
+   ```bash
+   # Create a directory for blockchain data (adjust path as needed)
+   export HOST_DATA_DIR=./data
+   mkdir -p $HOST_DATA_DIR
+   ```
+4. **Configure your L1 endpoints** in the appropriate `.env` file:
    ```bash
    OP_NODE_L1_ETH_RPC=<your-preferred-l1-rpc>
    OP_NODE_L1_BEACON=<your-preferred-l1-beacon>
    OP_NODE_L1_BEACON_ARCHIVER=<your-preferred-l1-beacon-archiver>
    ```
-4. Start the node:
+5. **Start the node**:
 
    ```bash
    # For mainnet (default):
@@ -36,6 +42,15 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 
    # For testnet with a specific client:
    NETWORK_ENV=.env.sepolia CLIENT=reth docker compose up --build
+
+   # Run in detached mode (background):
+   docker compose up --build -d
+
+   # View logs:
+   docker compose logs -f
+
+   # Stop the node:
+   docker compose down
    ```
 
 ### Supported Clients
@@ -81,23 +96,33 @@ Supported clients:
 
 ## Configuration
 
-### Required Settings
+### Required Environment Variables
 
-- L1 Configuration:
-  - `OP_NODE_L1_ETH_RPC`: Your Ethereum L1 node RPC endpoint
-  - `OP_NODE_L1_BEACON`: Your L1 beacon node endpoint
-  - `OP_NODE_L1_BEACON_ARCHIVER`: Your L1 beacon archiver endpoint
-  - `OP_NODE_L1_RPC_KIND`: The type of RPC provider being used (default: "debug_geth"). Supported values:
-    - `alchemy`: Alchemy RPC provider
-    - `quicknode`: QuickNode RPC provider
-    - `infura`: Infura RPC provider
-    - `parity`: Parity RPC provider
-    - `nethermind`: Nethermind RPC provider
-    - `debug_geth`: Debug Geth RPC provider
-    - `erigon`: Erigon RPC provider
-    - `basic`: Basic RPC provider (standard receipt fetching only)
-    - `any`: Any available RPC method
-    - `standard`: Standard RPC methods including newer optimized methods
+#### Data Directory
+- `HOST_DATA_DIR`: Host directory path for blockchain data storage (default: `./data`)
+  ```bash
+  export HOST_DATA_DIR=/path/to/your/data/directory
+  ```
+
+#### L1 Configuration
+- `OP_NODE_L1_ETH_RPC`: Your Ethereum L1 node RPC endpoint
+- `OP_NODE_L1_BEACON`: Your L1 beacon node endpoint  
+- `OP_NODE_L1_BEACON_ARCHIVER`: Your L1 beacon archiver endpoint
+- `OP_NODE_L1_RPC_KIND`: The type of RPC provider being used (default: "debug_geth"). Supported values:
+  - `alchemy`: Alchemy RPC provider
+  - `quicknode`: QuickNode RPC provider
+  - `infura`: Infura RPC provider
+  - `parity`: Parity RPC provider
+  - `nethermind`: Nethermind RPC provider
+  - `debug_geth`: Debug Geth RPC provider
+  - `erigon`: Erigon RPC provider
+  - `basic`: Basic RPC provider (standard receipt fetching only)
+  - `any`: Any available RPC method
+  - `standard`: Standard RPC methods including newer optimized methods
+
+#### Client Selection
+- `CLIENT`: Execution client to use (`geth`, `reth`, or `nethermind`)
+- `NODE_TYPE`: For Reth client, choose `vanilla` (default) or `base` (with Flashblocks support)
 
 ### Network Settings
 
@@ -127,6 +152,57 @@ For full configuration options, see the `.env.mainnet` file.
 
 Snapshots are available to help you sync your node more quickly. See [docs.base.org](https://docs.base.org/chain/run-a-base-node#snapshots) for links and more details on how to restore from a snapshot.
 
+## Deployment Examples
+
+### Development Setup
+```bash
+# Quick development setup with minimal resources
+export HOST_DATA_DIR=./dev-data
+mkdir -p $HOST_DATA_DIR
+
+# Use testnet for development
+NETWORK_ENV=.env.sepolia CLIENT=geth docker compose up --build
+```
+
+### Production Setup
+```bash
+# Production setup with optimized settings
+export HOST_DATA_DIR=/opt/base-node/data
+mkdir -p $HOST_DATA_DIR
+
+# Set production environment variables
+export GETH_CACHE="32768"      # 32GB cache
+export GETH_CACHE_DATABASE="40" # 8GB database cache
+
+# Run with specific client
+CLIENT=reth docker compose up --build -d
+```
+
+### Multi-Client Testing
+```bash
+# Test different clients
+CLIENT=geth docker compose up --build
+CLIENT=reth docker compose up --build  
+CLIENT=nethermind docker compose up --build
+```
+
+### Reth with Flashblocks Support
+```bash
+# Enable Base-specific features
+NODE_TYPE=base CLIENT=reth docker compose up --build
+```
+
+### Monitoring and Logs
+```bash
+# Run with log monitoring
+docker compose up --build -d
+docker compose logs -f --tail=100
+
+# Monitor specific service
+docker compose logs -f execution
+docker compose logs -f node
+```
+
 ## Supported Networks
 
 | Network | Status |
@@ -136,7 +212,116 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 
 ## Troubleshooting
 
-For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
+### Common Docker Issues
+
+#### 1. Port Already in Use
+```bash
+# Error: Port 8545 is already in use
+# Solution: Stop conflicting services or change ports
+docker compose down
+sudo lsof -i :8545  # Check what's using the port
+```
+
+#### 2. Permission Denied on Data Directory
+```bash
+# Error: Permission denied when accessing data directory
+# Solution: Fix directory permissions
+sudo chown -R $USER:$USER ./data
+chmod -R 755 ./data
+```
+
+#### 3. Out of Disk Space
+```bash
+# Error: No space left on device
+# Solution: Check disk usage and clean up
+df -h
+docker system prune -a  # Clean up Docker images
+```
+
+#### 4. Memory Issues
+```bash
+# Error: Container killed due to OOM
+# Solution: Increase Docker memory limits or reduce cache settings
+# Edit docker-compose.yml to add memory limits:
+# deploy:
+#   resources:
+#     limits:
+#       memory: 32G
+```
+
+#### 5. L1 RPC Connection Issues
+```bash
+# Error: Failed to connect to L1 RPC
+# Solution: Verify your L1 endpoint and credentials
+curl -X POST -H "Content-Type: application/json" \
+  --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
+  $OP_NODE_L1_ETH_RPC
+```
+
+### Docker Compose Commands
+
+#### Basic Operations
+```bash
+# Start services
+docker compose up --build
+
+# Start in background
+docker compose up --build -d
+
+# View logs
+docker compose logs -f
+docker compose logs -f execution  # Specific service logs
+
+# Stop services
+docker compose down
+
+# Restart services
+docker compose restart
+
+# Rebuild and restart
+docker compose up --build --force-recreate
+```
+
+#### Debugging
+```bash
+# Check service status
+docker compose ps
+
+# Execute commands in running container
+docker compose exec execution bash
+docker compose exec node bash
+
+# Check container resource usage
+docker stats
+
+# View detailed container info
+docker compose config
+```
+
+### Performance Optimization
+
+#### For Low-Memory Systems (16GB RAM)
+```bash
+# Reduce cache settings in your .env file:
+GETH_CACHE="8192"        # 8GB instead of 20GB
+GETH_CACHE_DATABASE="10"  # 2GB instead of 4GB
+GETH_CACHE_GC="6"         # Reduce GC frequency
+```
+
+#### For High-Performance Systems
+```bash
+# Increase cache settings:
+GETH_CACHE="32768"       # 32GB cache
+GETH_CACHE_DATABASE="40" # 8GB database cache
+GETH_CACHE_TRIE="64"     # Larger trie cache
+```
+
+### Getting Help
+
+For additional support:
+- Join our [Discord](https://discord.gg/buildonbase) and post in `🛠｜node-operators`
+- Open a new [GitHub issue](https://github.com/base/node/issues)
+- Check the [Base documentation](https://docs.base.org/)
 
 ## Disclaimer
 
