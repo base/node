@@ -124,6 +124,10 @@ Supported clients:
 - `CLIENT`: Execution client to use (`geth`, `reth`, or `nethermind`)
 - `NODE_TYPE`: For Reth client, choose `vanilla` (default) or `base` (with Flashblocks support)
 
+#### JWT Authentication
+- `OP_NODE_L2_ENGINE_AUTH_RAW`: JWT secret for engine API authentication (required)
+- `OP_NODE_L2_ENGINE_AUTH`: Path to JWT secret file (defined in .env files)
+
 ### Network Settings
 
 - Mainnet:

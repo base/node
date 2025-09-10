@@ -27,6 +27,14 @@ if [[ -z "$OP_NODE_NETWORK" && -z "$OP_NODE_ROLLUP_CONFIG" ]]; then
   exit 1
 fi
 
+if [[ -z "$OP_NODE_L2_ENGINE_RPC" ]]; then
+  echo "expected OP_NODE_L2_ENGINE_RPC to be set" 1>&2
+  exit 1
+fi
+
+# Create JWT directory if it doesn't exist
+mkdir -p "$(dirname "$OP_NODE_L2_ENGINE_AUTH")"
+
 # wait until local execution client comes up (authed so will return 401 without token)
 until [ "$(curl -s -w '%{http_code}' -o /dev/null "${OP_NODE_L2_ENGINE_RPC/ws/http}")" -eq 401 ]; do
   echo "waiting for execution client to be ready"
@@ -42,6 +50,14 @@ else
 fi
 export OP_NODE_P2P_ADVERTISE_IP=$PUBLIC_IP
 
+# Write the JWT secret
+if [[ -z "$OP_NODE_L2_ENGINE_AUTH_RAW" ]]; then
+    echo "Expected OP_NODE_L2_ENGINE_AUTH_RAW to be set" 1>&2
+    exit 1
+fi
 echo "$OP_NODE_L2_ENGINE_AUTH_RAW" > "$OP_NODE_L2_ENGINE_AUTH"
+
+# Unset the raw JWT secret to prevent it from being passed to op-node
+unset OP_NODE_L2_ENGINE_AUTH_RAW
 
 exec ./op-node

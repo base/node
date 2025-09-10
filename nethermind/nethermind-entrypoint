@@ -21,8 +21,16 @@ if [[ -z "$NETWORK" ]]; then
     exit 1
 fi
 
+if [[ -z "$OP_SEQUENCER_HTTP" ]]; then
+    echo "Expected OP_SEQUENCER_HTTP to be set" 1>&2
+    exit 1
+fi
+
 # Create necessary directories
 mkdir -p "$NETHERMIND_DATA_DIR"
+
+# Create JWT directory if it doesn't exist
+mkdir -p "$(dirname "$OP_NODE_L2_ENGINE_AUTH")"
 
 # Write the JWT secret
 if [[ -z "$OP_NODE_L2_ENGINE_AUTH_RAW" ]]; then
