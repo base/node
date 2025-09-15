@@ -132,22 +132,16 @@ func updater(token string, repoPath string, commit bool, githubAction bool) erro
 }
 
 func createCommitMessage(updatedDependencies []VersionUpdateInfo, repoPath string, githubAction bool) error {
-	var repos []string
-	commitTitle := "chore: updated "
-	commitDescription := "Updated dependencies for: "
-
-	for _, dependency := range updatedDependencies {
-		repo, tag := dependency.Repo, dependency.To
-		commitDescription += repo + " => " + tag + " (" + dependency.DiffUrl + ") "
-		repos = append(repos, repo)
+	if len(updatedDependencies) == 0 {
+		return nil
 	}
-	commitDescription = strings.TrimSuffix(commitDescription, " ")
-	commitTitle += strings.Join(repos, ", ")
-	
+
+	commitTitle, commitDescription := buildCommitMessageParts(updatedDependencies)
+
 	if githubAction {
 		err := writeToGithubOutput(commitTitle, commitDescription, repoPath)
 		if err != nil {
-			return fmt.Errorf("error creating git commit message: %s", err)
+			return fmt.Errorf("failed to create git commit message: %s", err)
 		}
 	} else if !githubAction {
 		cmd := exec.Command("git", "commit", "-am", commitTitle, "-m", commitDescription)
@@ -156,6 +150,33 @@ func createCommitMessage(updatedDependencies []VersionUpdateInfo, repoPath strin
 		}
 	}
 	return nil
+}
+
+func buildCommitMessageParts(updatedDependencies []VersionUpdateInfo) (string, string) {
+	sorted := slices.Clone(updatedDependencies)
+	slices.SortFunc(sorted, func(a, b VersionUpdateInfo) int {
+		return strings.Compare(a.Repo, b.Repo)
+	})
+
+	repos := make([]string, 0, len(sorted))
+	var builder strings.Builder
+	builder.WriteString("Updated dependencies for: ")
+
+	for _, dependency := range sorted {
+		repo, tag := dependency.Repo, dependency.To
+		repos = append(repos, repo)
+		builder.WriteString(repo)
+		builder.WriteString(" => ")
+		builder.WriteString(tag)
+		builder.WriteString(" (")
+		builder.WriteString(dependency.DiffUrl)
+		builder.WriteString(") ")
+	}
+
+	commitDescription := strings.TrimSuffix(builder.String(), " ")
+	commitTitle := "chore: updated " + strings.Join(repos, ", ")
+
+	return commitTitle, commitDescription
 }
 
 func getAndUpdateDependency(ctx context.Context, client *github.Client, dependencyType string, repoPath string, dependencies Dependencies) (VersionUpdateInfo, error) {
