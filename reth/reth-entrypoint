@@ -28,7 +28,7 @@ if [[ "$NODE_TYPE" == "base" ]]; then
     echo "Starting Base Reth node"
     BINARY="./base-reth-node"
 else
-    echo "Starting vanilla Reth node"
+    echo "Starting OP Reth node"
     BINARY="./op-reth"
 fi
 
