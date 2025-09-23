@@ -149,7 +149,7 @@ func createCommitMessage(updatedDependencies []VersionUpdateInfo, repoPath strin
 		if err != nil {
 			return fmt.Errorf("error creating git commit message: %s", err)
 		}
-	} else if !githubAction {
+	} else {
 		cmd := exec.Command("git", "commit", "-am", commitTitle, "-m", commitDescription)
 		if err := cmd.Run(); err != nil {
 			return fmt.Errorf("failed to run git commit -m: %s", err)
