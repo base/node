@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: ${CLIENT:-geth}/Dockerfile
+    restart: unless-stopped
     ports:
       - "8545:8545" # RPC
       - "8546:8546" # websocket
@@ -20,6 +21,7 @@ services:
     build:
       context: .
       dockerfile: ${CLIENT:-geth}/Dockerfile
+    restart: unless-stopped
     depends_on:
       - execution
     ports:
