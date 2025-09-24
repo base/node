@@ -24,7 +24,7 @@ jobs:
           egress-policy: audit
 
       - name: Checkout
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        uses: actions/checkout@4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
@@ -57,7 +57,7 @@ jobs:
           egress-policy: audit
 
       - name: Checkout
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        uses: actions/checkout@4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Set up Docker Buildx
@@ -88,7 +88,7 @@ jobs:
           egress-policy: audit
 
       - name: Checkout
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        uses: actions/checkout@4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Set up Docker Buildx
