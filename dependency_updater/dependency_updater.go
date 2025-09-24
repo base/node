@@ -92,7 +92,7 @@ func updater(token string, repoPath string, commit bool, githubAction bool) erro
 
 	err = json.Unmarshal(f, &dependencies)
 	if err != nil {
-		return fmt.Errorf("error unmarshaling versions JSON to dependencies: %s", err)
+		return fmt.Errorf("error unmarshalling versions JSON to dependencies: %s", err)
 	}
 
 	for dependency := range dependencies {
