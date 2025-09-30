@@ -264,15 +264,12 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 				diff,
 			}
 		}
+		// For branch tracking, return branch name as the tag
+		return dependencies[dependencyType].Branch, commit, updatedDependency, nil
 	}
 
 	if version != nil {
 		return *version.TagName, commit, updatedDependency, nil
-	}
-
-	// For branch tracking, use branch name as tag
-	if dependencies[dependencyType].Tracking == "branch" {
-		return dependencies[dependencyType].Branch, commit, updatedDependency, nil
 	}
 
 	return "", commit, updatedDependency, nil
