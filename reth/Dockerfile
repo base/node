@@ -43,7 +43,7 @@ RUN . /tmp/versions.env && git clone $BASE_RETH_NODE_REPO . && \
 
 RUN cargo build --bin base-reth-node --release
 
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 RUN apt-get update && \
     apt-get install -y jq curl supervisor && \
