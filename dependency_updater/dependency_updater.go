@@ -115,7 +115,7 @@ func updater(token string, repoPath string, commit bool, githubAction bool) erro
 			updatedDependencies = append(updatedDependencies, updatedDependency)
 		}
 	}
-	
+
 	e := createVersionsEnv(repoPath, dependencies)
 	if e != nil {
 		return fmt.Errorf("error creating versions.env: %s", e)
@@ -143,7 +143,7 @@ func createCommitMessage(updatedDependencies []VersionUpdateInfo, repoPath strin
 	}
 	commitDescription = strings.TrimSuffix(commitDescription, " ")
 	commitTitle += strings.Join(repos, ", ")
-	
+
 	if githubAction {
 		err := writeToGithubOutput(commitTitle, commitDescription, repoPath)
 		if err != nil {
