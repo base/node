@@ -17,6 +17,14 @@ if [[ -z "$RETH_CHAIN" ]]; then
     exit 1
 fi
 
+if [[ -z "$RETH_SEQUENCER_HTTP" ]]; then
+    echo "expected RETH_SEQUENCER_HTTP to be set" 1>&2
+    exit 1
+fi
+
+# Create JWT directory if it doesn't exist
+mkdir -p "$(dirname "$OP_NODE_L2_ENGINE_AUTH")"
+
 # Add Flashblocks support for base mode
 if [[ "$NODE_TYPE" == "base" && -n "$RETH_FB_WEBSOCKET_URL" ]]; then
     ADDITIONAL_ARGS="--websocket-url=$RETH_FB_WEBSOCKET_URL"
@@ -33,6 +41,12 @@ else
 fi
 
 mkdir -p $RETH_DATA_DIR
+
+# Write the JWT secret
+if [[ -z "$OP_NODE_L2_ENGINE_AUTH_RAW" ]]; then
+    echo "Expected OP_NODE_L2_ENGINE_AUTH_RAW to be set" 1>&2
+    exit 1
+fi
 echo "$OP_NODE_L2_ENGINE_AUTH_RAW" > "$OP_NODE_L2_ENGINE_AUTH"
 
 exec $BINARY node \
