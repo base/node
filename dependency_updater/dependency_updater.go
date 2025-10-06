@@ -64,7 +64,7 @@ func main() {
 			},
 		},
 		Action: func(ctx context.Context, cmd *cli.Command) error {
-			err := updater(string(cmd.String("token")), string(cmd.String("repo")), cmd.Bool("commit"), cmd.Bool("github-action"))
+			err := updater(cmd.String("token"), cmd.String("repo"), cmd.Bool("commit"), cmd.Bool("github-action"))
 			if err != nil {
 				return fmt.Errorf("failed to run updater: %s", err)
 			}
