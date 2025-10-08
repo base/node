@@ -133,17 +133,18 @@ func updater(token string, repoPath string, commit bool, githubAction bool) erro
 
 func createCommitMessage(updatedDependencies []VersionUpdateInfo, repoPath string, githubAction bool) error {
 	var repos []string
-	var updates []string
+	descriptionLines := []string{
+		"### Dependency Updates",
+	}
 
 	commitTitle := "chore: updated "
-	commitDescription := "### Dependency Updates"
 
 	for _, dependency := range updatedDependencies {
 		repo, tag := dependency.Repo, dependency.To
-		updates = append(updates, fmt.Sprintf("**%s** - %s:  [diff](%s)", repo, tag, dependency.DiffUrl))
+		descriptionLines = append(descriptionLines, fmt.Sprintf("**%s** - %s:  [diff](%s)", repo, tag, dependency.DiffUrl))
 		repos = append(repos, repo)
 	}
-	commitDescription = strings.Join(updates, "\n")
+	commitDescription := strings.Join(descriptionLines, "\n")
 	commitTitle += strings.Join(repos, ", ")
 
 	if githubAction {
