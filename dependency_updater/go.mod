@@ -1,4 +1,4 @@
-module dependency_updater
+module github.com/base/node/dependency_updater
 
 go 1.24.3
 
