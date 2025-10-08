@@ -20,7 +20,7 @@ Use the `NODE_TYPE` environment variable to select the implementation:
 The node follows the standard `docker-compose` workflow in the master README.
 
 ```bash
-# Run OP Reth (Optimism fork) node
+# Run OP Reth node
 CLIENT=reth docker-compose up
 
 # Run Base L2 Reth node with Flashblocks support
