@@ -140,7 +140,7 @@ func createCommitMessage(updatedDependencies []VersionUpdateInfo, repoPath strin
 
 	for _, dependency := range updatedDependencies {
 		repo, tag := dependency.Repo, dependency.To
-		updates = append(updates, fmt.Sprintf("**%s - %s**:  %s", repo, tag, dependency.DiffUrl))
+		updates = append(updates, fmt.Sprintf("**%s** - %s:  [diff](%s)", repo, tag, dependency.DiffUrl))
 		repos = append(repos, repo)
 	}
 	commitDescription = strings.Join(updates, "\n")
