@@ -12,7 +12,7 @@ This is a unified implementation of the Reth node set up that supports running b
 
 Use the `NODE_TYPE` environment variable to select the implementation:
 
-- `NODE_TYPE=vanilla` - OP Reth (Optimism fork) implementation (default)
+- `NODE_TYPE=vanilla` - OP Reth implementation (default)
 - `NODE_TYPE=base` - Base L2 Reth implementation with Flashblocks support
 
 ## Running the Node
