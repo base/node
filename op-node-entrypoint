@@ -12,7 +12,7 @@ get_public_ip() {
   # Iterate through the providers until an IP is found or the list is exhausted
   for provider in "${PROVIDERS[@]}"; do
     local IP
-    IP=$(curl -s "$provider")
+    IP=$(curl -s --max-time 10 --connect-timeout 5 "$provider")
     # Check if IP contains a valid format (simple regex for an IPv4 address)
     if [[ $IP =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
       echo "$IP"
@@ -28,7 +28,7 @@ if [[ -z "$OP_NODE_NETWORK" && -z "$OP_NODE_ROLLUP_CONFIG" ]]; then
 fi
 
 # wait until local execution client comes up (authed so will return 401 without token)
-until [ "$(curl -s -w '%{http_code}' -o /dev/null "${OP_NODE_L2_ENGINE_RPC/ws/http}")" -eq 401 ]; do
+until [ "$(curl -s --max-time 10 --connect-timeout 5 -w '%{http_code}' -o /dev/null "${OP_NODE_L2_ENGINE_RPC/ws/http}")" -eq 401 ]; do
   echo "waiting for execution client to be ready"
   sleep 5
 done

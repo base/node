@@ -25,7 +25,7 @@ RUN . /tmp/versions.env && git clone $OP_GETH_REPO --branch $OP_GETH_TAG --singl
 
 RUN go run build/ci.go install -static ./cmd/geth
 
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 RUN apt-get update && \
     apt-get install -y jq curl supervisor && \

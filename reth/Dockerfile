@@ -13,7 +13,7 @@ RUN . /tmp/versions.env && git clone $OP_NODE_REPO --branch $OP_NODE_TAG --singl
 RUN . /tmp/versions.env && cd op-node && \
     make VERSION=$OP_NODE_TAG op-node
 
-FROM rust:1.87 AS reth
+FROM rust:1.88 AS reth
 
 WORKDIR /app
 
@@ -27,7 +27,7 @@ RUN . /tmp/versions.env && git clone $OP_RETH_REPO --branch $OP_RETH_TAG --singl
 
 RUN cargo build --bin op-reth --profile maxperf --manifest-path crates/optimism/bin/Cargo.toml
 
-FROM rust:1.87 AS reth-base
+FROM rust:1.88 AS reth-base
 
 WORKDIR /app
 
@@ -43,11 +43,11 @@ RUN . /tmp/versions.env && git clone $BASE_RETH_NODE_REPO . && \
 
 RUN cargo build --bin base-reth-node --release
 
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 RUN apt-get update && \
     apt-get install -y jq curl supervisor && \
-    rm -rf /var/lib/apt/lists
+    rm -rf /var/lib/apt/lists/*
 RUN mkdir -p /var/log/supervisor
 
 WORKDIR /app

@@ -1,6 +1,6 @@
 # Running a Reth Node
 
-This is a unified implementation of the Reth node setup that supports running both standard Reth and Base Reth with Flashblocks support.
+This is a unified implementation of the Reth node setup that supports running both OP Reth and Base Reth with Flashblocks support.
 
 ## Setup
 
@@ -12,7 +12,7 @@ This is a unified implementation of the Reth node setup that supports running bo
 
 Use the `NODE_TYPE` environment variable to select the implementation:
 
-- `NODE_TYPE=vanilla` - Standard Reth implementation (default)
+- `NODE_TYPE=vanilla` - OP Reth implementation (default)
 - `NODE_TYPE=base` - Base L2 Reth implementation with Flashblocks support
 
 ## Running the Node
@@ -20,7 +20,7 @@ Use the `NODE_TYPE` environment variable to select the implementation:
 The node follows the standard `docker-compose` workflow in the master README.
 
 ```bash
-# Run standard Reth node
+# Run OP Reth node
 CLIENT=reth docker-compose up
 
 # Run Base L2 Reth node with Flashblocks support

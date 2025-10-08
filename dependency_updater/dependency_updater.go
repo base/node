@@ -64,7 +64,7 @@ func main() {
 			},
 		},
 		Action: func(ctx context.Context, cmd *cli.Command) error {
-			err := updater(string(cmd.String("token")), string(cmd.String("repo")), cmd.Bool("commit"), cmd.Bool("github-action"))
+			err := updater(cmd.String("token"), cmd.String("repo"), cmd.Bool("commit"), cmd.Bool("github-action"))
 			if err != nil {
 				return fmt.Errorf("failed to run updater: %s", err)
 			}
@@ -92,7 +92,7 @@ func updater(token string, repoPath string, commit bool, githubAction bool) erro
 
 	err = json.Unmarshal(f, &dependencies)
 	if err != nil {
-		return fmt.Errorf("error unmarshaling versions JSON to dependencies: %s", err)
+		return fmt.Errorf("error unmarshalling versions JSON to dependencies: %s", err)
 	}
 
 	for dependency := range dependencies {
@@ -143,7 +143,7 @@ func createCommitMessage(updatedDependencies []VersionUpdateInfo, repoPath strin
 	}
 	commitDescription = strings.TrimSuffix(commitDescription, " ")
 	commitTitle += strings.Join(repos, ", ")
-	
+
 	if githubAction {
 		err := writeToGithubOutput(commitTitle, commitDescription, repoPath)
 		if err != nil {
@@ -311,6 +311,10 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 		repoUrl := generateGithubRepoUrl(dependencies, dependency) + ".git"
 
 		dependencyPrefix := strings.ToUpper(dependency)
+
+		if dependencies[dependency].Tracking == "branch" {
+			dependencies[dependency].Tag = dependencies[dependency].Branch
+		}
 
 		envLines = append(envLines, fmt.Sprintf("export %s_%s=%s",
 			dependencyPrefix, "TAG", dependencies[dependency].Tag))
