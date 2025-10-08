@@ -1,6 +1,6 @@
 # Running a Reth Node
 
-This is a unified implementation of the Reth node set up that supports running both OP Reth (Optimism fork) or Base Reth with Flashblocks support.
+This is a unified implementation of the Reth node set up that supports running both OP Reth or Base Reth with Flashblocks support.
 
 ## Setup
 
