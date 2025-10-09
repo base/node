@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <!-- 🏷️ Basic Info -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.okeamah</groupId>       <!-- Your package namespace -->
+  <artifactId>base-node</artifactId>   <!-- Your project name -->
+  <version>1.0.0</version>             <!-- Project version -->
+  <name>Base Node</name>
+  <description>Java project published to GitHub Packages.</description>
+  <url>https://github.com/OKEAMAH/base-node</url>
+
+  <!-- 💡 Java compatibility -->
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+  </properties>
+
+  <!-- 📦 Dependencies -->
+  <dependencies>
+    <!-- Example dependency -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+      <version>3.3.2</version>
+    </dependency>
+  </dependencies>
+
+  <!-- ⚙️ Build settings -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <source>17</source>
+          <target>17</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>3.1.1</version>
+      </plugin>
+    </plugins>
+  </build>
+
+  <!-- 🚀 Publish configuration -->
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub OKEAMAH base-node</name>
+      <url>https://maven.pkg.github.com/OKEAMAH/base-node</url>
+    </repository>
+  </distributionManagement>
+
+</project>
