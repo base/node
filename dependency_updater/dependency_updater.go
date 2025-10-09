@@ -360,7 +360,7 @@ func writeToGithubOutput(title string, description string, repoPath string) erro
 	}
 
 	delimiter := "EOF"
-	descToWrite := fmt.Sprintf("%s<<%s\n%s%s\n", "DESC", delimiter, description, delimiter)
+	descToWrite := fmt.Sprintf("%s<<%s\n%s\n%s\n", "DESC", delimiter, description, delimiter)
 	_, err = f.WriteString(descToWrite)
 	if err != nil {
 		return fmt.Errorf("failed to write to GITHUB_OUTPUT file: %s", err)
