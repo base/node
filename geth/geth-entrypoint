@@ -7,7 +7,7 @@ RPC_PORT="${RPC_PORT:-8545}"
 WS_PORT="${WS_PORT:-8546}"
 AUTHRPC_PORT="${AUTHRPC_PORT:-8551}"
 METRICS_PORT="${METRICS_PORT:-6060}"
-HOST_IP="" # put your external IP address here and open port 30303 to improve peer connectivity
+# Set env HOST_IP to your external IP and open port 30303 to improve peer connectivity
 P2P_PORT="${P2P_PORT:-30303}"
 DISCOVERY_PORT="${DISCOVERY_PORT:-30303}"
 ADDITIONAL_ARGS=""
