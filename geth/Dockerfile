@@ -1,4 +1,4 @@
-FROM golang:1.23 AS op
+FROM golang:1.24 AS op
 
 RUN curl -sSfL 'https://just.systems/install.sh' | bash -s -- --to /usr/local/bin
 
@@ -13,7 +13,7 @@ RUN . /tmp/versions.env && git clone $OP_NODE_REPO --branch $OP_NODE_TAG --singl
 RUN . /tmp/versions.env && cd op-node && \
     make VERSION=$OP_NODE_TAG op-node
 
-FROM golang:1.23 AS geth
+FROM golang:1.24 AS geth
 
 WORKDIR /app
 

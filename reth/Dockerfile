@@ -1,4 +1,4 @@
-FROM golang:1.23 AS op
+FROM golang:1.24 AS op
 
 RUN curl -sSfL 'https://just.systems/install.sh' | bash -s -- --to /usr/local/bin
 
