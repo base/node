@@ -108,38 +108,11 @@ Supported clients:
 
 ### Performance Settings
 
-- Cache Settings:
-  - `GETH_CACHE="20480"` (20GB)
-  - `GETH_CACHE_DATABASE="20"` (4GB)
-  - `GETH_CACHE_GC="12"`
-  - `GETH_CACHE_SNAPSHOT="24"`
-  - `GETH_CACHE_TRIE="44"`
-
-### Optional Features
-
-- EthStats Monitoring (uncomment to enable)
-- Trusted RPC Mode (uncomment to enable)
-- Snap Sync (experimental)
-
-For full configuration options, see the `.env.mainnet` file.
-
-## Snapshots
-
-Snapshots are available to help you sync your node more quickly. See [docs.base.org](https://docs.base.org/chain/run-a-base-node#snapshots) for links and more details on how to restore from a snapshot.
-
-## Supported Networks
-
-| Network | Status |
-| ------- | ------ |
-| Mainnet | ✅     |
-| Testnet | ✅     |
-
-## Troubleshooting
-
-For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
-
-## Disclaimer
-
-THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
-
-For more information, visit [docs.base.org](https://docs.base.org/).
+> [!NOTE]
+To run the node using a supported client, you can use the following command:
+`CLIENT=supported_client docker compose up --build`
+ 
+Supported clients:
+ - geth
+ - reth (with Flashblocks support option, see [Reth Node README](./reth/README.md))
+ - nethermind
