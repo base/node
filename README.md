@@ -12,7 +12,7 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 
 ## Quick Start
 
-1. Ensure you have an Ethereum L1 full node RPC available
+1. Ensure you have an Ethereum L1 full node RPC available.
 2. Choose your network:
    - For mainnet: Use `.env.mainnet`
    - For testnet: Use `.env.sepolia`
