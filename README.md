@@ -1,3 +1,6 @@
+# Base Node Fork
+Personal fork of the Base Node repository for research and contribution testing.
+
 ![Base](logo.webp)
 
 # Base Node
