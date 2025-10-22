@@ -196,6 +196,14 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 			}
 
 			if dependencies[dependencyType].TagPrefix == "" {
+				// Guard against empty release list to avoid index out of range
+				if len(releases) == 0 {
+					return "", "", VersionUpdateInfo{}, fmt.Errorf(
+						"no releases found for %s/%s",
+						dependencies[dependencyType].Owner,
+						dependencies[dependencyType].Repo,
+					)
+				}
 				version = releases[0]
 				if *version.TagName != dependencies[dependencyType].Tag {
 					diffUrl = generateGithubRepoUrl(dependencies, dependencyType) + "/compare/" +
@@ -359,8 +367,7 @@ func writeToGithubOutput(title string, description string, repoPath string) erro
 		return fmt.Errorf("failed to write to GITHUB_OUTPUT file: %s", err)
 	}
 
-	delimiter := "EOF"
-	descToWrite := fmt.Sprintf("%s<<%s\n%s\n%s\n", "DESC", delimiter, description, delimiter)
+	descToWrite := fmt.Sprintf("%s=%s\n", "DESC", description)
 	_, err = f.WriteString(descToWrite)
 	if err != nil {
 		return fmt.Errorf("failed to write to GITHUB_OUTPUT file: %s", err)
