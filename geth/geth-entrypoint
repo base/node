@@ -14,6 +14,11 @@ ADDITIONAL_ARGS=""
 OP_GETH_GCMODE="${OP_GETH_GCMODE:-full}"
 OP_GETH_SYNCMODE="${OP_GETH_SYNCMODE:-full}"
 
+# Security settings with safe defaults
+GETH_CORS_DOMAINS="${GETH_CORS_DOMAINS:-localhost,127.0.0.1}"
+GETH_VHOSTS="${GETH_VHOSTS:-localhost,127.0.0.1}"
+GETH_WS_ORIGINS="${GETH_WS_ORIGINS:-localhost,127.0.0.1}"
+
 # Add cache optimizations with defaults
 GETH_CACHE="${GETH_CACHE:-20480}"
 GETH_CACHE_DATABASE="${GETH_CACHE_DATABASE:-20}"
@@ -54,19 +59,19 @@ exec ./geth \
     --datadir="$GETH_DATA_DIR" \
     --verbosity="$VERBOSITY" \
     --http \
-    --http.corsdomain="*" \
-    --http.vhosts="*" \
+    --http.corsdomain="$GETH_CORS_DOMAINS" \
+    --http.vhosts="$GETH_VHOSTS" \
     --http.addr=0.0.0.0 \
     --http.port="$RPC_PORT" \
     --http.api=web3,debug,eth,net,engine \
     --authrpc.addr=0.0.0.0 \
     --authrpc.port="$AUTHRPC_PORT" \
-    --authrpc.vhosts="*" \
+    --authrpc.vhosts="$GETH_VHOSTS" \
     --authrpc.jwtsecret="$OP_NODE_L2_ENGINE_AUTH" \
     --ws \
     --ws.addr=0.0.0.0 \
     --ws.port="$WS_PORT" \
-    --ws.origins="*" \
+    --ws.origins="$GETH_WS_ORIGINS" \
     --ws.api=debug,eth,net,engine \
     --metrics \
     --metrics.addr=0.0.0.0 \
