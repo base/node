@@ -1,10 +1,10 @@
 {
 	  "base_reth_node": {
-	  	  "tag": "main",
+	  	  "tag": "v0.1.11",
 	  	  "commit": "2b8aa079aca3a34e714ec5c0949178e2bffc4a5b",
 	  	  "owner": "base",
 	  	  "repo": "node-reth",
-	  	  "tracking": "branch"
+	  	  "tracking": "tag"
 	  },
 	  "nethermind": {
 	  	  "tag": "1.34.1",
