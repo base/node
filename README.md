@@ -60,13 +60,13 @@ The following are the hardware specifications we use in production:
 
 #### Reth Archive Node (recommended)
 
-- **Instance**: AWS i7ie.6xlarge
+- **Instance**: AWS i7i.12xlarge
 - **Storage**: RAID 0 of all local NVMe drives (`/dev/nvme*`)
 - **Filesystem**: ext4
 
 #### Geth Full Node
 
-- **Instance**: AWS i4i.12xlarge
+- **Instance**: AWS i7i.12xlarge
 - **Storage**: RAID 0 of all local NVMe drives (`/dev/nvme*`)
 - **Filesystem**: ext4
 
