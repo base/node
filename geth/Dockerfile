@@ -1,7 +1,7 @@
 # ===============================
 # Stage 1: Build op-node
 # ===============================
-FROM golang:1.23 AS op
+FROM golang:1.24 AS op
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN curl -sSfL 'https://just.systems/install.sh' | bash -s -- --to /usr/local/bin
@@ -21,7 +21,7 @@ RUN set -e && \
 # ===============================
 # Stage 2: Build geth
 # ===============================
-FROM golang:1.23 AS geth
+FROM golang:1.24 AS geth
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 WORKDIR /app

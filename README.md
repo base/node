@@ -40,8 +40,8 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 
 ### Supported Clients
 
-- `geth` (default)
-- `reth`
+- `reth` (default)
+- `geth`
 - `nethermind`
 
 ## Requirements
@@ -58,15 +58,15 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 
 The following are the hardware specifications we use in production:
 
-#### Geth Full Node
+#### Reth Archive Node (recommended)
 
-- **Instance**: AWS i4i.12xlarge
+- **Instance**: AWS i7i.12xlarge
 - **Storage**: RAID 0 of all local NVMe drives (`/dev/nvme*`)
 - **Filesystem**: ext4
 
-#### Reth Archive Node
+#### Geth Full Node
 
-- **Instance**: AWS i7ie.6xlarge
+- **Instance**: AWS i7i.12xlarge
 - **Storage**: RAID 0 of all local NVMe drives (`/dev/nvme*`)
 - **Filesystem**: ext4
 
@@ -75,8 +75,8 @@ To run the node using a supported client, you can use the following command:
 `CLIENT=supported_client docker compose up --build`
  
 Supported clients:
- - geth
  - reth (with Flashblocks support option, see [Reth Node README](./reth/README.md))
+ - geth
  - nethermind
 
 ## Configuration

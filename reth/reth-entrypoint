@@ -10,7 +10,7 @@ METRICS_PORT="${METRICS_PORT:-6060}"
 DISCOVERY_PORT="${DISCOVERY_PORT:-30303}"
 P2P_PORT="${P2P_PORT:-30303}"
 ADDITIONAL_ARGS=""
-NODE_TYPE="${NODE_TYPE:-vanilla}"
+NODE_TYPE="${NODE_TYPE:-base}"
 
 if [[ -z "${RETH_CHAIN:-}" ]]; then
     echo "expected RETH_CHAIN to be set" 1>&2
