@@ -1,6 +1,7 @@
 FROM golang:1.24 AS op
 
-RUN curl -sSfL 'https://just.systems/install.sh' | bash -s -- --to /usr/local/bin
+#RUN curl -sSfL 'https://just.systems/install.sh' | bash -s -- --to /usr/local/bin
+COPY just /usr/local/bin
 
 WORKDIR /app
 
@@ -25,7 +26,7 @@ RUN . /tmp/versions.env && git clone $OP_RETH_REPO --branch $OP_RETH_TAG --singl
     git switch -c branch-$OP_RETH_TAG && \
     bash -c '[ "$(git rev-parse HEAD)" = "$OP_RETH_COMMIT" ]'
 
-RUN cargo build --bin op-reth --profile maxperf --manifest-path crates/optimism/bin/Cargo.toml
+RUN cargo build --bin op-reth --profile maxperf --features jemalloc --manifest-path crates/optimism/bin/Cargo.toml 
 
 FROM rust:1.88 AS reth-base
 
@@ -37,8 +38,9 @@ RUN apt-get update && apt-get -y upgrade && \
     apt-get install -y git libclang-dev pkg-config curl build-essential && \
     rm -rf /var/lib/apt/lists/*
 
+    #git checkout tags/$BASE_RETH_NODE_TAG && \
 RUN . /tmp/versions.env && git clone $BASE_RETH_NODE_REPO . && \
-    git checkout tags/$BASE_RETH_NODE_TAG && \
+    git checkout $BASE_RETH_NODE_COMMIT && \
     bash -c '[ "$(git rev-parse HEAD)" = "$BASE_RETH_NODE_COMMIT" ]' || (echo "Commit hash verification failed" && exit 1)
 
 RUN cargo build --bin base-reth-node --release

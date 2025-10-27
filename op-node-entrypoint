@@ -44,4 +44,4 @@ export OP_NODE_P2P_ADVERTISE_IP=$PUBLIC_IP
 
 echo "$OP_NODE_L2_ENGINE_AUTH_RAW" > "$OP_NODE_L2_ENGINE_AUTH"
 
-exec ./op-node
+exec ./op-node --l2.enginekind=reth --syncmode=execution-layer --l1.trustrpc

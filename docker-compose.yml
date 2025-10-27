@@ -2,14 +2,16 @@ services:
   execution:
     build:
       context: .
-      dockerfile: ${CLIENT:-geth}/Dockerfile
+      dockerfile: ${CLIENT:-reth}/Dockerfile
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
-      - "8545:8545" # RPC
-      - "8546:8546" # websocket
-      - "7301:6060" # metrics
-      - "30303:30303" # P2P TCP
-      - "30303:30303/udp" # P2P UDP
+      - "8645:8545" # RPC
+      - "8646:8546" # websocket
+      - "7501:6060" # metrics
+      - "31307:30303" # P2P TCP
+      - "31307:30303/udp" # P2P UDP
     command: ["bash", "./execution-entrypoint"]
     volumes:
       - ${HOST_DATA_DIR}:/data
@@ -20,16 +22,18 @@ services:
   node:
     build:
       context: .
-      dockerfile: ${CLIENT:-geth}/Dockerfile
+      dockerfile: ${CLIENT:-reth}/Dockerfile
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - execution
     ports:
-      - "7545:8545" # RPC
-      - "9222:9222" # P2P TCP
-      - "9222:9222/udp" # P2P UDP
-      - "7300:7300" # metrics
-      - "6060:6060" # pprof
+      - "7645:8545" # RPC
+      - "9624:9222" # P2P TCP
+      - "9624:9222/udp" # P2P UDP
+      - "7600:7300" # metrics
+      - "6660:6060" # pprof
     command: ["bash", "./op-node-entrypoint"]
     env_file:
       - ${NETWORK_ENV:-.env.mainnet} # Use .env.mainnet by default, override with .env.sepolia for testnet
