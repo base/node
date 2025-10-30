@@ -15,6 +15,18 @@ Use the `NODE_TYPE` environment variable to select the implementation:
 - `NODE_TYPE=vanilla` - OP Reth implementation (default)
 - `NODE_TYPE=base` - Base L2 Reth implementation with Flashblocks support
 
+## Environment Variables
+
+| Variable | Purpose | Allowed values | Required | Default | Example |
+| --- | --- | --- | --- | --- | --- |
+| `NODE_TYPE` | Selects Reth implementation | `vanilla`, `base` | No | `vanilla` (when using the root `docker-compose.yml`) | `NODE_TYPE=base` |
+| `CLIENT` | Chooses which client Dockerfile to build via the root `docker-compose.yml` | `reth`, `geth`, `nethermind` | No | `geth` | `CLIENT=reth` |
+| `RETH_FB_WEBSOCKET_URL` | Flashblocks websocket endpoint (Base mode only) | valid ws(s) URL | Only when `NODE_TYPE=base` | — | `RETH_FB_WEBSOCKET_URL=wss://...` |
+
+Notes:
+- `CLIENT` is consumed by the root `docker-compose.yml` to select the client build context.
+- `RETH_FB_WEBSOCKET_URL` is used only when `NODE_TYPE=base`; it is not needed for `vanilla`.
+
 ## Running the Node
 
 The node follows the standard `docker-compose` workflow in the master README.
