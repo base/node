@@ -32,6 +32,11 @@ else
     BINARY="./op-reth"
 fi
 
+# Add pruning for base
+if [[ "$NODE_TYPE" == "base" && -n "${RETH_PRUNING_ARGS+x}" = x ]]; then
+    ADDITIONAL_ARGS="$ADDITIONAL_ARGS $RETH_PRUNING_ARGS"
+fi
+
 mkdir -p "$RETH_DATA_DIR"
 echo "$OP_NODE_L2_ENGINE_AUTH_RAW" > "$OP_NODE_L2_ENGINE_AUTH"
 
