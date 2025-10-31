@@ -29,7 +29,7 @@ FROM ubuntu:24.04
 
 RUN apt-get update && \
     apt-get install -y jq curl supervisor && \
-    rm -rf /var/lib/apt/lists
+    rm -rf /var/lib/apt/lists/*
 RUN mkdir -p /var/log/supervisor
 
 WORKDIR /app
