@@ -14,15 +14,15 @@
 	  	  "tracking": "tag"
 	  },
 	  "op_geth": {
-	  	  "tag": "v1.101603.2",
-	  	  "commit": "f305011e5706b21b93c4cdd5fd008c6bfdce175c",
+	  	  "tag": "v1.101603.3",
+	  	  "commit": "4fd8b05caf3f9d8ee8c6d86fe7735418b1fb804d",
 	  	  "owner": "ethereum-optimism",
 	  	  "repo": "op-geth",
 	  	  "tracking": "tag"
 	  },
 	  "op_node": {
-	  	  "tag": "op-node/v1.14.3",
-	  	  "commit": "8c183919fe3fc791d996693a4ecceaa1e979063b",
+	  	  "tag": "op-node/v1.16.0",
+	  	  "commit": "971c25eb5a5564ce239e3c4a95778abb24ca87d7",
 	  	  "tagPrefix": "op-node",
 	  	  "owner": "ethereum-optimism",
 	  	  "repo": "optimism",
