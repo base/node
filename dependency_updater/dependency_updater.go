@@ -183,8 +183,16 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 	var updatedDependency VersionUpdateInfo
 	foundPrefixVersion := false
 	options := &github.ListOptions{Page: 1}
+	const maxPages = 100 // Prevent infinite loop if API returns unexpected NextPage values
+	pageCount := 0
+
 	if dependencies[dependencyType].Tracking == "tag" {
 		for {
+			pageCount++
+			if pageCount > maxPages {
+				return "", "", VersionUpdateInfo{}, fmt.Errorf("exceeded maximum page limit (%d) while searching for releases of %s", maxPages, dependencyType)
+			}
+
 			releases, resp, err := client.Repositories.ListReleases(
 				ctx,
 				dependencies[dependencyType].Owner,
@@ -193,6 +201,11 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 
 			if err != nil {
 				return "", "", VersionUpdateInfo{}, fmt.Errorf("error getting releases: %s", err)
+			}
+
+			// If no releases found, keep current version
+			if len(releases) == 0 {
+				break
 			}
 
 			if dependencies[dependencyType].TagPrefix == "" {
@@ -204,7 +217,7 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 				break
 			} else if dependencies[dependencyType].TagPrefix != "" {
 				for release := range releases {
-					if strings.HasPrefix(*releases[release].TagName, dependencies[dependencyType].TagPrefix) {
+					if releases[release].TagName != nil && strings.HasPrefix(*releases[release].TagName, dependencies[dependencyType].TagPrefix) {
 						version = releases[release]
 						foundPrefixVersion = true
 						if *version.TagName != dependencies[dependencyType].Tag {
@@ -217,9 +230,11 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 				if foundPrefixVersion {
 					break
 				}
+				// Check if there are more pages before continuing
+				if resp.NextPage == 0 {
+					break
+				}
 				options.Page = resp.NextPage
-			} else if resp.NextPage == 0 {
-				break
 			}
 		}
 	}
@@ -256,6 +271,9 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 		)
 		if err != nil {
 			return "", "", VersionUpdateInfo{}, fmt.Errorf("error listing commits for "+dependencyType+": %s", err)
+		}
+		if len(branchCommit) == 0 {
+			return "", "", VersionUpdateInfo{}, fmt.Errorf("no commits found for branch %s in %s (branch may not exist)", dependencies[dependencyType].Branch, dependencyType)
 		}
 		commit = *branchCommit[0].SHA
 		if dependencies[dependencyType].Commit != commit {
