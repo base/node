@@ -38,6 +38,18 @@ if [[ "$NODE_TYPE" == "base" && "${RETH_PRUNING_ARGS+x}" = x ]]; then
     ADDITIONAL_ARGS="$ADDITIONAL_ARGS $RETH_PRUNING_ARGS"
 fi
 
+# Configure sync mode for pruning
+if [ "${RETH_SYNC_MODE+x}" = x ]; then
+    echo "Adding sync mode arguments: $RETH_SYNC_MODE"
+    ADDITIONAL_ARGS="$ADDITIONAL_ARGS --syncmode=$RETH_SYNC_MODE"
+fi
+
+# Configure engine kind for pruning
+if [ "${RETH_ENGINE_KIND+x}" = x ]; then
+    echo "Adding engine kind arguments: $RETH_ENGINE_KIND"
+    ADDITIONAL_ARGS="$ADDITIONAL_ARGS --l2.enginekind=$RETH_ENGINE_KIND"
+fi
+
 mkdir -p "$RETH_DATA_DIR"
 echo "$OP_NODE_L2_ENGINE_AUTH_RAW" > "$OP_NODE_L2_ENGINE_AUTH"
 
