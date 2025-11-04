@@ -25,7 +25,7 @@ RUN . /tmp/versions.env && git clone $OP_RETH_REPO --branch $OP_RETH_TAG --singl
     git switch -c branch-$OP_RETH_TAG && \
     bash -c '[ "$(git rev-parse HEAD)" = "$OP_RETH_COMMIT" ]'
 
-RUN cargo build --bin op-reth --profile maxperf --manifest-path crates/optimism/bin/Cargo.toml
+RUN cargo build --bin op-reth --profile maxperf --jobs 2 --manifest-path crates/optimism/bin/Cargo.toml
 
 FROM rust:1.88 AS reth-base
 
@@ -41,7 +41,7 @@ RUN . /tmp/versions.env && git clone $BASE_RETH_NODE_REPO . && \
     git checkout tags/$BASE_RETH_NODE_TAG && \
     bash -c '[ "$(git rev-parse HEAD)" = "$BASE_RETH_NODE_COMMIT" ]' || (echo "Commit hash verification failed" && exit 1)
 
-RUN cargo build --bin base-reth-node --profile maxperf --features jemalloc
+RUN cargo build --bin base-reth-node --profile maxperf --features jemalloc --jobs 2
 
 FROM ubuntu:24.04
 
