@@ -41,7 +41,7 @@ RUN . /tmp/versions.env && git clone $BASE_RETH_NODE_REPO . && \
     git checkout tags/$BASE_RETH_NODE_TAG && \
     bash -c '[ "$(git rev-parse HEAD)" = "$BASE_RETH_NODE_COMMIT" ]' || (echo "Commit hash verification failed" && exit 1)
 
-RUN cargo build --bin base-reth-node --release
+RUN cargo build --bin base-reth-node --profile maxperf --features jemalloc
 
 FROM ubuntu:24.04
 
@@ -54,7 +54,7 @@ WORKDIR /app
 
 COPY --from=op /app/op-node/bin/op-node ./
 COPY --from=reth /app/target/maxperf/op-reth ./
-COPY --from=reth-base /app/target/release/base-reth-node ./
+COPY --from=reth-base /app/target/maxperf/base-reth-node ./
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY ./reth/reth-entrypoint ./execution-entrypoint
 COPY op-node-entrypoint .
