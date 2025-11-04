@@ -90,10 +90,10 @@ jobs:
       matrix:
         settings:
           - arch: linux/amd64
-            runs-on: ubuntu-24.04
+            runs-on: ubuntu-24.04-16core
             features: jemalloc,asm-keccak,optimism
           - arch: linux/arm64
-            runs-on: ubuntu-24.04-arm
+            runs-on: ubuntu-24.04-arm-16core
             features: jemalloc,optimism
     runs-on: ${{ matrix.settings.runs-on }}
     steps:
