@@ -11,6 +11,7 @@ DISCOVERY_PORT="${DISCOVERY_PORT:-30303}"
 P2P_PORT="${P2P_PORT:-30303}"
 ADDITIONAL_ARGS=""
 NODE_TYPE="${NODE_TYPE:-base}"
+BINARY="./base-reth-node"
 
 if [[ -z "${RETH_CHAIN:-}" ]]; then
     echo "expected RETH_CHAIN to be set" 1>&2
@@ -21,15 +22,6 @@ fi
 if [[ "$NODE_TYPE" == "base" && -n "${RETH_FB_WEBSOCKET_URL:-}" ]]; then
     ADDITIONAL_ARGS="--websocket-url=$RETH_FB_WEBSOCKET_URL"
     echo "Enabling Flashblocks support with endpoint: $RETH_FB_WEBSOCKET_URL"
-fi
-
-# Select binary based on NODE_TYPE
-if [[ "$NODE_TYPE" == "base" ]]; then
-    echo "Starting Base Reth node"
-    BINARY="./base-reth-node"
-else
-    echo "Starting OP Reth node"
-    BINARY="./op-reth"
 fi
 
 # Add pruning for base
