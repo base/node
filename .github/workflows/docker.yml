@@ -256,6 +256,7 @@ jobs:
             ${{ env.NAMESPACE }}/${{ env.GETH_IMAGE_NAME }}
           tags: |
             type=ref,event=branch
+            type=ref,event=tag
             type=sha,format=long
 
       - name: Create manifest list and push
@@ -306,6 +307,7 @@ jobs:
             ${{ env.NAMESPACE }}/${{ env.RETH_IMAGE_NAME }}
           tags: |
             type=ref,event=branch
+            type=ref,event=tag
             type=sha,format=long
 
       - name: Create manifest list and push
@@ -353,6 +355,7 @@ jobs:
             ${{ env.NAMESPACE }}/${{ env.NETHERMIND_IMAGE_NAME }}
           tags: |
             type=ref,event=branch
+            type=ref,event=tag
             type=sha,format=long
 
       - name: Create manifest list and push
