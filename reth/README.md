@@ -33,6 +33,7 @@ When running in Base mode (`NODE_TYPE=base`), you can query a pending block usin
 
 ```bash
 curl -X POST \
+  -H "Content-Type: application/json" \
   --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["pending", false],"id":1}' \
   http://localhost:8545
 ```
