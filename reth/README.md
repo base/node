@@ -1,45 +1,150 @@
-# Running a Reth Node
+![Base](logo.webp)
 
-This is a unified implementation of the Reth node setup that supports running both OP Reth and Base Reth with Flashblocks support.
+# Base Node
 
-## Setup
+Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [OP Stack](https://docs.optimism.io/). This repository contains Docker builds to run your own node on the Base network.
 
-- See hardware requirements mentioned in the master README
-- For Base Reth mode: Access to a Flashblocks websocket endpoint (for `RETH_FB_WEBSOCKET_URL`)
-  - We provide public websocket endpoints for mainnet and devnet, included in `.env.mainnet` and `.env.sepolia`
+[![Website base.org](https://img.shields.io/website-up-down-green-red/https/base.org.svg)](https://base.org)
+[![Docs](https://img.shields.io/badge/docs-up-green)](https://docs.base.org/)
+[![Discord](https://img.shields.io/discord/1067165013397213286?label=discord)](https://base.org/discord)
+[![Twitter Base](https://img.shields.io/twitter/follow/Base?style=social)](https://x.com/Base)
+[![Farcaster Base](https://img.shields.io/badge/Farcaster_Base-3d8fcc)](https://farcaster.xyz/base)
 
-## Node Type Selection
+## Quick Start
 
-Use the `NODE_TYPE` environment variable to select the implementation:
+1. Ensure you have an Ethereum L1 full node RPC available
+2. Choose your network:
+   - For mainnet: Use `.env.mainnet`
+   - For testnet: Use `.env.sepolia`
+3. Configure your L1 endpoints in the appropriate `.env` file:
+   ```bash
+   OP_NODE_L1_ETH_RPC=<your-preferred-l1-rpc>
+   OP_NODE_L1_BEACON=<your-preferred-l1-beacon>
+   OP_NODE_L1_BEACON_ARCHIVER=<your-preferred-l1-beacon-archiver>
+   ```
+4. Start the node:
 
-- `NODE_TYPE=vanilla` - OP Reth implementation (default)
-- `NODE_TYPE=base` - Base L2 Reth implementation with Flashblocks support
+   ```bash
+   # For mainnet (default):
+   docker compose up --build
 
-## Running the Node
+   # For testnet:
+   NETWORK_ENV=.env.sepolia docker compose up --build
 
-The node follows the standard `docker-compose` workflow in the master README.
+   # To use a specific client (optional):
+   CLIENT=reth docker compose up --build
 
-```bash
-# Run OP Reth node
-CLIENT=reth docker-compose up
+   # For testnet with a specific client:
+   NETWORK_ENV=.env.sepolia CLIENT=reth docker compose up --build
+   ```
 
-# Run Base L2 Reth node with Flashblocks support
-NODE_TYPE=base CLIENT=reth docker-compose up
-```
+### Supported Clients
 
-## Testing Flashblocks RPC Methods
+- `reth` (default)
+- `geth`
+- `nethermind`
 
-When running in Base mode (`NODE_TYPE=base`), you can query a pending block using the Flashblocks RPC:
+## Requirements
 
-```bash
-curl -X POST \
-  --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["pending", false],"id":1}' \
-  http://localhost:8545
-```
+### Minimum Requirements
 
-## Additional RPC Methods
+- Modern Multicore CPU
+- 32GB RAM (64GB Recommended)
+- NVMe SSD drive
+- Storage: (2 \* [current chain size](https://base.org/stats) + [snapshot size](https://basechaindata.vercel.app) + 20% buffer) (to accommodate future growth)
+- Docker and Docker Compose
 
-For a complete list of supported RPC methods, refer to:
+### Production Hardware Specifications
 
-- [Standard Ethereum JSON-RPC](https://ethereum.org/en/developers/docs/apis/json-rpc/)
-- [Flashblocks RPC Methods](https://docs.base.org/chain/flashblocks#rpc-api) (Base mode only)
+The following are the hardware specifications we use in production:
+
+#### Reth Archive Node (recommended)
+
+- **Instance**: AWS i7i.12xlarge
+- **Storage**: RAID 0 of all local NVMe drives (`/dev/nvme*`)
+- **Filesystem**: ext4
+
+#### Geth Full Node
+
+- **Instance**: AWS i7i.12xlarge
+- **Storage**: RAID 0 of all local NVMe drives (`/dev/nvme*`)
+- **Filesystem**: ext4
+
+> [!NOTE]
+To run the node using a supported client, you can use the following command:
+`CLIENT=supported_client docker compose up --build`
+ 
+Supported clients:
+ - reth (with Flashblocks support option, see [Reth Node README](./reth/README.md))
+ - geth
+ - nethermind
+
+## Configuration
+
+### Required Settings
+
+- L1 Configuration:
+  - `OP_NODE_L1_ETH_RPC`: Your Ethereum L1 node RPC endpoint
+  - `OP_NODE_L1_BEACON`: Your L1 beacon node endpoint
+  - `OP_NODE_L1_BEACON_ARCHIVER`: Your L1 beacon archiver endpoint
+  - `OP_NODE_L1_RPC_KIND`: The type of RPC provider being used (default: "debug_geth"). Supported values:
+    - `alchemy`: Alchemy RPC provider
+    - `quicknode`: QuickNode RPC provider
+    - `infura`: Infura RPC provider
+    - `parity`: Parity RPC provider
+    - `nethermind`: Nethermind RPC provider
+    - `debug_geth`: Debug Geth RPC provider
+    - `erigon`: Erigon RPC provider
+    - `basic`: Basic RPC provider (standard receipt fetching only)
+    - `any`: Any available RPC method
+    - `standard`: Standard RPC methods including newer optimized methods
+
+### Network Settings
+
+- Mainnet:
+  - `RETH_CHAIN=base`
+  - `OP_NODE_NETWORK=base-mainnet`
+  - Sequencer: `https://mainnet-sequencer.base.org`
+
+- Testnet:
+  - `RETH_CHAIN=base-sepolia`
+  - `OP_NODE_NETWORK=base-sepolia`
+  - Sequencer: `https://sepolia-sequencer.base.org`
+
+### Performance Settings
+
+- Cache Settings:
+  - `GETH_CACHE="20480"` (20GB)
+  - `GETH_CACHE_DATABASE="20"` (4GB)
+  - `GETH_CACHE_GC="12"`
+  - `GETH_CACHE_SNAPSHOT="24"`
+  - `GETH_CACHE_TRIE="44"`
+
+### Optional Features
+
+- EthStats Monitoring (uncomment to enable)
+- Trusted RPC Mode (uncomment to enable)
+- Snap Sync (experimental)
+
+For full configuration options, see the `.env.mainnet` file.
+
+## Snapshots
+
+Snapshots are available to help you sync your node more quickly. See [docs.base.org](https://docs.base.org/chain/run-a-base-node#snapshots) for links and more details on how to restore from a snapshot.
+
+## Supported Networks
+
+| Network | Status |
+| ------- | ------ |
+| Mainnet | ✅     |
+| Testnet | ✅     |
+
+## Troubleshooting
+
+For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
+
+## Disclaimer
+
+THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
+
+For more information, visit [docs.base.org](https://docs.base.org/).
