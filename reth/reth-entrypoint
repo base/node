@@ -19,7 +19,7 @@ fi
 
 # Enable Flashblocks support if websocket URL is provided
 if [[ -n "${RETH_FB_WEBSOCKET_URL:-}" ]]; then
-    ADDITIONAL_ARGS="--websocket-url=$RETH_FB_WEBSOCKET_URL"
+    ADDITIONAL_ARGS="$ADDITIONAL_ARGS --websocket-url=$RETH_FB_WEBSOCKET_URL"
     echo "Enabling Flashblocks support with endpoint: $RETH_FB_WEBSOCKET_URL"
 else
     echo "Running in vanilla node mode (no Flashblocks URL provided)"
@@ -32,6 +32,7 @@ if [[ "${RETH_PRUNING_ARGS+x}" = x ]]; then
 fi
 
 mkdir -p "$RETH_DATA_DIR"
+echo "Starting reth with additional args: $ADDITIONAL_ARGS"
 echo "$OP_NODE_L2_ENGINE_AUTH_RAW" > "$OP_NODE_L2_ENGINE_AUTH"
 
 exec "$BINARY" node \
