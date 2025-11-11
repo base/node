@@ -22,9 +22,9 @@ get_public_ip() {
   return 1
 }
 
-if [[ -z "$OP_NODE_NETWORK" && -z "$OP_NODE_ROLLUP_CONFIG" ]]; then
-  echo "expected OP_NODE_NETWORK to be set" 1>&2
-  exit 1
+if [[ -z "$OP_NODE_NETWORK" || -z "$OP_NODE_ROLLUP_CONFIG" ]]; then
+    echo "expected OP_NODE_NETWORK and OP_NODE_ROLLUP_CONFIG to be set" 1>&2
+    exit 1
 fi
 
 # wait until local execution client comes up (authed so will return 401 without token)
