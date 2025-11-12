@@ -75,7 +75,7 @@ To run the node using a supported client, you can use the following command:
 `CLIENT=supported_client docker compose up --build`
  
 Supported clients:
- - reth (with Flashblocks support option, see [Reth Node README](./reth/README.md))
+ - reth (runs vanilla node by default, Flashblocks mode enabled by providing RETH_FB_WEBSOCKET_URL, see [Reth Node README](./reth/README.md))
  - geth
  - nethermind
 
