@@ -55,6 +55,13 @@ fi
 
 if [[ "$RETH_HISTORICAL_PROOFS" == "true" && -n "$RETH_HISTORICAL_PROOFS_STORAGE_PATH" ]]; then
     ADDITIONAL_ARGS="$ADDITIONAL_ARGS --proofs-history --proofs-history.storage-path=$RETH_HISTORICAL_PROOFS_STORAGE_PATH"
+
+    # in this case, we need to run the init script first (idempotent)
+    exec "$BINARY" initialize-op-proofs \
+        -$LOG_LEVEL \
+        --log.stdout.format json \
+        --datadir="$RETH_DATA_DIR" \
+        --proofs-history.storage-path=$RETH_HISTORICAL_PROOFS_STORAGE_PATH
 fi
 
 mkdir -p "$RETH_DATA_DIR"
