@@ -37,6 +37,18 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
    # For testnet with a specific client:
    NETWORK_ENV=.env.sepolia CLIENT=reth docker compose up --build
    ```
+### Prerequisites (Software)
+
+- **Docker** (v24+ recommended) and **Docker Compose v2** (uses the `docker compose` syntax).
+  - Install Docker: https://docs.docker.com/engine/install/
+  - Enable Docker Compose v2: https://docs.docker.com/compose/
+- Make sure `docker compose` command works:
+  ```bash
+  docker compose version
+  ```
+  If your system only has `docker-compose` (with a hyphen), please install/enable Compose **v2** or upgrade Docker.
+
+> This clarifies the `docker compose up` commands used below and helps avoid “command not found” issues on older setups.
 
 ### Supported Clients
 
@@ -139,6 +151,8 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
 
 ## Disclaimer
+
+
 
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
 
