@@ -217,9 +217,10 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 				if foundPrefixVersion {
 					break
 				}
+				if resp.NextPage == 0 {
+					break
+				}
 				options.Page = resp.NextPage
-			} else if resp.NextPage == 0 {
-				break
 			}
 		}
 	}
