@@ -30,6 +30,7 @@ When running in Flashblocks mode (with `RETH_FB_WEBSOCKET_URL` configured), you 
 
 ```bash
 curl -X POST \
+  -H "Content-Type: application/json" \
   --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["pending", false],"id":1}' \
   http://localhost:8545
 ```
