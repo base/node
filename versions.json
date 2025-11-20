@@ -1,7 +1,7 @@
 {
 	  "base_reth_node": {
-	  	  "tag": "v0.2.1",
-	  	  "commit": "ddf99821c7aace74ac4d9c6016c9aeac4f908212",
+	  	  "tag": "v0.2.2",
+	  	  "commit": "4a580faec0b560eb65d6ee2f620efb7b044a649d",
 	  	  "owner": "base",
 	  	  "repo": "node-reth",
 	  	  "tracking": "tag"
@@ -29,8 +29,8 @@
 	  	  "tracking": "tag"
 	  },
 	  "op_reth": {
-	  	  "tag": "v1.9.2",
-	  	  "commit": "74351d98e906b8af5f118694529fb2b71d316946",
+	  	  "tag": "v1.9.3",
+	  	  "commit": "27a8c0f5a6dfb27dea84c5751776ecabdd069646",
 	  	  "owner": "paradigmxyz",
 	  	  "repo": "reth",
 	  	  "tracking": "tag"
