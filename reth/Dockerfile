@@ -13,7 +13,7 @@ RUN . /tmp/versions.env && git clone $OP_NODE_REPO --branch $OP_NODE_TAG --singl
 RUN . /tmp/versions.env && cd op-node && \
     make VERSION=$OP_NODE_TAG op-node
 
-FROM rust:1.88 AS reth-base
+FROM rust:1.91.1 AS reth-base
 
 WORKDIR /app
 
