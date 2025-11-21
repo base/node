@@ -1,38 +1,53 @@
 {
-	  "base_reth_node": {
-	  	  "tag": "v0.2.1",
-	  	  "commit": "ddf99821c7aace74ac4d9c6016c9aeac4f908212",
-	  	  "owner": "base",
-	  	  "repo": "node-reth",
-	  	  "tracking": "tag"
-	  },
-	  "nethermind": {
-	  	  "tag": "1.35.2",
-	  	  "commit": "faa9b9e69c1b0002d216a96473692a80d7c47b4e",
-	  	  "owner": "NethermindEth",
-	  	  "repo": "nethermind",
-	  	  "tracking": "tag"
-	  },
-	  "op_geth": {
-	  	  "tag": "v1.101603.5",
-	  	  "commit": "904a088c5cc1eeec21a1ffa47327dc20a809e642",
-	  	  "owner": "ethereum-optimism",
-	  	  "repo": "op-geth",
-	  	  "tracking": "tag"
-	  },
-	  "op_node": {
-	  	  "tag": "op-node/v1.16.2",
-	  	  "commit": "1b8c541060f0d323a7023fbc68fbbc8daf674340",
-	  	  "tagPrefix": "op-node",
-	  	  "owner": "ethereum-optimism",
-	  	  "repo": "optimism",
-	  	  "tracking": "tag"
-	  },
-	  "op_reth": {
-	  	  "tag": "v1.9.2",
-	  	  "commit": "74351d98e906b8af5f118694529fb2b71d316946",
-	  	  "owner": "paradigmxyz",
-	  	  "repo": "reth",
-	  	  "tracking": "tag"
-	  }
+  // =======================================================
+  // OPTIMIZED: Dependencies are sorted alphabetically by key name 
+  // for improved searchability and management.
+  // =======================================================
+
+  // Execution Client for Base Chain (Reth implementation)
+  "base_reth_node": {
+    "tag": "v0.2.1",
+    "commit": "ddf99821c7aace74ac4d9c6016c9aeac4f908212",
+    "owner": "base",
+    "repo": "node-reth",
+    "tracking": "tag"
+  },
+
+  // Execution Client (General Ethereum/EVM)
+  "nethermind": {
+    "tag": "1.35.2",
+    "commit": "faa9b9e69c1b0002d216a96473692a80d7c47b4e",
+    "owner": "NethermindEth",
+    "repo": "nethermind",
+    "tracking": "tag"
+  },
+
+  // Optimized Execution Client (Go-Ethereum fork for Optimism)
+  "op_geth": {
+    "tag": "v1.101603.5",
+    "commit": "904a088c5cc1eeec21a1ffa47327dc20a809e642",
+    "owner": "ethereum-optimism",
+    "repo": "op-geth",
+    "tracking": "tag"
+  },
+
+  // Consensus/Sequencer Node (Optimism Bedrock Architecture)
+  "op_node": {
+    "tag": "op-node/v1.16.2",
+    "commit": "1b8c541060f0d323a7023fbc68fbbc8daf674340",
+    // tagPrefix is necessary because the tag includes the module name (op-node/vX.X.X).
+    "tagPrefix": "op-node", 
+    "owner": "ethereum-optimism",
+    "repo": "optimism",
+    "tracking": "tag"
+  },
+
+  // Optimized Execution Client (Reth fork for Optimism)
+  "op_reth": {
+    "tag": "v1.9.2",
+    "commit": "74351d98e906b8af5f118694529fb2b71d316946",
+    "owner": "paradigmxyz",
+    "repo": "reth",
+    "tracking": "tag"
+  }
 }
