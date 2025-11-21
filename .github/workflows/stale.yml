@@ -1,22 +1,45 @@
-name: Mark stale issues and PRs
+# Workflow for automatically marking and closing inactive Issues and Pull Requests.
+name: Mark Stale Issues and PRs
 
 on:
+  # Scheduled run: Executes daily at 00:30 UTC.
   schedule:
+    # Runs at 00:30 UTC every day
     - cron: '30 0 * * *'
+  # Allows manual execution from the GitHub Actions UI.
   workflow_dispatch:
+
 jobs:
   stale:
+    # Runs the job on the latest Ubuntu runner.
     runs-on: ubuntu-latest
+    
+    # Restrict permissions to the minimum required (Principle of Least Privilege).
+    # Only needs write access to Issues and PRs to apply labels and close them.
     permissions:
-      actions: write
       issues: write
       pull-requests: write
+      # actions: write is unnecessary for the stale action and has been removed.
+      
     steps:
-      - uses: actions/stale@5f858e3efba33a5ca4407a664cc011ad407f2008 # v10.1.0
+      - name: Stale Issues and Pull Requests Check
+        # Using the specific SHA for security (pinned version v10.1.0)
+        uses: actions/stale@5f858e3efba33a5ca4407a664cc011ad407f2008 
         with:
-          days-before-stale: 14
-          days-before-close: 5
+          # Number of days of inactivity before an item is marked as stale.
+          days-before-stale: 14 
+          
+          # Number of days of inactivity after being marked stale before the item is closed.
+          days-before-close: 5 
+          
+          # Message to add when marking an Issue as stale.
           stale-issue-message: 'This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions.'
+          
+          # Message to add when marking a Pull Request as stale.
           stale-pr-message: 'This pull request has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions.'
+          
+          # Message to add when closing an inactive Issue.
           close-issue-message: 'This issue was closed because it has been inactive for 5 days since being marked as stale.'
+          
+          # Message to add when closing an inactive Pull Request.
           close-pr-message: 'This pull request was closed because it has been inactive for 5 days since being marked as stale.'
