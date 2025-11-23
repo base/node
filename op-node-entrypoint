@@ -28,9 +28,17 @@ if [[ -z "$OP_NODE_NETWORK" && -z "$OP_NODE_ROLLUP_CONFIG" ]]; then
 fi
 
 # wait until local execution client comes up (authed so will return 401 without token)
+# set a maximum number of retries (default 60 attempts = ~5 minutes)
+MAX_RETRIES=${OP_NODE_MAX_WAIT:-60}
+RETRIES=0
 until [ "$(curl -s --max-time 10 --connect-timeout 5 -w '%{http_code}' -o /dev/null "${OP_NODE_L2_ENGINE_RPC/ws/http}")" -eq 401 ]; do
+  if [ "$RETRIES" -ge "$MAX_RETRIES" ]; then
+    echo "execution client did not become ready after $((MAX_RETRIES * 5)) seconds" 1>&2
+    exit 2
+  fi
   echo "waiting for execution client to be ready"
   sleep 5
+  RETRIES=$((RETRIES + 1))
 done
 
 # public-facing P2P node, advertise public IP address
