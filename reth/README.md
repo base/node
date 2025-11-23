@@ -1,35 +1,32 @@
 # Running a Reth Node
 
-This is a unified implementation of the Reth node setup that supports running both OP Reth and Base Reth with Flashblocks support.
+This is an implementation of the Reth node setup that supports Flashblocks mode based on configuration.
 
 ## Setup
 
 - See hardware requirements mentioned in the master README
-- For Base Reth mode: Access to a Flashblocks websocket endpoint (for `RETH_FB_WEBSOCKET_URL`)
+- For Flashblocks mode: Access to a Flashblocks websocket endpoint (for `RETH_FB_WEBSOCKET_URL`)
   - We provide public websocket endpoints for mainnet and devnet, included in `.env.mainnet` and `.env.sepolia`
 
 ## Node Type Selection
 
-Use the `NODE_TYPE` environment variable to select the implementation:
+The node determines its mode based on the presence of the `RETH_FB_WEBSOCKET_URL` environment variable:
 
-- `NODE_TYPE=vanilla` - OP Reth implementation (default)
-- `NODE_TYPE=base` - Base L2 Reth implementation with Flashblocks support
+- **Vanilla Mode** (default): When no `RETH_FB_WEBSOCKET_URL` is provided.
+- **Flashblocks Mode**: When `RETH_FB_WEBSOCKET_URL` is provided.
 
 ## Running the Node
 
 The node follows the standard `docker-compose` workflow in the master README.
 
 ```bash
-# Run OP Reth node
+# To run Reth node with Flashblocks support, set RETH_FB_WEBSOCKET_URL in your .env file
 CLIENT=reth docker-compose up
-
-# Run Base L2 Reth node with Flashblocks support
-NODE_TYPE=base CLIENT=reth docker-compose up
 ```
 
 ## Testing Flashblocks RPC Methods
 
-When running in Base mode (`NODE_TYPE=base`), you can query a pending block using the Flashblocks RPC:
+When running in Flashblocks mode (with `RETH_FB_WEBSOCKET_URL` configured), you can query a pending block using the Flashblocks RPC:
 
 ```bash
 curl -X POST \
@@ -42,4 +39,4 @@ curl -X POST \
 For a complete list of supported RPC methods, refer to:
 
 - [Standard Ethereum JSON-RPC](https://ethereum.org/en/developers/docs/apis/json-rpc/)
-- [Flashblocks RPC Methods](https://docs.base.org/chain/flashblocks#rpc-api) (Base mode only)
+- [Flashblocks RPC Methods](https://docs.base.org/chain/flashblocks#rpc-api) (Flashblocks mode only)
