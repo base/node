@@ -48,7 +48,7 @@ jobs:
 
       - name: Extract metadata for the Docker image
         id: meta
-        uses: docker/metadata-action@818d4b7b91585d195f67373fd9cb0332e31a7175 # v4.6.0
+        uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5.7.0
         with:
           images: |
             ${{ env.NAMESPACE }}/${{ env.GETH_DEPRECATED_IMAGE_NAME }}
@@ -104,7 +104,7 @@ jobs:
           egress-policy: audit
 
       - name: Checkout
-        uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
 
       - name: Log into the Container registry
         uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
@@ -115,7 +115,7 @@ jobs:
 
       - name: Extract metadata for the Docker image
         id: meta
-        uses: docker/metadata-action@818d4b7b91585d195f67373fd9cb0332e31a7175 # v4.6.0
+        uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5.7.0
         with:
           images: |
             ${{ env.NAMESPACE }}/${{ env.RETH_IMAGE_NAME }}
@@ -171,7 +171,7 @@ jobs:
           egress-policy: audit
 
       - name: Checkout
-        uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
 
       - name: Log into the Container registry
         uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
@@ -185,7 +185,7 @@ jobs:
 
       - name: Extract metadata for the Docker image
         id: meta
-        uses: docker/metadata-action@818d4b7b91585d195f67373fd9cb0332e31a7175 # v4.6.0
+        uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5.7.0
         with:
           images: |
             ${{ env.NAMESPACE }}/${{ env.NETHERMIND_IMAGE_NAME }}
