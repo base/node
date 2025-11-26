@@ -7,8 +7,8 @@
 	  	  "tracking": "tag"
 	  },
 	  "nethermind": {
-	  	  "tag": "1.35.2",
-	  	  "commit": "faa9b9e69c1b0002d216a96473692a80d7c47b4e",
+	  	  "tag": "1.35.3",
+	  	  "commit": "d9febbce240491e8f918d41a4ffd06385a746b6c",
 	  	  "owner": "NethermindEth",
 	  	  "repo": "nethermind",
 	  	  "tracking": "tag"
