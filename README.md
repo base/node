@@ -131,8 +131,8 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 
 | Network | Status |
 | ------- | ------ |
-| Mainnet | ✅     |
-| Testnet | ✅     |
+| Mainnet | ✅ |
+| Testnet | ✅ |
 
 ## Troubleshooting
 
