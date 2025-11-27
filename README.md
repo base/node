@@ -27,16 +27,20 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
    ```bash
    # For mainnet (default):
    docker compose up --build
+   
+### Command matrix
 
-   # For testnet:
-   NETWORK_ENV=.env.sepolia docker compose up --build
+**Mainnet**
 
-   # To use a specific client (optional):
-   CLIENT=reth docker compose up --build
+- Geth (default): `docker compose up --build`
+- Reth: `CLIENT=reth docker compose up --build`
+- Nethermind: `CLIENT=nethermind docker compose up --build`
 
-   # For testnet with a specific client:
-   NETWORK_ENV=.env.sepolia CLIENT=reth docker compose up --build
-   ```
+**Sepolia testnet**
+
+- Geth: `NETWORK_ENV=.env.sepolia docker compose up --build`
+- Reth: `NETWORK_ENV=.env.sepolia CLIENT=reth docker compose up --build`
+- Nethermind: `NETWORK_ENV=.env.sepolia CLIENT=nethermind docker compose up --build`
 
 ### Supported Clients
 
@@ -49,7 +53,7 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 ### Minimum Requirements
 
 - Modern Multicore CPU
-- 32GB RAM (64GB Recommended)
+- 32GB RAM minimum (64GB recommended for mainnet)
 - NVMe SSD drive
 - Storage: (2 \* [current chain size](https://base.org/stats) + [snapshot size](https://basechaindata.vercel.app) + 20% buffer) (to accommodate future growth)
 - Docker and Docker Compose
