@@ -38,6 +38,18 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
    NETWORK_ENV=.env.sepolia CLIENT=reth docker compose up --build
    ```
 
+   ### Common configuration combinations
+
+Use case | NETWORK_ENV | CLIENT | Command example
+--- | --- | --- | ---
+Mainnet, default | (default) | (default) | `docker compose up --build`
+Mainnet, geth | (default) | `geth` | `CLIENT=geth docker compose up --build`
+Mainnet, reth | (default) | `reth` | `CLIENT=reth docker compose up --build`
+Mainnet, nethermind | (default) | `nethermind` | `CLIENT=nethermind docker compose up --build`
+Sepolia, default | `.env.sepolia` | (default) | `NETWORK_ENV=.env.sepolia docker compose up --build`
+Sepolia, reth | `.env.sepolia` | `reth` | `NETWORK_ENV=.env.sepolia CLIENT=reth docker compose up --build`
+Sepolia, nethermind | `.env.sepolia` | `nethermind` | `NETWORK_ENV=.env.sepolia CLIENT=nethermind docker compose up --build`
+
 ### Supported Clients
 
 - `reth` (default)
