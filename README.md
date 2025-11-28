@@ -127,6 +127,10 @@ For full configuration options, see the `.env.mainnet` file.
 ## Snapshots
 
 Snapshots are available to help you sync your node more quickly. See [docs.base.org](https://docs.base.org/chain/run-a-base-node#snapshots) for links and more details on how to restore from a snapshot.
+When restoring from a snapshot, make sure that:
+- The snapshot matches the network you are running (mainnet vs sepolia).
+- The snapshot was generated for the same client type you use (geth, reth, or nethermind).
+- Your `NETWORK_ENV` and `CLIENT` values in `docker compose` match the snapshot you downloaded.
 
 ## Supported Networks
 
