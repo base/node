@@ -42,6 +42,13 @@ The best way to see a feature added, however, is to submit a pull request.
 
 * Submit your pull request!
 
+## Small documentation changes
+
+For minor improvements such as fixing typos or clarifying examples in README and env files, please:
+
+- Use a `docs:` prefixed commit message (for example, `docs: clarify node snapshot restore steps`).
+- Keep each pull request focused on a single logical change to make reviews easier.
+
 ## Support Requests
 
 For security reasons, any communication referencing support tickets for Coinbase
