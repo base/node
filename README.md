@@ -1,6 +1,11 @@
 ![Base](logo.webp)
 
 # Base Node
+## Requirements
+
+- Go 1.21 or higher
+- Git installed for fetching dependencies
+
 
 Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [OP Stack](https://docs.optimism.io/). This repository contains Docker builds to run your own node on the Base network.
 
