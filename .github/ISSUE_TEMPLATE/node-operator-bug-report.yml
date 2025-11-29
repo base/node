@@ -1,0 +1,105 @@
+name: Node operator bug report
+description: Report an issue encountered while running a Base node.
+title: "[Node operator] <short summary of the issue>"
+labels:
+  - node-operator
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for running a Base node and taking the time to report this issue.
+        Please fill in as much detail as you can so that maintainers can help
+        reproduce and debug the problem.
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Describe where this node is running (cloud provider, region, instance type, OS, etc.).
+      placeholder: "Example: AWS i7i.12xlarge, us-east-1, Ubuntu 22.04"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: network
+    attributes:
+      label: Network
+      options:
+        - Base mainnet
+        - Base Sepolia
+        - Other / custom
+    validations:
+      required: true
+
+  - type: dropdown
+    id: client
+    attributes:
+      label: Execution client
+      options:
+        - reth
+        - geth
+        - nethermind
+        - unknown / other
+    validations:
+      required: true
+
+  - type: input
+    id: node-version
+    attributes:
+      label: Base node version
+      description: Which base/node version or release tag are you using?
+      placeholder: "Example: v0.14.3 or commit hash"
+    validations:
+      required: true
+
+  - type: textarea
+    id: configuration
+    attributes:
+      label: Relevant configuration
+      description: >
+        Summarise relevant configuration values (for example, NETWORK_ENV,
+        CLIENT, key L1 RPC endpoints). Please omit or redact any secrets.
+      placeholder: |
+        Example:
+        - NETWORK_ENV=.env.mainnet
+        - CLIENT=reth
+        - OP_NODE_L1_ETH_RPC is set (redacted)
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: >
+        Describe what you expected to happen and what actually happened.
+      placeholder: "A clear description of the observed behaviour vs. the expected behaviour."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce
+      description: >
+        Provide a minimal, step-by-step description of how to reproduce the issue.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: >
+        Paste relevant excerpts from op-node and execution client logs. Please
+        remove or redact any sensitive information before posting.
+      render: shell
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Any other information that may be useful (recent upgrades, configuration changes, load patterns, etc.).
