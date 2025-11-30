@@ -114,6 +114,8 @@ Supported clients:
   - `GETH_CACHE_GC="12"`
   - `GETH_CACHE_SNAPSHOT="24"`
   - `GETH_CACHE_TRIE="44"`
+    
+These cache values are intended for production full nodes with ample RAM and override the default op-geth cache settings. If you are running on lower-resource hardware, you may need to reduce `GETH_CACHE` and rebalance the percentage variables accordingly.
 
 ### Optional Features
 
