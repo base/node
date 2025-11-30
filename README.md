@@ -98,6 +98,7 @@ Supported clients:
     - `basic`: Basic RPC provider (standard receipt fetching only)
     - `any`: Any available RPC method
     - `standard`: Standard RPC methods including newer optimized methods
+If you are unsure which option to choose, keeping the default value "debug_geth" is a safe choice for most geth-based L1 endpoints.
 
 ### Network Settings
 
