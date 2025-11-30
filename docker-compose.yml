@@ -12,7 +12,7 @@ services:
       - "30303:30303/udp" # P2P UDP
     command: ["bash", "./execution-entrypoint"]
     volumes:
-      - ${HOST_DATA_DIR}:/data
+      - ${HOST_DATA_DIR}:/data # HOST_DATA_DIR controls where execution client data (chain state, logs) are stored on the host
     env_file:
       - ${NETWORK_ENV:-.env.mainnet} # Use .env.mainnet by default, override with .env.sepolia for testnet
   node:
