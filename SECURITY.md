@@ -27,6 +27,8 @@ with domain knowledge, ensuring the best quality of review.
 For more information on reporting vulnerabilities and our HackerOne bug bounty
 program, view our [security program policies][7].
 
+For non-security bugs or feature requests, please use the standard GitHub Issues workflow instead of this channel.
+
 [1]: https://www.coinbase.com/blog/celebrating-10-years-of-our-bug-bounty-program
 [2]: https://hackerone.com/coinbase?type=team 
 [3]: https://docs.optimism.io/
