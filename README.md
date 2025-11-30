@@ -126,6 +126,7 @@ For full configuration options, see the `.env.mainnet` file.
 ## Snapshots
 
 Snapshots are available to help you sync your node more quickly. See [docs.base.org](https://docs.base.org/chain/run-a-base-node#snapshots) for links and more details on how to restore from a snapshot.
+When using a snapshot, make sure the network, client, and environment variables in your .env file match the snapshot you have downloaded.
 
 ## Supported Networks
 
