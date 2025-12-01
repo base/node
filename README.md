@@ -137,6 +137,12 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 ## Troubleshooting
 
 For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
+When opening a GitHub issue, please include:
+
+- The Base node version you are running (release tag).
+- Which client you are using (`reth`, `geth`, or `nethermind`).
+- A short description of the issue and any relevant logs.
+
 
 ## Disclaimer
 
