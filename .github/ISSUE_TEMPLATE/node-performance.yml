@@ -1,0 +1,124 @@
+name: Node performance issue
+description: Report performance-related issues with a Base node (slow sync, high CPU, disk pressure, etc.).
+title: "[Perf] <short summary>"
+labels:
+  - performance
+  - node
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for running a Base node and reporting a performance issue.
+        Please provide details about your environment, configuration, and
+        what you are observing so that we can help diagnose the problem.
+
+  - type: dropdown
+    id: network
+    attributes:
+      label: Network
+      options:
+        - Mainnet
+        - Sepolia testnet
+    validations:
+      required: true
+
+  - type: dropdown
+    id: client
+    attributes:
+      label: Client implementation
+      options:
+        - reth
+        - geth
+        - nethermind
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: hardware
+    attributes:
+      label: Hardware and host details
+      description: Describe the host machine (cloud provider, instance type, CPU, RAM, disks).
+      placeholder: |
+        Example:
+        - AWS i7i.12xlarge
+        - 64 GiB RAM
+        - NVMe SSD, ext4 filesystem
+    validations:
+      required: true
+
+  - type: textarea
+    id: docker-config
+    attributes:
+      label: Docker / container configuration
+      description: Describe how you run the node (docker compose, extra flags, resource limits).
+      placeholder: |
+        Example:
+        - docker compose up --build
+        - No explicit CPU or memory limits
+        - Data directory mounted from /data/base-node
+    validations:
+      required: false
+
+  - type: textarea
+    id: symptoms
+    attributes:
+      label: Symptoms
+      description: Describe the performance issue you are observing.
+      placeholder: |
+        Examples:
+        - Node sync is very slow compared to expected
+        - CPU is pegged at 100% for long periods
+        - Disk I/O or latency appears to be a bottleneck
+        - Node frequently falls behind head and has to catch up
+    validations:
+      required: true
+
+  - type: textarea
+    id: metrics
+    attributes:
+      label: Metrics or observations
+      description: Include any metrics, graphs, or command output that illustrate the problem.
+      placeholder: |
+        Examples:
+        - top / htop screenshots
+        - iostat or vmstat output
+        - Cloud provider monitoring graphs (CPU, disk, network)
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Paste relevant log excerpts (with sensitive data removed).
+      placeholder: |
+        Include any repeated error messages or warnings that appear while
+        the performance issue is happening.
+    validations:
+      required: false
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce
+      description: List the steps that lead to the performance issue (if applicable).
+      placeholder: |
+        1. Start node with given configuration
+        2. Wait for initial sync
+        3. Observe performance degradation under specific conditions
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Any other information that might help (snapshot usage, recent changes, etc.).
+      placeholder: |
+        Example:
+        - Restored from snapshot on a specific date
+        - Recently changed L1 RPC provider
+        - Other workloads running on the same host
+    validations:
+      required: false
