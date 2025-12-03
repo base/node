@@ -53,6 +53,7 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 - NVMe SSD drive
 - Storage: (2 \* [current chain size](https://base.org/stats) + [snapshot size](https://basechaindata.vercel.app) + 20% buffer) (to accommodate future growth)
 - Docker and Docker Compose
+- Docker version 24.0+ and Compose v2 are recommended for best compatibility with the provided compose files
 
 ### Production Hardware Specifications
 
@@ -126,6 +127,10 @@ For full configuration options, see the `.env.mainnet` file.
 ## Snapshots
 
 Snapshots are available to help you sync your node more quickly. See [docs.base.org](https://docs.base.org/chain/run-a-base-node#snapshots) for links and more details on how to restore from a snapshot.
+When restoring from a snapshot, make sure that:
+- The snapshot matches the network you are running (mainnet vs sepolia).
+- The snapshot was generated for the same client type you use (geth, reth, or nethermind).
+- Your `NETWORK_ENV` and `CLIENT` values in `docker compose` match the snapshot you downloaded.
 
 ## Supported Networks
 
