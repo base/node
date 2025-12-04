@@ -129,14 +129,30 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 
 ## Supported Networks
 
-| Network | Status |
-| ------- | ------ |
-| Mainnet | ✅     |
-| Testnet | ✅     |
+Network Status  
+Mainnet ✅  
+Testnet ✅  
 
 ## Troubleshooting
 
-For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
+For support please join our Discord post in `｜node-operators`. You can alternatively open a new GitHub issue.
+
+## FAQ
+
+### How do I know if my node is synced?
+
+You can use standard Ethereum RPC methods against your Base node:
+
+- Call `eth_syncing` on your node’s RPC endpoint. When it returns `false`, the node reports that it is fully synced.
+- Compare the latest block number from your node (`eth_blockNumber`) with a public Base RPC, such as `https://mainnet.base.org`. A small difference (a few blocks) is normal, but the numbers should stay close.
+
+### Can I change the client after I have already started syncing?
+
+Yes, but each client (`reth`, `geth`, `nethermind`) maintains its own data directory:
+
+1. Stop the current containers:
+   ```bash
+   docker compose down
 
 ## Disclaimer
 
