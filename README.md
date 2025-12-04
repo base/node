@@ -117,11 +117,32 @@ Supported clients:
 
 ### Optional Features
 
-- EthStats Monitoring (uncomment to enable)
-- Trusted RPC Mode (uncomment to enable)
-- Snap Sync (experimental)
+  * EthStats Monitoring (uncomment to enable)
+  * Trusted RPC Mode (uncomment to enable)
+  * Snap Sync (experimental)
 
 For full configuration options, see the `.env.mainnet` file.
+
+### Environment variables reference
+
+The most commonly used environment variables for this repository are summarized below.  
+You can set them in `.env.mainnet` / `.env.sepolia` or export them in your shell before running `docker compose`.
+
+| Variable                      | Required | Description                                                                                  | Example                                             |
+| ---------------------------- | -------- | -------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| `OP_NODE_L1_ETH_RPC`         | Yes      | Ethereum L1 execution RPC endpoint used by the Base node.                                    | `https://your-l1-rpc.example`                      |
+| `OP_NODE_L1_BEACON`          | Yes      | L1 beacon node endpoint.                                                                     | `https://your-l1-beacon.example`                   |
+| `OP_NODE_L1_BEACON_ARCHIVER` | Yes      | L1 beacon archiver endpoint used for historical data.                                       | `https://your-l1-archiver.example`                 |
+| `OP_NODE_L1_RPC_KIND`        | No       | Type of RPC provider being used. Defaults to `"debug_geth"`. See the list in **Configuration**. | `quicknode`, `alchemy`, `infura`, `nethermind`     |
+| `RETH_CHAIN`                 | Yes      | Network identifier for Reth.                                                                 | `base`                                             |
+| `OP_NODE_NETWORK`            | Yes      | Base network configuration name for op-node.                                                 | `base-mainnet`                                     |
+| `GETH_CACHE`                 | No       | Total Geth cache size in MB.                                                                 | `20480`                                            |
+| `GETH_CACHE_DATABASE`        | No       | Geth database cache (subset of `GETH_CACHE`).                                                | `20`                                               |
+| `GETH_CACHE_GC`              | No       | Geth garbage collection cache percentage.                                                    | `12`                                               |
+| `GETH_CACHE_SNAPSHOT`        | No       | Geth snapshot cache percentage.                                                              | `24`                                               |
+| `GETH_CACHE_TRIE`            | No       | Geth trie cache percentage.                                                                  | `44`                                               |
+| `NETWORK_ENV`                | No       | Path to the env file that `docker compose` should use.                                       | `.env.mainnet`, `.env.sepolia`                     |
+| `CLIENT`                     | No       | L2 client to run in the Docker Compose stack.                                                | `reth`, `geth`, `nethermind`                       |
 
 ## Snapshots
 
