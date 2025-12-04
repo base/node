@@ -12,31 +12,20 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 
 ## Quick Start
 
-1. Ensure you have an Ethereum L1 full node RPC available
+1. Ensure you have an Ethereum L1 full node RPC available.
+
 2. Choose your network:
    - For mainnet: Use `.env.mainnet`
    - For testnet: Use `.env.sepolia`
-3. Configure your L1 endpoints in the appropriate `.env` file:
-   ```bash
-   OP_NODE_L1_ETH_RPC=<your-preferred-l1-rpc>
-   OP_NODE_L1_BEACON=<your-preferred-l1-beacon>
-   OP_NODE_L1_BEACON_ARCHIVER=<your-preferred-l1-beacon-archiver>
-   ```
-4. Start the node:
 
-   ```bash
-   # For mainnet (default):
-   docker compose up --build
+3. Configure your L1 endpoints in the appropriate `.env` file.  
+   For example, when using a third-party RPC provider:
 
-   # For testnet:
-   NETWORK_ENV=.env.sepolia docker compose up --build
-
-   # To use a specific client (optional):
-   CLIENT=reth docker compose up --build
-
-   # For testnet with a specific client:
-   NETWORK_ENV=.env.sepolia CLIENT=reth docker compose up --build
-   ```
+```bash
+OP_NODE_L1_ETH_RPC=https://your-l1-rpc.example
+OP_NODE_L1_BEACON=https://your-l1-beacon.example
+OP_NODE_L1_BEACON_ARCHIVER=https://your-l1-beacon-archiver.example
+OP_NODE_L1_RPC_KIND=quicknode  # or alchemy / infura / nethermind / debug_geth / erigon
 
 ### Supported Clients
 
