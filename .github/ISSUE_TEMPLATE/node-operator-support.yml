@@ -1,0 +1,130 @@
+name: Node operator support
+description: Request help with running or troubleshooting a Base node.
+title: "[Node] <short summary>"
+labels:
+  - node
+  - support
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for running a Base node and taking the time to open an issue.
+        Please provide as much detail as you can so that maintainers and the
+        community can help you diagnose and resolve the problem.
+
+  - type: dropdown
+    id: network
+    attributes:
+      label: Network
+      options:
+        - Mainnet
+        - Sepolia testnet
+    validations:
+      required: true
+
+  - type: dropdown
+    id: client
+    attributes:
+      label: Client implementation
+      description: Which client are you running in this repository?
+      options:
+        - reth
+        - geth
+        - nethermind
+        - Not sure
+    validations:
+      required: true
+
+  - type: input
+    id: node-version
+    attributes:
+      label: Node version or release tag
+      description: The Base node release or Git commit you are running.
+      placeholder: "Example: v0.14.3 or main at <commit hash>"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: snapshot-used
+    attributes:
+      label: Are you using a snapshot?
+      options:
+        - No snapshot (synced from genesis)
+        - Restored from an official snapshot
+        - Restored from a third-party snapshot
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment details
+      description: Describe where your node is running (cloud provider, instance type, RAM, storage).
+      placeholder: "Example: AWS i7i.12xlarge, 64 GB RAM, NVMe SSD, Docker on Ubuntu 22.04"
+    validations:
+      required: true
+
+  - type: textarea
+    id: l1-config
+    attributes:
+      label: L1 configuration
+      description: Describe how your L1 RPC, beacon, and archiver endpoints are configured (do not paste secrets).
+      placeholder: |
+        Example:
+        - Using .env.mainnet
+        - OP_NODE_L1_ETH_RPC points to a full Ethereum mainnet node
+        - OP_NODE_L1_BEACON and OP_NODE_L1_BEACON_ARCHIVER set to matching beacon endpoints
+    validations:
+      required: false
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce
+      description: List the steps needed to reproduce the problem from a clean state.
+      placeholder: |
+        1. Clone base/node
+        2. Configure .env.mainnet
+        3. Run: docker compose up --build
+        4. Observe ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: What did you expect your node to do?
+      placeholder: "The node should sync to head and respond to RPC requests..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual behavior
+      description: What actually happened, including any error messages or abnormal behaviour.
+      placeholder: "Instead, the node stops at a certain block, shows repeated errors, or fails to start..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Paste relevant excerpts from your client and docker compose logs (with sensitive data removed).
+      placeholder: |
+        Please include any stack traces or repeated error messages
+        from docker compose logs or the client container.
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Any other details that might be useful (firewall rules, recent changes, etc.).
+      placeholder: "Optional extra information that may help us understand your setup."
+    validations:
+      required: false
