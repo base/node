@@ -45,6 +45,12 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 - `nethermind`
 
 ## Requirements
+> **⚠️ Minimum system specs for running Base node:**  
+> - CPU: 4-core or higher  
+> - Memory: 32 GB RAM (64 GB recommended)  
+> - Storage: NVMe SSD, size ≥ 2× current chain size + buffer  
+> - Docker & Docker Compose installed  
+
 
 ### Minimum Requirements
 
