@@ -143,3 +143,15 @@ For support please join our [Discord](https://discord.gg/buildonbase) post in `ð
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
 
 For more information, visit [docs.base.org](https://docs.base.org/).
+
+## Troubleshooting
+
+If you encounter issues when starting the node, try the following:
+
+- Ensure Docker is running and updated to the latest version.
+- Rebuild images using: `docker compose build --no-cache`
+- Verify that the correct `.env` file is selected via `NETWORK_ENV`.
+- Check port conflicts (e.g., 8545 or 8546 already in use).
+
+These tips help resolve the most common startup problems.
+
