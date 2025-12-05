@@ -98,6 +98,10 @@ Supported clients:
     - `basic`: Basic RPC provider (standard receipt fetching only)
     - `any`: Any available RPC method
     - `standard`: Standard RPC methods including newer optimized methods
+Example:
+OP_NODE_L1_RPC=http://localhost:8545
+OP_NODE_L1_RPC_KIND=basic
+
 
 ### Network Settings
 
