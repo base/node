@@ -137,6 +137,7 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 ## Troubleshooting
 
 For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
+If the containers fail to start, double-check that your L1 RPC variables are set in the correct environment file (for example, `.env.mainnet` or `.env.sepolia`) and that the file is loaded by your compose command.
 
 ## Disclaimer
 
