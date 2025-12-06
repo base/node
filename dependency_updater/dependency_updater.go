@@ -195,32 +195,33 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 				return "", "", VersionUpdateInfo{}, fmt.Errorf("error getting releases: %s", err)
 			}
 
-			if dependencies[dependencyType].TagPrefix == "" {
-				version = releases[0]
-				if *version.TagName != dependencies[dependencyType].Tag {
-					diffUrl = generateGithubRepoUrl(dependencies, dependencyType) + "/compare/" +
-						dependencies[dependencyType].Tag + "..." + *version.TagName
-				}
-				break
-			} else if dependencies[dependencyType].TagPrefix != "" {
-				for release := range releases {
-					if strings.HasPrefix(*releases[release].TagName, dependencies[dependencyType].TagPrefix) {
-						version = releases[release]
-						foundPrefixVersion = true
-						if *version.TagName != dependencies[dependencyType].Tag {
-							diffUrl = generateGithubRepoUrl(dependencies, dependencyType) + "/compare/" +
-								dependencies[dependencyType].Tag + "..." + *version.TagName
-						}
-						break
+		if dependencies[dependencyType].TagPrefix == "" {
+			version = releases[0]
+			if *version.TagName != dependencies[dependencyType].Tag {
+				diffUrl = generateGithubRepoUrl(dependencies, dependencyType) + "/compare/" +
+					dependencies[dependencyType].Tag + "..." + *version.TagName
+			}
+			break
+		} else if dependencies[dependencyType].TagPrefix != "" {
+			for release := range releases {
+				if strings.HasPrefix(*releases[release].TagName, dependencies[dependencyType].TagPrefix) {
+					version = releases[release]
+					foundPrefixVersion = true
+					if *version.TagName != dependencies[dependencyType].Tag {
+						diffUrl = generateGithubRepoUrl(dependencies, dependencyType) + "/compare/" +
+							dependencies[dependencyType].Tag + "..." + *version.TagName
 					}
-				}
-				if foundPrefixVersion {
 					break
 				}
-				options.Page = resp.NextPage
-			} else if resp.NextPage == 0 {
+			}
+			if foundPrefixVersion {
 				break
 			}
+			if resp.NextPage == 0 {
+				break
+			}
+			options.Page = resp.NextPage
+		}
 		}
 	}
 
