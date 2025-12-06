@@ -37,6 +37,13 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
    # For testnet with a specific client:
    NETWORK_ENV=.env.sepolia CLIENT=reth docker compose up --build
    ```
+## Viewing Logs
+
+To view real-time logs while running the node:
+
+```bash
+docker compose logs -f
+
 
 ### Supported Clients
 
