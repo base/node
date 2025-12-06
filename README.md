@@ -43,6 +43,7 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 - `reth` (default)
 - `geth`
 - `nethermind`
+To select a client when starting the node, set the CLIENT environment variable (geth, reth, or nethermind) before running docker compose.
 
 ## Requirements
 
