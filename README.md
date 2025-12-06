@@ -138,6 +138,17 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 
 For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
 
+## Security best practices
+
+Operating an Ethereum node, even on a test network, comes with security responsibilities:
+
+- Expose RPC endpoints only to trusted networks or behind proper authentication.
+- Avoid running the node as the root user; use a dedicated system user where possible.
+- Keep your host system and Docker engine up to date with security patches.
+- Do not store private keys or secrets directly in `.env` files committed to version control.
+
+Review your infrastructure regularly and treat node hosts as sensitive production systems.
+
 ## Disclaimer
 
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
