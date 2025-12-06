@@ -143,3 +143,16 @@ For support please join our [Discord](https://discord.gg/buildonbase) post in `�
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
 
 For more information, visit [docs.base.org](https://docs.base.org/).
+
+## Environment variables
+
+The node requires several environment variables to run correctly.  
+Create a `.env` file or export them manually before starting the services.
+
+- `L1_RPC_URL` — Ethereum RPC endpoint  
+- `P2P_PORT` — port for P2P networking  
+- `RPC_PORT` — port for the public RPC interface  
+- `SYNC_MODE` — sync mode (e.g., full / snap)  
+
+For a full list, check the sample `.env` file in the repository.
+
