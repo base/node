@@ -137,6 +137,7 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 ## Troubleshooting
 
 For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
+If your node is consistently lagging behind the chain head, verify that your L1 RPC and beacon endpoints are healthy, not rate limited, and correctly configured in the `OP_NODE_L1_*` and `OP_NODE_L1_RPC_KIND` settings above.
 
 ## Disclaimer
 
