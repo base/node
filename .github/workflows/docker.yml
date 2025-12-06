@@ -199,6 +199,8 @@ jobs:
           tags: ${{ env.NAMESPACE }}/${{ env.NETHERMIND_IMAGE_NAME }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: ${{ matrix.settings.arch }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           outputs: type=image,push-by-digest=true,name-canonical=true,push=true
 
       - name: Export digest
