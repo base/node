@@ -126,6 +126,14 @@ For full configuration options, see the `.env.mainnet` file.
 ## Snapshots
 
 Snapshots are available to help you sync your node more quickly. See [docs.base.org](https://docs.base.org/chain/run-a-base-node#snapshots) for links and more details on how to restore from a snapshot.
+## Updating your node
+
+To update your Base node to the latest released images:
+
+1. Stop the running node:
+
+``bash
+docker compose down
 
 ## Supported Networks
 
