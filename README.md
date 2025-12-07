@@ -126,6 +126,23 @@ For full configuration options, see the `.env.mainnet` file.
 ## Snapshots
 
 Snapshots are available to help you sync your node more quickly. See [docs.base.org](https://docs.base.org/chain/run-a-base-node#snapshots) for links and more details on how to restore from a snapshot.
+## Data directories and logs
+
+By default, Docker stores all blockchain data inside the `./data` directory of this repository (mounted as a volume into the execution client containers).
+
+* Execution client data (Reth / Geth / Nethermind) lives under `./data/execution`.
+* Node data (op-node) lives under `./data/op-node`.
+
+If you want to:
+
+* **Move data to a different disk** — update the corresponding volume paths in `docker-compose.yml`.
+* **Clean up storage** — stop the node with `docker compose down` and then remove the data directory you no longer need.
+
+Logs are written to the Docker logs for each container. You can inspect them using:
+
+```bash
+docker compose logs -f op-node
+docker compose logs -f execution
 
 ## Supported Networks
 
