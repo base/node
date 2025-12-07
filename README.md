@@ -10,6 +10,16 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 [![Twitter Base](https://img.shields.io/twitter/follow/Base?style=social)](https://x.com/Base)
 [![Farcaster Base](https://img.shields.io/badge/Farcaster_Base-3d8fcc)](https://farcaster.xyz/base)
 
+## Ports
+
+Default ports used by this node:
+
+- `8080` – main HTTP API  
+- `9000` – peer-to-peer communication  
+- `5001` – internal health/status endpoint  
+
+If you run the node behind Docker or a proxy, make sure these ports are exposed and not taken by other services.
+
 ## Quick Start
 
 1. Ensure you have an Ethereum L1 full node RPC available
