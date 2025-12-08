@@ -1,3 +1,11 @@
+# Execution client data directories
 geth-data/
 reth-data/
 nethermind-data/
+
+# Local virtual environments and temporary files
+.venv/
+venv/
+*.log
+tmp/
+logs/
