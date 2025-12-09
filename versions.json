@@ -21,8 +21,8 @@
 	  	  "tracking": "tag"
 	  },
 	  "op_node": {
-	  	  "tag": "op-node/v1.16.2",
-	  	  "commit": "1b8c541060f0d323a7023fbc68fbbc8daf674340",
+	  	  "tag": "op-node/v1.16.3",
+	  	  "commit": "478b8bda4e30cc4feb587d7d722168264425a564",
 	  	  "tagPrefix": "op-node",
 	  	  "owner": "ethereum-optimism",
 	  	  "repo": "optimism",
