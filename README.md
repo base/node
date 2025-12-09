@@ -129,10 +129,18 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 
 ## Supported Networks
 
-| Network | Status |
-| ------- | ------ |
-| Mainnet | ✅     |
-| Testnet | ✅     |
+Network Status
+Mainnet ✅
+Testnet ✅
+
+## Logs & monitoring
+
+When running Base Node with Docker Compose, you can inspect logs for the main services with:
+
+```bash
+docker compose logs -f execution
+docker compose logs -f node
+
 
 ## Troubleshooting
 
