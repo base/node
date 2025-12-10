@@ -143,3 +143,22 @@ For support please join our [Discord](https://discord.gg/buildonbase) post in `ð
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
 
 For more information, visit [docs.base.org](https://docs.base.org/).
+### Quick Tip: On-Chain Banking with Base Nodes
+Run a Base node for low-latency apps like tokenized banks! Inspired by [ukml's Base--A-Future-World-On-Chain-Bank repo](https://github.com/ukml/Base--A-Future-World-On-Chain-Bank), use ~$0.01 fees for 24/7 deposits. Sample Solidity vault for INR/USDC ramps:
+
+```solidity
+// Simple Deposit Vault (deploy on Base testnet)
+pragma solidity ^0.8.0;
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
+contract BankVault {
+    mapping(address => uint256) public balances;
+    IERC20 public usdc; // USDC on Base: 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
+
+    constructor(address _usdc) { usdc = IERC20(_usdc); }
+
+    function deposit(uint256 amount) external {
+        usdc.transferFrom(msg.sender, address(this), amount);
+        balances[msg.sender] += amount;
+    }
+}
