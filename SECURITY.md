@@ -20,7 +20,7 @@ All potential vulnerability reports can be submitted via the [HackerOne][6]
 platform.
 
 The HackerOne platform allows us to have a centralized and single reporting
-source for us to deliver optimized SLA's and results. All reports submitted to
+source for us to deliver optimized SLAs and results. All reports submitted to
 the platform are triaged around the clock by our team of Coinbase engineers
 with domain knowledge, ensuring the best quality of review.
 
