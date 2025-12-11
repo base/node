@@ -75,7 +75,7 @@ To run the node using a supported client, you can use the following command:
 `CLIENT=supported_client docker compose up --build`
  
 Supported clients:
- - reth (runs vanilla node by default, Flashblocks mode enabled by providing RETH_FB_WEBSOCKET_URL, see [Reth Node README](./reth/README.md))
+ - reth (runs vanilla node by default, Flashblocks mode is enabled by providing RETH_FB_WEBSOCKET_URL, see [Reth Node README](./reth/README.md))
  - geth
  - nethermind
 
@@ -136,7 +136,7 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 
 ## Troubleshooting
 
-For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
+For support, please join our [Discord](https://discord.gg/buildonbase) and post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
 
 ## Disclaimer
 
