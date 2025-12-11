@@ -43,7 +43,7 @@ func main() {
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:     "token",
-				Usage:    "Auth token used to make requests to the Github API must be set using export",
+				Usage:    "Auth token used to make requests to the GitHub API must be set using export",
 				Sources:  cli.EnvVars("GITHUB_TOKEN"),
 				Required: true,
 			},
@@ -59,7 +59,7 @@ func main() {
 			},
 			&cli.BoolFlag{
 				Name:     "github-action",
-				Usage:    "Specifies whether tool is being used through github action workflow",
+				Usage:    "Specifies whether tool is being used through GitHub Actions workflow",
 				Required: false,
 			},
 		},
