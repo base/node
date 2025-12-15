@@ -143,3 +143,14 @@ For support please join our [Discord](https://discord.gg/buildonbase) post in `ð
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
 
 For more information, visit [docs.base.org](https://docs.base.org/).
+
+## Backup and Recovery
+
+Operators should consider regular backups of important node data:
+
+- Persist critical configuration files
+- Backup keys or credentials if used
+- Plan recovery steps before performing upgrades or maintenance
+
+Having a recovery plan reduces downtime and prevents irreversible data loss.
+
