@@ -143,3 +143,14 @@ For support please join our [Discord](https://discord.gg/buildonbase) post in `ð
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
 
 For more information, visit [docs.base.org](https://docs.base.org/).
+
+## Runtime Requirements
+
+Before running a Base node, ensure your environment meets the following non-obvious requirements:
+
+- Sufficient disk space for chain data growth over time
+- Open network ports required for peer-to-peer communication
+- Stable network connectivity for syncing and RPC access
+
+Missing any of these may lead to slow syncs or unexpected runtime issues.
+
