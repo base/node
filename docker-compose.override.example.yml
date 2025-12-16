@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  op-node:
+    environment:
+      # Example of overriding the L1 RPC URL for local testing.
+      - L1_RPC_URL=http://host.docker.internal:8545
+
+  execution-client:
+    ports:
+      # Expose HTTP port of the execution client to the host.
+      - "8545:8545"
