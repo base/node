@@ -143,3 +143,13 @@ For support please join our [Discord](https://discord.gg/buildonbase) post in `ð
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
 
 For more information, visit [docs.base.org](https://docs.base.org/).
+
+## Network Connectivity
+
+Reliable network connectivity is essential for proper node operation:
+
+- Temporary network interruptions can delay block synchronization
+- Firewalls or restrictive network policies may prevent peer discovery
+- Consistent outbound connectivity improves sync stability
+
+Operators should verify network conditions when troubleshooting sync issues.
