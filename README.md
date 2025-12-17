@@ -123,6 +123,21 @@ Supported clients:
 
 For full configuration options, see the `.env.mainnet` file.
 
+## Default ports
+
+These are the common default ports exposed by the Docker Compose setup. If you have conflicts, change the `ports:` mappings in `docker-compose.yml`.
+
+| Purpose | Default |
+|---|---|
+| Execution JSON-RPC | `8545` |
+| Execution WebSocket | `8546` |
+| Execution Engine API | `8551` |
+| Metrics | `6060` (may be mapped to a different host port) |
+| P2P | `30303/tcp` and `30303/udp` |
+
+Tip: If you are running multiple chains on the same machine, adjust the host-side ports to avoid collisions.
+
+
 ## Snapshots
 
 Snapshots are available to help you sync your node more quickly. See [docs.base.org](https://docs.base.org/chain/run-a-base-node#snapshots) for links and more details on how to restore from a snapshot.
