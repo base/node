@@ -1,6 +1,9 @@
 #!/bin/bash
 set -eu
-
+if [[ -z "${OP_NODE_L2_ENGINE_AUTH_RAW:-}" ]]; then
+  echo "expected OP_NODE_L2_ENGINE_AUTH_RAW to be set for authrpc" 1>&2
+  exit 1
+fi
 IPC_PATH="/data/reth.ipc"
 RETH_DATA_DIR=/data
 RPC_PORT="${RPC_PORT:-8545}"
