@@ -43,6 +43,11 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 - `reth` (default)
 - `geth`
 - `nethermind`
+  
+## Environment Assumptions
+
+This setup assumes familiarity with Linux-based systems and basic networking concepts.
+Production deployments may require additional hardening.
 
 ## Requirements
 
