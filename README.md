@@ -10,6 +10,11 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 [![Twitter Base](https://img.shields.io/twitter/follow/Base?style=social)](https://x.com/Base)
 [![Farcaster Base](https://img.shields.io/badge/Farcaster_Base-3d8fcc)](https://farcaster.xyz/base)
 
+## Repository Scope
+
+This repository focuses on running and maintaining Base node infrastructure.
+Client implementations and protocol development are handled in separate repositories.
+
 ## Quick Start
 
 1. Ensure you have an Ethereum L1 full node RPC available
