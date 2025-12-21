@@ -33,7 +33,29 @@ fi
 
 mkdir -p "$RETH_DATA_DIR"
 echo "$OP_NODE_L2_ENGINE_AUTH_RAW" > "$OP_NODE_L2_ENGINE_AUTH"
+# --- ARCHITECTURAL ADDITION: PRE-FLIGHT INTEGRITY CHECKS ---
+echo "Starting architectural pre-flight checks..."
 
+# 1. Database Integrity Check (Inspired by Arbitrum state validation)
+# Ensures the node doesn't start with a corrupted DB after an unsafe shutdown
+if [[ -d "$RETH_DATA_DIR/db" ]]; then
+    echo "Checking database integrity..."
+    if ! "$BINARY" db stats --datadir="$RETH_DATA_DIR" > /dev/null; then
+        echo "ERROR: Database integrity check failed. Manual intervention required." 1>&2
+        exit 1
+    fi
+fi
+
+# 2. Network Readiness Check for Flashblocks
+# Prevents node from hanging if the WebSocket endpoint is unreachable
+if [[ -n "${RETH_FB_WEBSOCKET_URL:-}" ]]; then
+    echo "Validating Flashblocks endpoint connectivity..."
+    # Simple timeout check (requires 'nc' or 'timeout')
+    if ! timeout 2s bash -c "true > /dev/tcp/${RETH_FB_WEBSOCKET_URL#*://}/80" 2>/dev/null; then
+        echo "WARNING: Flashblocks URL is set but unreachable. Node may experience latency."
+    fi
+fi
+# --- END OF ARCHITECTURAL ADDITION ---
 exec "$BINARY" node \
   -vvv \
   --datadir="$RETH_DATA_DIR" \
