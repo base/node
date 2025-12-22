@@ -1,0 +1,31 @@
+name: Shell script syntax check
+
+on:
+  pull_request:
+    paths:
+      - "**/*.sh"
+  push:
+    branches:
+      - main
+    paths:
+      - "**/*.sh"
+
+jobs:
+  bash_syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Find shell scripts and run bash -n
+        run: |
+          set -euo pipefail
+          scripts="$(find . -type f -name '*.sh' -print0 | tr '\0' '\n')"
+          if [ -z "$scripts" ]; then
+            echo "No shell scripts found, nothing to check."
+            exit 0
+          fi
+          echo "$scripts" | while read -r file; do
+            echo "Checking $file"
+            bash -n "$file"
+          done
