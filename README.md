@@ -136,6 +136,16 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 
 ## Troubleshooting
 
+## Upgrade Considerations
+
+Before upgrading a running node, operators should review release notes and assess potential impacts:
+
+- Some upgrades may require additional disk space or resyncing
+- Configuration defaults can change between versions
+- Downtime may occur during major version upgrades
+
+Planning upgrades ahead of time helps avoid unexpected disruptions.
+
 For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
 
 ## Disclaimer
