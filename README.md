@@ -138,6 +138,106 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 
 For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
 
+
+## 🪟 Windows Setup Guide (Unofficial)
+
+This section provides a simple Windows guide for contributors who want to build or run the Base node locally on Windows.
+
+---
+
+### 🔧 1. Install Required Tools
+
+#### ✔ Install Git
+
+[https://git-scm.com/download/win](https://git-scm.com/download/win)
+
+#### ✔ Install Go (GoLang)
+
+[https://go.dev/dl/](https://go.dev/dl/)
+Recommended: **Go 1.21+**
+
+#### ✔ Install Docker Desktop
+
+[https://www.docker.com/products/docker-desktop/](https://www.docker.com/products/docker-desktop/)
+
+Enable inside Docker settings:
+
+* Use **WSL2 backend**
+* Allocate at least **4GB RAM**
+
+#### ✔ Install WSL2
+
+Open PowerShell **as Administrator**:
+
+```powershell
+wsl --install
+```
+
+---
+
+### 📥 2. Clone the Official Repository
+
+```powershell
+git clone https://github.com/base/node.git
+cd node
+```
+
+---
+
+### 🌱 3. Configure Go Environment
+
+Check Go installation:
+
+```powershell
+go version
+```
+
+If Go is not recognized, add it to PATH:
+
+```powershell
+setx PATH "$env:PATH;C:\Go\bin"
+```
+
+Restart your terminal afterwards.
+
+---
+
+### 🏗 4. Build the Base Node
+
+```powershell
+go build ./...
+```
+
+If you face compatibility issues, run the same inside WSL2.
+
+---
+
+### 🐳 5. Run Using Docker (Recommended)
+
+```powershell
+docker build -t base-node .
+docker run -it base-node
+```
+
+Docker Desktop must be running before using these commands.
+
+---
+
+### 🧪 6. Run Tests
+
+```powershell
+go test ./...
+```
+
+---
+
+### 📝 Notes for Windows Users
+
+* WSL2 provides better compatibility for crypto/node tooling
+* Use **VS Code** with the WSL extension for the best experience
+* All steps work in **PowerShell**, **Windows Terminal**, or **VS Code Terminal**
+
+---
 ## Disclaimer
 
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
