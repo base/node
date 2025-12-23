@@ -136,6 +136,21 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 
 ## Troubleshooting
 
+### Checking sync status
+
+You can use JSON-RPC methods to check whether your node is syncing and how far it has progressed:
+
+``bash
+# Check if the node is still syncing
+curl -s -X POST http://localhost:8545 \
+  -H "Content-Type: application/json" \
+  --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}'
+
+# Get the current block number
+curl -s -X POST http://localhost:8545 \
+  -H "Content-Type: application/json" \
+  --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
+
 For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
 
 ## Disclaimer
