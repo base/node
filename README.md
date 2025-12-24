@@ -44,6 +44,10 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 - `geth`
 - `nethermind`
 
+For most node operators, `reth` is a solid default choice that balances performance and resource usage on Base.
+`geth` remains a good fit if you already operate other geth-based infrastructure and prefer a more established client.
+`nethermind` is available for operators who want another actively maintained client implementation in their fleet.
+
 ## Requirements
 
 ### Minimum Requirements
