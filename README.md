@@ -44,6 +44,23 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 - `geth`
 - `nethermind`
 
+### Verify the node is running
+
+After starting the stack, you can run a quick health check:
+
+- Check that the containers are up:
+
+```bash
+docker compose ps
+```
+- Confirm the L2 RPC is responding:
+
+```
+curl -d '{"id":0,"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest",false]}' \
+  -H "Content-Type: application/json" http://localhost:8545
+```
+If `docker compose ps` shows the services as `Up` and the `curl` call returns a JSON block, your Base node is responding correctly.
+
 ## Requirements
 
 ### Minimum Requirements
