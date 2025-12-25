@@ -1,0 +1,17 @@
+# Optional override file to change logging configuration when running Base via docker compose.
+#
+# Usage:
+#   docker compose -f docker-compose.yml -f docker-compose.override.logging.yml up
+#
+# This example increases the log driver buffer and sets log level to debug
+# for the op-node service only.
+
+services:
+  op-node:
+    environment:
+      - LOG_LEVEL=debug
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
