@@ -136,6 +136,12 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 
 ## Troubleshooting
 
+## Project context
+
+This repository contains the core node implementation used by Base.
+It focuses on reliability, networking, and protocol-level behavior rather than user-facing tooling.
+
+
 For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
 
 ## Disclaimer
