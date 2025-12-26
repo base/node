@@ -1,0 +1,29 @@
+name: Validate docker-compose config
+
+on:
+  pull_request:
+    paths:
+      - "docker-compose.yml"
+      - "docker-compose.*.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "docker-compose.yml"
+      - "docker-compose.*.yml"
+
+jobs:
+  compose-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install docker-compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose-plugin
+
+      - name: Validate Compose file
+        run: |
+          docker compose -f docker-compose.yml config
