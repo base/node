@@ -44,6 +44,11 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 - `geth`
 - `nethermind`
 
+## Target audience
+
+This repository is intended for protocol engineers, node operators,
+and contributors working on Base infrastructure.
+
 ## Requirements
 
 ### Minimum Requirements
