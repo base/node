@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Base Discord (node-operators)
+    url: https://discord.gg/base
+    about: Ask questions and get help in the node-operators channel.
+  - name: Base docs (Node Operators)
+    url: https://docs.base.org/
+    about: Official documentation for running a Base node.
