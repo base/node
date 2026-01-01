@@ -143,3 +143,14 @@ For support please join our [Discord](https://discord.gg/buildonbase) post in `ð
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
 
 For more information, visit [docs.base.org](https://docs.base.org/).
+
+## Logging and Monitoring
+
+For production or long-running nodes, it is recommended to monitor logs and system metrics:
+
+- Review node logs regularly to detect sync or network issues
+- Monitor CPU, memory, and disk usage over time
+- Ensure log storage does not grow indefinitely
+
+Proper monitoring helps detect problems early and improves node stability.
+
