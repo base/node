@@ -136,6 +136,15 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 
 ## Troubleshooting
 
+## FAQ
+
+**Is this node production-ready?**  
+Yes. This repository is actively used and maintained for the Base network.
+
+**Who should use this repository?**  
+Node operators, infrastructure providers, and contributors to the Base protocol.
+
+
 For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
 
 ## Disclaimer
