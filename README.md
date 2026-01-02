@@ -1,3 +1,8 @@
+## Project Purpose
+
+This repository contains the core node implementation for the Base network.
+It focuses on reliability, performance, and compatibility with the Ethereum ecosystem.
+
 ![Base](logo.webp)
 
 # Base Node
