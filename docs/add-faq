@@ -1,0 +1,13 @@
+# Frequently Asked Questions
+
+## What is this repository?
+This repository contains the core node implementation used by the Base network.
+
+## Who should use this project?
+Developers, infrastructure operators, and contributors interested in Base node development.
+
+## Is this repository production-ready?
+Yes, but it is primarily intended for advanced users and contributors.
+
+## Where can I get help?
+Please open an issue or start a discussion in the repository.
