@@ -1,0 +1,7 @@
+# <type>(<scope>): <short description>
+#
+# Body: explain what and why in 72-char lines.
+#
+# Footers:
+# - BREAKING CHANGE: describe breaking changes
+# - Closes: #issue
