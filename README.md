@@ -143,3 +143,9 @@ For support please join our [Discord](https://discord.gg/buildonbase) post in `ð
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
 
 For more information, visit [docs.base.org](https://docs.base.org/).
+
+## Support
+
+For questions, issues, or operational concerns, please open a GitHub Issue.
+This helps keep discussions transparent and accessible to the community.
+
