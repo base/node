@@ -136,6 +136,13 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 
 ## Troubleshooting
 
+## Requirements
+
+- Linux or macOS
+- Docker installed
+- Basic understanding of Ethereum nodes
+
+
 For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
 
 ## Disclaimer
