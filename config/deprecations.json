@@ -1,0 +1,7 @@
+{
+  "_comment": "This file maps deprecated environment variable names to their replacements.",
+  "_comment2": "Example format: \"OLD_VAR_NAME\": \"NEW_VAR_NAME\"",
+  "_comment3": "If a variable was removed without replacement, map it to null: \"OLD_VAR\": null",
+  "_comment4": "Add deprecated variables here as they are renamed in future releases"
+}
+
