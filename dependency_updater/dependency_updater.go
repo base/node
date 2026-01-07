@@ -259,12 +259,13 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 		}
 		commit = *branchCommit[0].SHA
 		if dependencies[dependencyType].Commit != commit {
-			diff := dependencies[dependencyType].Commit + " => " + commit
+			from, to := dependencies[dependencyType].Commit, commit
+			diffUrl = fmt.Sprintf("%s/compare/%s...%s", generateGithubRepoUrl(dependencies, dependencyType), from, to)
 			updatedDependency = VersionUpdateInfo{
 				dependencies[dependencyType].Repo,
 				dependencies[dependencyType].Tag,
 				commit,
-				diff,
+				diffUrl,
 			}
 		}
 	}
