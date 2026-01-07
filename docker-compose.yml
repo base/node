@@ -1,4 +1,19 @@
 services:
+  config-doctor:
+    build:
+      context: .
+      dockerfile: config-doctor/Dockerfile
+    env_file:
+      - ${NETWORK_ENV:-.env.mainnet}
+    environment:
+      - NETWORK_ENV=${NETWORK_ENV:-.env.mainnet}
+      - CLIENT=${CLIENT:-geth}
+    volumes:
+      - .:/workspace:ro
+    working_dir: /workspace
+    command: ["/app/validate-config.sh", "/workspace/${NETWORK_ENV:-.env.mainnet}"]
+    profiles:
+      - validation
   execution:
     build:
       context: .
