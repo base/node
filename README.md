@@ -1,4 +1,8 @@
 ![Base](logo.webp)
+## Project Summary
+
+This repository contains the Base node implementation and related tooling.
+It is intended for developers running or contributing to the Base network.
 
 # Base Node
 
