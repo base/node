@@ -79,7 +79,7 @@ Supported clients:
  - geth
  - nethermind
 
-## Configuration
+###Configuration
 
 ### Required Settings
 
