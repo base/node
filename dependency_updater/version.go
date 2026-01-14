@@ -54,9 +54,9 @@ func ValidateVersionUpgrade(currentTag, newTag, tagPrefix string) error {
 	// Parse current version
 	currentVersion, err := ParseVersion(currentTag, tagPrefix)
 	if err != nil {
-		// If current version is unparseable, allow the update
-		// (could be legacy format or non-semver tag)
-		return nil
+		// Current version unparseable - still validate new version is parseable
+		_, newErr := ParseVersion(newTag, tagPrefix)
+		return newErr
 	}
 
 	// Parse new version

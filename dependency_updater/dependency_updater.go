@@ -223,6 +223,12 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 
 		// Find the maximum version among valid tags
 		for _, tag := range validTags {
+			// Skip if this tag can't be parsed
+			if _, err := ParseVersion(*tag.Name, tagPrefix); err != nil {
+				log.Printf("Skipping unparseable tag %s: %v", *tag.Name, err)
+				continue
+			}
+
 			if selectedTag == nil {
 				selectedTag = tag
 				continue

@@ -104,6 +104,10 @@ func TestValidateVersionUpgrade(t *testing.T) {
 		{"empty current - valid new", "", "v0.3.0", "", false},
 		{"empty current - invalid new", "", "not-a-version", "", true},
 		{"unparseable current allows update", "not-semver", "v0.3.0", "", false},
+
+		// Unparseable current with unparseable new should fail
+		{"unparseable current - unparseable new", "rollup-boost/v0.7.11", "websocket-proxy/v0.0.2", "", true},
+		{"unparseable current - valid new", "rollup-boost/v0.7.11", "v0.8.0", "", false},
 	}
 
 	for _, tt := range tests {
