@@ -208,7 +208,6 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 
 				// Check if this is a valid upgrade (not a downgrade)
 				if err := ValidateVersionUpgrade(currentTag, *tag.Name, tagPrefix); err != nil {
-					log.Printf("Skipping %s for %s: %v", *tag.Name, dependencyType, err)
 					continue
 				}
 
