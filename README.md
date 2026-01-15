@@ -123,6 +123,68 @@ Supported clients:
 
 For full configuration options, see the `.env.mainnet` file.
 
+## Configuration Validation
+
+The repository includes a built-in configuration validator that helps detect configuration issues before starting the node. This validator:
+
+- ✅ Validates required environment variables are present
+- ⚠️ Detects deprecated environment variables and suggests replacements
+- 🔍 Identifies unknown/typo variables and suggests corrections
+- 📋 Validates URL, port, and numeric format requirements
+- 📊 Provides a consolidated report with actionable suggestions
+
+### Using the Validator
+
+#### Option 1: Using Make (Recommended)
+
+```bash
+# Validate default .env.mainnet
+make doctor
+
+# Validate a specific env file
+make doctor ENV_FILE=.env.sepolia
+```
+
+#### Option 2: Direct Script Execution
+
+```bash
+# Validate default .env.mainnet
+./scripts/validate-config.sh
+
+# Validate a specific env file
+./scripts/validate-config.sh .env.sepolia
+```
+
+#### Option 3: Using Docker Compose
+
+```bash
+# Validate configuration before starting services
+docker compose --profile validation run --rm config-doctor
+
+# Validate a specific env file
+NETWORK_ENV=.env.sepolia docker compose --profile validation run --rm config-doctor
+```
+
+### Example Output
+
+```
+Validating configuration file: .env.mainnet
+Detected client: reth
+
+❌ ERRORS:
+  Missing required variables:
+    - OP_NODE_L1_BEACON_ARCHIVER
+
+⚠️  WARNINGS:
+  Deprecated variable 'OLD_VAR_NAME' found. Use 'NEW_VAR_NAME' instead.
+  Unknown variable 'OP_NODE_TYPO' found. Did you mean 'OP_NODE_NETWORK'?
+  Invalid URL format for 'OP_NODE_L1_ETH_RPC': 'invalid-url' (must start with http://, https://, ws://, or wss://)
+```
+
+### Deprecation Mapping
+
+When environment variables are renamed across releases, the deprecation mapping in `config/deprecations.json` automatically suggests the correct replacement. This file can be updated as variables are deprecated in future releases.
+
 ## Snapshots
 
 Snapshots are available to help you sync your node more quickly. See [docs.base.org](https://docs.base.org/chain/run-a-base-node#snapshots) for links and more details on how to restore from a snapshot.
