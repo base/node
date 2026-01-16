@@ -3,7 +3,7 @@
 	  	  "tag": "v0.2.2",
 	  	  "commit": "4a580faec0b560eb65d6ee2f620efb7b044a649d",
 	  	  "owner": "base",
-	  	  "repo": "node-reth",
+	  	  "repo": "base",
 	  	  "tracking": "tag"
 	  },
 	  "nethermind": {
