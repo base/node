@@ -1,0 +1,33 @@
+# Sample configuration for the Base node dependency updater.
+# This file is intended as a starting point for running the updater locally.
+#
+# Copy to config.yaml and adjust values for your environment.
+
+registry:
+  # Container registry host, e.g. ghcr.io
+  host: ghcr.io
+  # Organization or user that owns the images
+  owner: base
+  # Repository that holds node images
+  repository: node
+
+images:
+  # Logical name for the image that should be checked/updated
+  - name: base-reth-node
+    # Fully-qualified image name without tag
+    image: ghcr.io/base/node-reth
+    # Only consider tags that start with this prefix (optional)
+    tagPrefix: "v"
+    # Whether to allow pre-release tags like v0.15.0-rc.1
+    allowPrereleases: false
+
+github:
+  # Personal access token used to talk to the GitHub API (if required by the updater)
+  # Recommended to set via environment variable in CI instead of committing real tokens.
+  tokenEnvVar: GITHUB_TOKEN
+
+policy:
+  # Maximum number of tags to inspect per image. Helps to keep runs fast in CI.
+  maxTagsPerImage: 50
+  # If true, updater will only print what would change instead of mutating anything.
+  dryRun: true
