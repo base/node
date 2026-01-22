@@ -177,75 +177,97 @@ func getAndUpdateDependency(ctx context.Context, client *github.Client, dependen
 }
 
 func getVersionAndCommit(ctx context.Context, client *github.Client, dependencies Dependencies, dependencyType string) (string, string, VersionUpdateInfo, error) {
-	var version *github.RepositoryRelease
+	var selectedTag *github.RepositoryTag
 	var commit string
 	var diffUrl string
 	var updatedDependency VersionUpdateInfo
-	foundPrefixVersion := false
 	options := &github.ListOptions{Page: 1}
+	currentTag := dependencies[dependencyType].Tag
+	tagPrefix := dependencies[dependencyType].TagPrefix
+
 	if dependencies[dependencyType].Tracking == "tag" {
+		// Collect all valid tags across all pages, then find the max version
+		var validTags []*github.RepositoryTag
+
 		for {
-			releases, resp, err := client.Repositories.ListReleases(
+			tags, resp, err := client.Repositories.ListTags(
 				ctx,
 				dependencies[dependencyType].Owner,
 				dependencies[dependencyType].Repo,
 				options)
 
 			if err != nil {
-				return "", "", VersionUpdateInfo{}, fmt.Errorf("error getting releases: %s", err)
+				return "", "", VersionUpdateInfo{}, fmt.Errorf("error getting tags: %s", err)
 			}
 
-			if dependencies[dependencyType].TagPrefix == "" {
-				version = releases[0]
-				if *version.TagName != dependencies[dependencyType].Tag {
-					diffUrl = generateGithubRepoUrl(dependencies, dependencyType) + "/compare/" +
-						dependencies[dependencyType].Tag + "..." + *version.TagName
+			for _, tag := range tags {
+				// Skip if tagPrefix is set and doesn't match
+				if tagPrefix != "" && !strings.HasPrefix(*tag.Name, tagPrefix) {
+					continue
 				}
-				break
-			} else if dependencies[dependencyType].TagPrefix != "" {
-				for release := range releases {
-					if strings.HasPrefix(*releases[release].TagName, dependencies[dependencyType].TagPrefix) {
-						version = releases[release]
-						foundPrefixVersion = true
-						if *version.TagName != dependencies[dependencyType].Tag {
-							diffUrl = generateGithubRepoUrl(dependencies, dependencyType) + "/compare/" +
-								dependencies[dependencyType].Tag + "..." + *version.TagName
-						}
-						break
-					}
+
+				// Check if this is a valid upgrade (not a downgrade)
+				if err := ValidateVersionUpgrade(currentTag, *tag.Name, tagPrefix); err != nil {
+					continue
 				}
-				if foundPrefixVersion {
-					break
-				}
-				options.Page = resp.NextPage
-			} else if resp.NextPage == 0 {
+
+				validTags = append(validTags, tag)
+			}
+
+			if resp.NextPage == 0 {
 				break
 			}
+			options.Page = resp.NextPage
 		}
+
+		// Find the maximum version among valid tags
+		for _, tag := range validTags {
+			// Skip if this tag can't be parsed
+			if _, err := ParseVersion(*tag.Name, tagPrefix); err != nil {
+				log.Printf("Skipping unparseable tag %s: %v", *tag.Name, err)
+				continue
+			}
+
+			if selectedTag == nil {
+				selectedTag = tag
+				continue
+			}
+
+			cmp, err := CompareVersions(*tag.Name, *selectedTag.Name, tagPrefix)
+			if err != nil {
+				log.Printf("Error comparing versions %s and %s: %v", *tag.Name, *selectedTag.Name, err)
+				continue
+			}
+			if cmp > 0 {
+				selectedTag = tag
+			}
+		}
+
+		// If no valid version found, keep current version
+		if selectedTag == nil {
+			log.Printf("No valid upgrade found for %s, keeping %s", dependencyType, currentTag)
+			return currentTag, dependencies[dependencyType].Commit, VersionUpdateInfo{}, nil
+		}
+
+		if *selectedTag.Name != currentTag {
+			diffUrl = generateGithubRepoUrl(dependencies, dependencyType) + "/compare/" +
+				currentTag + "..." + *selectedTag.Name
+		}
+
+		// Get commit SHA from the tag
+		commit = *selectedTag.Commit.SHA
 	}
 
 	if diffUrl != "" {
 		updatedDependency = VersionUpdateInfo{
 			dependencies[dependencyType].Repo,
 			dependencies[dependencyType].Tag,
-			*version.TagName,
+			*selectedTag.Name,
 			diffUrl,
 		}
 	}
 
-	if dependencies[dependencyType].Tracking == "tag" {
-		versionCommit, _, err := client.Repositories.GetCommit(
-			ctx,
-			dependencies[dependencyType].Owner,
-			dependencies[dependencyType].Repo,
-			"refs/tags/"+*version.TagName,
-			&github.ListOptions{})
-		if err != nil {
-			return "", "", VersionUpdateInfo{}, fmt.Errorf("error getting commit for "+dependencyType+": %s", err)
-		}
-		commit = *versionCommit.SHA
-
-	} else if dependencies[dependencyType].Tracking == "branch" {
+	if dependencies[dependencyType].Tracking == "branch" {
 		branchCommit, _, err := client.Repositories.ListCommits(
 			ctx,
 			dependencies[dependencyType].Owner,
@@ -270,8 +292,8 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 		}
 	}
 
-	if version != nil {
-		return *version.TagName, commit, updatedDependency, nil
+	if selectedTag != nil {
+		return *selectedTag.Name, commit, updatedDependency, nil
 	}
 
 	return "", commit, updatedDependency, nil
