@@ -145,3 +145,5 @@ THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no g
 For more information, visit [docs.base.org](https://docs.base.org/).
 
 Test contribution by temhemc
+
+Improved project documentation by temhemc.
