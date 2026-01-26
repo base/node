@@ -143,3 +143,12 @@ For support please join our [Discord](https://discord.gg/buildonbase) post in `ð
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
 
 For more information, visit [docs.base.org](https://docs.base.org/).
+
+## Configuring Environment Variables
+
+If you need to customize data directories, ports or network settings, copy `.env.mainnet` to a new file and adjust the variables:
+
+```sh
+cp .env.mainnet .env.custom
+echo "HOST_DATA_DIR=/custom/data/path" >> .env.custom
+echo "PORT_RPC=18545" >> .env.custom
