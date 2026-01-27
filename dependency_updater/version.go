@@ -11,6 +11,9 @@ import (
 // rcPattern matches various RC formats: -rc1, -rc.1, -rc-1, -RC1, etc.
 var rcPattern = regexp.MustCompile(`(?i)-rc[.-]?(\d+)`)
 
+// rcOnlyPattern is used to check if a version contains ONLY an RC prerelease (not -synctest, -alpha, etc.)
+var rcOnlyPattern = regexp.MustCompile(`(?i)^-rc[.-]?\d+$`)
+
 // ParseVersion extracts and normalizes a semantic version from a tag string.
 // It handles tagPrefix stripping, v-prefix normalization, and RC format normalization.
 func ParseVersion(tag string, tagPrefix string) (*semver.Version, error) {
@@ -89,4 +92,45 @@ func CompareVersions(v1Tag, v2Tag, tagPrefix string) (int, error) {
 		return 0, err
 	}
 	return v1.Compare(v2), nil
+}
+
+// IsReleaseVersion returns true if the tag is a stable release (no prerelease suffix).
+// Examples:
+//   - "v1.0.0" -> true
+//   - "v1.0.0-rc1" -> false
+//   - "v1.0.0-synctest.0" -> false
+func IsReleaseVersion(tag string, tagPrefix string) bool {
+	v, err := ParseVersion(tag, tagPrefix)
+	if err != nil {
+		return false
+	}
+	return v.Prerelease() == ""
+}
+
+// IsRCVersion returns true if the tag is a release candidate version.
+// This matches versions with -rc, -rc.N, -rc-N, -rcN suffixes.
+// Examples:
+//   - "v1.0.0-rc1" -> true
+//   - "v1.0.0-rc.2" -> true
+//   - "v1.0.0" -> false (stable release, not RC)
+//   - "v1.0.0-synctest.0" -> false (not an RC)
+//   - "v1.0.0-alpha" -> false (not an RC)
+func IsRCVersion(tag string, tagPrefix string) bool {
+	v, err := ParseVersion(tag, tagPrefix)
+	if err != nil {
+		return false
+	}
+	prerelease := v.Prerelease()
+	if prerelease == "" {
+		return false
+	}
+	// Check if the prerelease is ONLY an RC format (e.g., "rc.1", "rc1", "rc-1")
+	// We need to check the original format before normalization
+	return rcOnlyPattern.MatchString("-" + prerelease)
+}
+
+// IsReleaseOrRCVersion returns true if the tag is either a stable release or an RC version.
+// This excludes other prereleases like -alpha, -beta, -synctest, etc.
+func IsReleaseOrRCVersion(tag string, tagPrefix string) bool {
+	return IsReleaseVersion(tag, tagPrefix) || IsRCVersion(tag, tagPrefix)
 }
