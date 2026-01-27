@@ -44,6 +44,44 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 - `geth`
 - `nethermind`
 
+## Default Ports
+
+The node exposes the following ports by default:
+
+**Execution Client:**
+| Port | Protocol | Description |
+|------|----------|-------------|
+| 8545 | TCP | HTTP JSON-RPC |
+| 8546 | TCP | WebSocket |
+| 7301 | TCP | Metrics |
+| 30303 | TCP/UDP | P2P |
+
+**OP Node:**
+| Port | Protocol | Description |
+|------|----------|-------------|
+| 7545 | TCP | HTTP JSON-RPC |
+| 9222 | TCP/UDP | P2P |
+| 7300 | TCP | Metrics |
+| 6060 | TCP | pprof |
+
+These ports can be customized by modifying the `docker-compose.yml` file.
+
+## Stopping the Node
+
+To stop the node gracefully:
+
+```bash
+docker compose down
+```
+
+To stop the node and remove all data volumes (full reset):
+
+```bash
+docker compose down -v
+```
+
+If running in the foreground, you can also press `Ctrl+C` to initiate a graceful shutdown.
+
 ## Requirements
 
 ### Minimum Requirements
