@@ -143,3 +143,12 @@ For support please join our [Discord](https://discord.gg/buildonbase) post in `ð
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
 
 For more information, visit [docs.base.org](https://docs.base.org/).
+
+## Overview
+
+This repository contains the core node implementation used within the Base
+ecosystem.
+
+It focuses on reliability, performance, and compatibility with Ethereum-based
+infrastructure.
+
