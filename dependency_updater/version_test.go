@@ -152,6 +152,124 @@ func TestCompareVersions(t *testing.T) {
 	}
 }
 
+func TestIsReleaseVersion(t *testing.T) {
+	tests := []struct {
+		tag       string
+		tagPrefix string
+		want      bool
+	}{
+		// Stable releases
+		{"v1.0.0", "", true},
+		{"v0.2.2", "", true},
+		{"1.35.3", "", true}, // nethermind style
+		{"v1.101603.5", "", true}, // op-geth style
+
+		// With prefix
+		{"op-node/v1.16.2", "op-node", true},
+
+		// Pre-release versions (should return false)
+		{"v1.0.0-rc1", "", false},
+		{"v1.0.0-rc.1", "", false},
+		{"v1.0.0-rc-1", "", false},
+		{"v1.0.0-synctest.0", "", false},
+		{"v1.0.0-alpha", "", false},
+		{"v1.0.0-beta.1", "", false},
+		{"op-node/v1.16.6-synctest.0", "op-node", false},
+		{"op-node/v1.16.3-rc1", "op-node", false},
+
+		// Invalid versions (should return false)
+		{"not-a-version", "", false},
+		{"", "", false},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.tag, func(t *testing.T) {
+			got := IsReleaseVersion(tt.tag, tt.tagPrefix)
+			if got != tt.want {
+				t.Errorf("IsReleaseVersion(%q, %q) = %v, want %v", tt.tag, tt.tagPrefix, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestIsRCVersion(t *testing.T) {
+	tests := []struct {
+		tag       string
+		tagPrefix string
+		want      bool
+	}{
+		// RC versions
+		{"v1.0.0-rc1", "", true},
+		{"v1.0.0-rc.1", "", true},
+		{"v1.0.0-rc-1", "", true},
+		{"v1.0.0-RC1", "", true},
+		{"v1.0.0-rc12", "", true},
+		{"op-node/v1.16.3-rc1", "op-node", true},
+		{"op-node/v1.16.3-rc.2", "op-node", true},
+
+		// Stable releases (not RC)
+		{"v1.0.0", "", false},
+		{"v0.2.2", "", false},
+		{"op-node/v1.16.2", "op-node", false},
+
+		// Other pre-release versions (not RC)
+		{"v1.0.0-synctest.0", "", false},
+		{"op-node/v1.16.6-synctest.0", "op-node", false},
+		{"v1.0.0-alpha", "", false},
+		{"v1.0.0-beta.1", "", false},
+		{"v1.0.0-alpha.rc1", "", false}, // rc is part of another prerelease
+
+		// Invalid versions
+		{"not-a-version", "", false},
+		{"", "", false},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.tag, func(t *testing.T) {
+			got := IsRCVersion(tt.tag, tt.tagPrefix)
+			if got != tt.want {
+				t.Errorf("IsRCVersion(%q, %q) = %v, want %v", tt.tag, tt.tagPrefix, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestIsReleaseOrRCVersion(t *testing.T) {
+	tests := []struct {
+		tag       string
+		tagPrefix string
+		want      bool
+	}{
+		// Stable releases - should pass
+		{"v1.0.0", "", true},
+		{"v0.2.2", "", true},
+		{"op-node/v1.16.2", "op-node", true},
+
+		// RC versions - should pass
+		{"v1.0.0-rc1", "", true},
+		{"v1.0.0-rc.1", "", true},
+		{"op-node/v1.16.3-rc1", "op-node", true},
+
+		// Other pre-release versions - should NOT pass
+		{"v1.0.0-synctest.0", "", false},
+		{"op-node/v1.16.6-synctest.0", "op-node", false},
+		{"v1.0.0-alpha", "", false},
+		{"v1.0.0-beta.1", "", false},
+
+		// Invalid versions
+		{"not-a-version", "", false},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.tag, func(t *testing.T) {
+			got := IsReleaseOrRCVersion(tt.tag, tt.tagPrefix)
+			if got != tt.want {
+				t.Errorf("IsReleaseOrRCVersion(%q, %q) = %v, want %v", tt.tag, tt.tagPrefix, got, tt.want)
+			}
+		})
+	}
+}
+
 func TestRCVersionOrdering(t *testing.T) {
 	// Verify that RC versions are ordered correctly
 	versions := []string{
