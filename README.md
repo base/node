@@ -138,6 +138,12 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 
 For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
 
+### Security notes
+
+* Do not expose your node RPC (`8545`/`8546`) directly to the public internet.
+* If you need remote access, put it behind a reverse proxy + authentication and restrict by IP.
+* Treat `.env.*` and any JWT/secret files as sensitive (do not commit them or paste into issues).
+  
 ## Disclaimer
 
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
