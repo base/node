@@ -15,13 +15,21 @@ services:
       - ${HOST_DATA_DIR}:/data
     env_file:
       - ${NETWORK_ENV:-.env.mainnet} # Use .env.mainnet by default, override with .env.sepolia for testnet
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6060"]  # Controlla l'endpoint metrics interno (6060)
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s                                     # dà tempo all'execution client di avviarsi
+
   node:
     build:
       context: .
       dockerfile: ${CLIENT:-geth}/Dockerfile
     restart: unless-stopped
     depends_on:
-      - execution
+      execution:
+        condition: service_healthy                          # node parte SOLO quando execution è healthy
     ports:
       - "7545:8545" # RPC
       - "9222:9222" # P2P TCP
