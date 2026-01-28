@@ -5,29 +5,43 @@ services:
       dockerfile: ${CLIENT:-geth}/Dockerfile
     restart: unless-stopped
     ports:
-      - "8545:8545" # RPC
-      - "8546:8546" # websocket
-      - "7301:6060" # metrics
+      - "8545:8545"   # RPC
+      - "8546:8546"   # WebSocket
+      - "7301:6060"   # Metrics (engine client)
       - "30303:30303" # P2P TCP
       - "30303:30303/udp" # P2P UDP
     command: ["bash", "./execution-entrypoint"]
     volumes:
       - ${HOST_DATA_DIR}:/data
     env_file:
-      - ${NETWORK_ENV:-.env.mainnet} # Use .env.mainnet by default, override with .env.sepolia for testnet
+      - ${NETWORK_ENV:-.env.mainnet}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:6060/debug/pprof/ >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 12
+      start_period: 20s
+
   node:
     build:
       context: .
       dockerfile: ${CLIENT:-geth}/Dockerfile
     restart: unless-stopped
     depends_on:
-      - execution
+      execution:
+        condition: service_healthy
     ports:
-      - "7545:8545" # RPC
-      - "9222:9222" # P2P TCP
-      - "9222:9222/udp" # P2P UDP
-      - "7300:7300" # metrics
-      - "6060:6060" # pprof
+      - "7545:8545"       # RPC (op-node)
+      - "9222:9222"       # P2P TCP
+      - "9222:9222/udp"   # P2P UDP
+      - "7300:7300"       # Metrics (op-node)
+      - "6060:6060"       # pprof
     command: ["bash", "./op-node-entrypoint"]
     env_file:
-      - ${NETWORK_ENV:-.env.mainnet} # Use .env.mainnet by default, override with .env.sepolia for testnet
+      - ${NETWORK_ENV:-.env.mainnet}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:6060/debug/pprof/ >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 12
+      start_period: 20s
