@@ -5,11 +5,11 @@ services:
       dockerfile: ${CLIENT:-geth}/Dockerfile
     restart: unless-stopped
     ports:
-      - "8545:8545" # RPC
-      - "8546:8546" # websocket
-      - "7301:6060" # metrics
-      - "30303:30303" # P2P TCP
-      - "30303:30303/udp" # P2P UDP
+      - "8545:8545"   # RPC
+      - "8546:8546"   # websocket
+      - "7301:6060"   # metrics
+      # - "30303:30303"     # P2P TCP   (commented out for security: avoid public exposure by default)
+      # - "30303:30303/udp" # P2P UDP   (commented out for security: avoid public exposure by default)
     command: ["bash", "./execution-entrypoint"]
     volumes:
       - ${HOST_DATA_DIR}:/data
