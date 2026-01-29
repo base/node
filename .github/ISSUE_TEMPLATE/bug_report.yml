@@ -1,0 +1,43 @@
+name: Bug report
+description: Report a problem with Base node setup/runtime
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "Thanks for reporting! Please include as much detail as you can."
+  - type: input
+    id: network
+    attributes:
+      label: Network
+      description: mainnet or sepolia
+      placeholder: "mainnet"
+    validations:
+      required: true
+  - type: input
+    id: client
+    attributes:
+      label: Client
+      description: reth, geth, or nethermind
+      placeholder: "reth"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs/output
+      description: Paste only non-sensitive logs (no tokens/URLs with keys).
+    validations:
+      required: false
