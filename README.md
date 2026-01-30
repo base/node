@@ -46,6 +46,11 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 
 ## Requirements
 
+## Learning Curve
+
+This project is intended for developers familiar with blockchain infrastructure and node operation.
+
+
 ### Minimum Requirements
 
 - Modern Multicore CPU
