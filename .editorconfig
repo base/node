@@ -1,0 +1,13 @@
+# EditorConfig is helpful for maintaining consistent coding styles for multiple developers working on the same project across various editors and IDEs.
+
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+indent_style = space
+indent_size = 2
+
+[*.go]
+indent_style = tab
