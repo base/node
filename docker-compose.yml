@@ -4,6 +4,7 @@ services:
       context: .
       dockerfile: ${CLIENT:-geth}/Dockerfile
     restart: unless-stopped
+    stop_grace_period: 60s
     ports:
       - "8545:8545" # RPC
       - "8546:8546" # websocket
@@ -20,6 +21,7 @@ services:
       context: .
       dockerfile: ${CLIENT:-geth}/Dockerfile
     restart: unless-stopped
+    stop_grace_period: 30s
     depends_on:
       - execution
     ports:
