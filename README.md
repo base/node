@@ -38,6 +38,18 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
    NETWORK_ENV=.env.sepolia CLIENT=reth docker compose up --build
    ```
 
+### Network Ports Reference
+
+If you are running the node behind a firewall, ensure the following ports are open:
+
+| Port | Protocol | Description |
+|------|----------|-------------|
+| 8545 | TCP      | Execution Client RPC |
+| 8546 | TCP      | Execution Client WebSocket |
+| 30303| TCP/UDP  | Execution Client P2P |
+| 9003 | TCP/UDP  | Consensus Client P2P |
+| 7300 | TCP      | Metrics (Prometheus) |  
+
 ### Supported Clients
 
 - `reth` (default)
