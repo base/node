@@ -143,3 +143,10 @@ For support please join our [Discord](https://discord.gg/buildonbase) post in `ð
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
 
 For more information, visit [docs.base.org](https://docs.base.org/).
+
+### Stopping the Node
+
+To stop the node gracefully and ensure data integrity, run the following command in your terminal:
+
+```bash
+docker compose down
