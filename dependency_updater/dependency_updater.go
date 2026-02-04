@@ -185,9 +185,10 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 	currentTag := dependencies[dependencyType].Tag
 	tagPrefix := dependencies[dependencyType].TagPrefix
 
-	if dependencies[dependencyType].Tracking == "tag" {
+	if dependencies[dependencyType].Tracking == "tag" || dependencies[dependencyType].Tracking == "release" {
 		// Collect all valid tags across all pages, then find the max version
 		var validTags []*github.RepositoryTag
+		trackingMode := dependencies[dependencyType].Tracking
 
 		for {
 			tags, resp, err := client.Repositories.ListTags(
@@ -204,6 +205,19 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 				// Skip if tagPrefix is set and doesn't match
 				if tagPrefix != "" && !strings.HasPrefix(*tag.Name, tagPrefix) {
 					continue
+				}
+
+				// Filter based on tracking mode:
+				// - "release": only stable releases (no prerelease suffix)
+				// - "tag": releases and RC versions only (exclude -synctest, -alpha, etc.)
+				if trackingMode == "release" {
+					if !IsReleaseVersion(*tag.Name, tagPrefix) {
+						continue
+					}
+				} else if trackingMode == "tag" {
+					if !IsReleaseOrRCVersion(*tag.Name, tagPrefix) {
+						continue
+					}
 				}
 
 				// Check if this is a valid upgrade (not a downgrade)
