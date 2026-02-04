@@ -51,7 +51,7 @@ if [[ "$RETH_HISTORICAL_PROOFS" == "true" && -n "$RETH_HISTORICAL_PROOFS_STORAGE
     ADDITIONAL_ARGS="$ADDITIONAL_ARGS --proofs-history --proofs-history.storage-path=$RETH_HISTORICAL_PROOFS_STORAGE_PATH"
 
     # in this case, we need to run the init script first (idempotent)
-    "$BINARY" initialize-op-proofs \
+    "$BINARY" proofs init \
         -$LOG_LEVEL \
         --log.stdout.format json \
         --chain "$RETH_CHAIN" \
