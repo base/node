@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  execution:
+    ports:
+      - "18545:8545"
+      - "18546:8546"
+    environment:
+      # allows you to override the network without changing the main file
+      NETWORK_ENV: ".env.sepolia"
+  node:
+    ports:
+      - "17545:8545"
+      - "19222:9222"
+    environment:
+      METRICS_PORT: "7310"
