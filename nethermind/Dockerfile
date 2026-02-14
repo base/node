@@ -13,7 +13,7 @@ RUN . /tmp/versions.env && git clone $OP_NODE_REPO --branch $OP_NODE_TAG --singl
 RUN . /tmp/versions.env && cd op-node && \
     just VERSION=$OP_NODE_TAG op-node
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0-noble AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0-noble AS build
 
 ARG BUILD_CONFIG=release
 ARG TARGETARCH
@@ -31,7 +31,7 @@ RUN TARGETARCH=${TARGETARCH#linux/} && \
     echo "Using architecture: $arch" && \
     dotnet publish src/Nethermind/Nethermind.Runner -c $BUILD_CONFIG -a $arch -o /publish --sc false
 
-FROM mcr.microsoft.com/dotnet/aspnet:9.0-noble
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-noble
 
 RUN apt-get update && \
     apt-get install -y jq curl supervisor && \
