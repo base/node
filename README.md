@@ -1,4 +1,4 @@
-![Base](logo.webp)
+﻿![Base](logo.webp)
 
 # Base Node
 
@@ -36,6 +36,13 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 
    # For testnet with a specific client:
    NETWORK_ENV=.env.sepolia CLIENT=reth docker compose up --build
+   ```
+5. Stop the node cleanly:
+
+   ```bash
+   # If running in the foreground, press Ctrl+C to stop containers.
+   # To stop and remove containers:
+   docker compose down
    ```
 
 ### Supported Clients
@@ -136,7 +143,7 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 
 ## Troubleshooting
 
-For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
+For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠️|node-operators`. You can alternatively open a new GitHub issue.
 
 ## Disclaimer
 
