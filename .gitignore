@@ -4,3 +4,11 @@
 /nethermind-data/
 /dependency_updater/dependency_updater
 .DS_Store
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+
+# Logs
+*.log
+npm-debug.log*
