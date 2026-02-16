@@ -21,16 +21,23 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
    OP_NODE_L1_ETH_RPC=<your-preferred-l1-rpc>
    OP_NODE_L1_BEACON=<your-preferred-l1-beacon>
    OP_NODE_L1_BEACON_ARCHIVER=<your-preferred-l1-beacon-archiver>
-
-  4. Start the node:
+   ```
+4. Start the node:
    ```bash
    # For mainnet (default):
    docker compose up --build
 
    # For testnet:
    NETWORK_ENV=.env.sepolia docker compose up --build
+   ```
 
- ## Requirements
+## Supported Clients
+
+- `reth` (default)
+- `geth`
+- `nethermind`
+
+## Requirements
 
 ### Minimum Requirements
 - Modern Multicore CPU
@@ -47,9 +54,7 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 | Testnet | ✅     |
 
 ## Troubleshooting
-
 For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
 
 ## Disclaimer
-
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. Usage is subject to applicable laws and regulations. For more information, visit [docs.base.org](https://docs.base.org/).
