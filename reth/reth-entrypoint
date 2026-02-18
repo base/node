@@ -65,15 +65,17 @@ if [[ "$RETH_HISTORICAL_PROOFS" == "true" && -n "$RETH_HISTORICAL_PROOFS_STORAGE
 
     # wait for json-rpc to return a block number greater than 0 (synced beyond genesis)
     while true; do
-        RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest", false],"id":1}' http://127.0.0.1:"$RPC_PORT")
-        if [ $? -ne 0 ]; then
-            echo "waiting for reth node to start up"
-        elif echo "$RESPONSE" | grep -q '"number":"0x0"'; then
+        RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest", false],"id":1}' http://127.0.0.1:"$RPC_PORT" 2>/dev/null || true)
+        
+        if echo "$RESPONSE" | grep -q '"number":"0x0"'; then
             echo "waiting for reth node to sync beyond genesis block"
-        else
-            # curl succeeded and block number is not 0x0
+        elif echo "$RESPONSE" | grep -q '"result"'; then
+            # curl succeeded and returned a valid result with block number != 0x0
             break
+        else
+            echo "waiting for reth node to start up"
         fi
+        
         sleep 1
         MAX_WAIT=$((MAX_WAIT - 1))
         if [ "$MAX_WAIT" -eq 0 ]; then
