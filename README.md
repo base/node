@@ -143,3 +143,12 @@ For support please join our [Discord](https://discord.gg/buildonbase) post in `ð
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
 
 For more information, visit [docs.base.org](https://docs.base.org/).
+
+### Community & Support
+
+For additional help, documentation, and real-time updates, please refer to:
+
+- [Official Documentation](https://docs.base.org): Comprehensive guides for node operators and developers.
+- [Network Status Page](https://status.base.org): Real-time status of Base Mainnet and Sepolia.
+- [Base Discord](https://discord.com/invite/buildonbase): Connect with the community and get technical support.
+- [Base Twitter/X](https://x.com/base): Latest announcements and ecosystem updates.
