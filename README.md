@@ -37,6 +37,13 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
    # For testnet with a specific client:
    NETWORK_ENV=.env.sepolia CLIENT=reth docker compose up --build
    ```
+### Checking Sync Status
+
+To verify if your node is correctly synchronized with the network, you can run the following command from your host machine:
+
+```bash
+curl -d '{"id":1,"jsonrpc":"2.0","method":"eth_syncing","params":[]}' \
+-H "Content-Type: application/json" http://localhost:8545
 
 ### Supported Clients
 
