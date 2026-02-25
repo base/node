@@ -27,12 +27,5 @@
 	  	  "owner": "ethereum-optimism",
 	  	  "repo": "optimism",
 	  	  "tracking": "release"
-	  },
-	  "op_reth": {
-	  	  "tag": "v1.10.2",
-	  	  "commit": "8e3b5e6a99439561b73c5dd31bd3eced2e994d60",
-	  	  "owner": "paradigmxyz",
-	  	  "repo": "reth",
-	  	  "tracking": "release"
 	  }
 }
