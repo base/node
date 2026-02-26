@@ -11,6 +11,9 @@ DISCOVERY_PORT="${DISCOVERY_PORT:-30303}"
 P2P_PORT="${P2P_PORT:-30303}"
 ADDITIONAL_ARGS=""
 BINARY="./base-reth-node"
+RETH_HISTORICAL_PROOFS="${RETH_HISTORICAL_PROOFS:-false}"
+RETH_HISTORICAL_PROOFS_STORAGE_PATH="${RETH_HISTORICAL_PROOFS_STORAGE_PATH:-}"
+LOG_LEVEL="${LOG_LEVEL:-info}"
 
 if [[ -z "${RETH_CHAIN:-}" ]]; then
     echo "expected RETH_CHAIN to be set" 1>&2
@@ -25,10 +28,82 @@ else
     echo "Running in vanilla node mode (no Flashblocks URL provided)"
 fi
 
+case "$LOG_LEVEL" in
+    "error")
+        LOG_LEVEL="v"
+        ;;
+    "warn")
+        LOG_LEVEL="vv"
+        ;;
+    "info"|*)
+        LOG_LEVEL="vvv"
+        ;;
+    "debug")
+        LOG_LEVEL="vvvv"
+        ;;
+    "trace")
+        LOG_LEVEL="vvvvv"
+        ;;
+esac
+
 # Add pruning for base
 if [[ "${RETH_PRUNING_ARGS+x}" = x ]]; then
     echo "Adding pruning arguments: $RETH_PRUNING_ARGS"
     ADDITIONAL_ARGS="$ADDITIONAL_ARGS $RETH_PRUNING_ARGS"
+fi
+
+if [[ "$RETH_HISTORICAL_PROOFS" == "true" && -n "$RETH_HISTORICAL_PROOFS_STORAGE_PATH" ]]; then
+    # reth doesn't like starting an old database in RO mode, so we have to start the reth node, wait for it to start up, then shut it down first
+    "$BINARY" node \
+        -$LOG_LEVEL \
+        --datadir="$RETH_DATA_DIR" \
+        --log.stdout.format json \
+        --http \
+        --http.addr=127.0.0.1 \
+        --http.port="$RPC_PORT" \
+        --http.api=eth \
+        --chain "$RETH_CHAIN" &
+
+    PID=$!
+
+    MAX_WAIT=$((60 * 60 * 6)) # 6 hours (static file manager init is slow)
+
+    # wait for json-rpc to return a block number greater than 0 (synced beyond genesis)
+    while true; do
+        RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest", false],"id":1}' http://127.0.0.1:"$RPC_PORT" 2>/dev/null || true)
+        
+        if echo "$RESPONSE" | grep -q '"number":"0x0"'; then
+            echo "waiting for reth node to sync beyond genesis block"
+        elif echo "$RESPONSE" | grep -q '"result"'; then
+            # curl succeeded and returned a valid result with block number != 0x0
+            break
+        else
+            echo "waiting for reth node to start up"
+        fi
+        
+        sleep 1
+        MAX_WAIT=$((MAX_WAIT - 1))
+        if [ "$MAX_WAIT" -eq 0 ]; then
+            echo "timed out waiting for reth node to start up"
+            kill "$PID"
+            exit 1
+        fi
+    done
+
+    # shut down gracefully
+    kill "$PID"
+
+    (wait "$PID" && echo "reth node initialized") || echo "warning: reth node exited with code $?"
+
+    ADDITIONAL_ARGS="$ADDITIONAL_ARGS --proofs-history --proofs-history.storage-path=$RETH_HISTORICAL_PROOFS_STORAGE_PATH"
+
+    # in this case, we need to run the init script first (idempotent)
+    "$BINARY" proofs init \
+        -$LOG_LEVEL \
+        --log.stdout.format json \
+        --chain "$RETH_CHAIN" \
+        --datadir="$RETH_DATA_DIR" \
+        --proofs-history.storage-path=$RETH_HISTORICAL_PROOFS_STORAGE_PATH
 fi
 
 mkdir -p "$RETH_DATA_DIR"
@@ -36,7 +111,7 @@ echo "Starting reth with additional args: $ADDITIONAL_ARGS"
 echo "$OP_NODE_L2_ENGINE_AUTH_RAW" > "$OP_NODE_L2_ENGINE_AUTH"
 
 exec "$BINARY" node \
-  -vvv \
+  -$LOG_LEVEL \
   --datadir="$RETH_DATA_DIR" \
   --log.stdout.format json \
   --ws \
