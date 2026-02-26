@@ -11,7 +11,6 @@ DISCOVERY_PORT="${DISCOVERY_PORT:-30303}"
 P2P_PORT="${P2P_PORT:-30303}"
 ADDITIONAL_ARGS=""
 BINARY="./base-reth-node"
-NODE_TYPE="${NODE_TYPE:-base}"
 RETH_HISTORICAL_PROOFS="${RETH_HISTORICAL_PROOFS:-false}"
 RETH_HISTORICAL_PROOFS_STORAGE_PATH="${RETH_HISTORICAL_PROOFS_STORAGE_PATH:-}"
 LOG_LEVEL="${LOG_LEVEL:-info}"
@@ -30,14 +29,20 @@ else
 fi
 
 case "$LOG_LEVEL" in
-    "debug")
-        LOG_LEVEL="vvvv"
+    "error")
+        LOG_LEVEL="v"
         ;;
     "warn")
         LOG_LEVEL="vv"
         ;;
     "info"|*)
         LOG_LEVEL="vvv"
+        ;;
+    "debug")
+        LOG_LEVEL="vvvv"
+        ;;
+    "trace")
+        LOG_LEVEL="vvvvv"
         ;;
 esac
 
@@ -100,8 +105,6 @@ if [[ "$RETH_HISTORICAL_PROOFS" == "true" && -n "$RETH_HISTORICAL_PROOFS_STORAGE
         --chain "$RETH_CHAIN" \
         --datadir="$RETH_DATA_DIR" \
         --proofs-history.storage-path=$RETH_HISTORICAL_PROOFS_STORAGE_PATH
-
-    sleep 60
 fi
 
 mkdir -p "$RETH_DATA_DIR"
