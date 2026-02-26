@@ -93,8 +93,7 @@ if [[ "$RETH_HISTORICAL_PROOFS" == "true" && -n "$RETH_HISTORICAL_PROOFS_STORAGE
     # shut down gracefully
     kill "$PID"
 
-    wait "$PID"
-    echo "reth node initialized"
+    (wait "$PID" && echo "reth node initialized") || echo "warning: reth node exited with code $?"
 
     ADDITIONAL_ARGS="$ADDITIONAL_ARGS --proofs-history --proofs-history.storage-path=$RETH_HISTORICAL_PROOFS_STORAGE_PATH"
 
