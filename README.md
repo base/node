@@ -12,7 +12,7 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 
 ## Quick Start
 
-1. Ensure you have an Ethereum L1 full node RPC available
+1. Ensure you have an Ethereum L1 full node RPC available (see [L1 RPC Providers](#l1-rpc-providers) below)
 2. Choose your network:
    - For mainnet: Use `.env.mainnet`
    - For testnet: Use `.env.sepolia`
@@ -21,6 +21,13 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
    OP_NODE_L1_ETH_RPC=<your-preferred-l1-rpc>
    OP_NODE_L1_BEACON=<your-preferred-l1-beacon>
    OP_NODE_L1_BEACON_ARCHIVER=<your-preferred-l1-beacon-archiver>
+   ```
+   
+   **Example with Alchemy:**
+   ```bash
+   OP_NODE_L1_ETH_RPC=https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY
+   OP_NODE_L1_BEACON=https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY
+   OP_NODE_L1_BEACON_ARCHIVER=https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY
    ```
 4. Start the node:
 
@@ -40,9 +47,11 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 
 ### Supported Clients
 
-- `reth` (default)
-- `geth`
-- `nethermind`
+| Client | Status | Best For | Notes |
+|--------|--------|----------|-------|
+| `reth` | ✅ Default | Archive nodes, Flashblocks | Recommended for most users |
+| `geth` | ✅ Stable | Full nodes | Well-tested, production-ready |
+| `nethermind` | ✅ Stable | Alternative full nodes | .NET-based implementation |
 
 ## Requirements
 
@@ -99,6 +108,52 @@ Supported clients:
     - `any`: Any available RPC method
     - `standard`: Standard RPC methods including newer optimized methods
 
+### L1 RPC Providers
+
+You'll need access to Ethereum L1 RPC endpoints. Here are recommended providers:
+
+#### Alchemy
+- **Website**: [alchemy.com](https://www.alchemy.com/)
+- **Free Tier**: Yes (300M compute units/month)
+- **Configuration**:
+  ```bash
+  OP_NODE_L1_ETH_RPC=https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY
+  OP_NODE_L1_BEACON=https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY
+  OP_NODE_L1_BEACON_ARCHIVER=https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY
+  OP_NODE_L1_RPC_KIND=alchemy
+  ```
+
+#### Infura
+- **Website**: [infura.io](https://www.infura.io/)
+- **Free Tier**: Yes (100k requests/day)
+- **Configuration**:
+  ```bash
+  OP_NODE_L1_ETH_RPC=https://mainnet.infura.io/v3/YOUR_PROJECT_ID
+  OP_NODE_L1_BEACON=https://mainnet.infura.io/v3/YOUR_PROJECT_ID
+  OP_NODE_L1_BEACON_ARCHIVER=https://mainnet.infura.io/v3/YOUR_PROJECT_ID
+  OP_NODE_L1_RPC_KIND=infura
+  ```
+
+#### QuickNode
+- **Website**: [quicknode.com](https://www.quicknode.com/)
+- **Free Tier**: Trial available
+- **Configuration**:
+  ```bash
+  OP_NODE_L1_ETH_RPC=https://YOUR_ENDPOINT.quiknode.pro/YOUR_TOKEN/
+  OP_NODE_L1_BEACON=https://YOUR_ENDPOINT.quiknode.pro/YOUR_TOKEN/
+  OP_NODE_L1_BEACON_ARCHIVER=https://YOUR_ENDPOINT.quiknode.pro/YOUR_TOKEN/
+  OP_NODE_L1_RPC_KIND=quicknode
+  ```
+
+#### Self-Hosted
+If you run your own Ethereum L1 node:
+```bash
+OP_NODE_L1_ETH_RPC=http://your-geth-node:8545
+OP_NODE_L1_BEACON=http://your-beacon-node:5052
+OP_NODE_L1_BEACON_ARCHIVER=http://your-beacon-node:5052
+OP_NODE_L1_RPC_KIND=debug_geth
+```
+
 ### Network Settings
 
 - Mainnet:
@@ -125,7 +180,14 @@ For full configuration options, see the `.env.mainnet` file.
 
 ## Snapshots
 
-Snapshots are available to help you sync your node more quickly. See [docs.base.org](https://docs.base.org/chain/run-a-base-node#snapshots) for links and more details on how to restore from a snapshot.
+Snapshots are available to help you sync your node more quickly. Using a snapshot can reduce initial sync time from days to hours.
+
+**To restore from a snapshot:**
+1. Download the latest snapshot from [docs.base.org](https://docs.base.org/chain/run-a-base-node#snapshots)
+2. Extract the snapshot to your data directory
+3. Start your node normally
+
+See [docs.base.org](https://docs.base.org/chain/run-a-base-node#snapshots) for links and detailed restoration instructions.
 
 ## Supported Networks
 
@@ -135,6 +197,30 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 | Testnet | ✅     |
 
 ## Troubleshooting
+
+### Common Issues
+
+#### Node Won't Start
+- **Check L1 RPC connectivity**: Ensure your L1 endpoints are accessible
+  ```bash
+  curl -X POST -H "Content-Type: application/json" \
+    --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
+    YOUR_L1_RPC_URL
+  ```
+- **Verify Docker resources**: Ensure Docker has sufficient memory (32GB+ recommended)
+- **Check disk space**: Verify you have enough storage for the chain data
+
+#### Slow Sync Speed
+- **Use snapshots**: See [Snapshots](#snapshots) section to restore from a recent snapshot
+- **Check L1 RPC rate limits**: Some providers throttle requests; consider upgrading your plan
+- **Verify network bandwidth**: Ensure stable, high-speed internet connection
+
+#### RPC Connection Errors
+- **Port conflicts**: Ensure ports 8545, 8546, 7300, 9222, 30303 are available
+- **Firewall settings**: Allow Docker containers to communicate
+- **Client-specific issues**: Try switching clients with `CLIENT=geth docker compose up --build`
+
+### Getting Help
 
 For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
 
