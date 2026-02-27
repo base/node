@@ -15,6 +15,13 @@ services:
       - ${HOST_DATA_DIR}:/data
     env_file:
       - ${NETWORK_ENV:-.env.mainnet} # Use .env.mainnet by default, override with .env.sepolia for testnet
+          healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:6060/debug/pprof/ > /dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 6
+      start_period: 60s
+
   node:
     build:
       context: .
@@ -31,3 +38,9 @@ services:
     command: ["bash", "./op-node-entrypoint"]
     env_file:
       - ${NETWORK_ENV:-.env.mainnet} # Use .env.mainnet by default, override with .env.sepolia for testnet
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:6060/debug/pprof/ > /dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 6
+      start_period: 60s
