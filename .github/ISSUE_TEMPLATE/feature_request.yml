@@ -1,0 +1,40 @@
+name: Feature request
+description: Propose an improvement or new feature
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What problem are you trying to solve?
+      placeholder: Describe the pain point.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What would you like to see added/changed?
+      placeholder: Describe the solution.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: What alternatives have you considered?
+      placeholder: Other approaches or workarounds.
+    validations:
+      required: false
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: Any affected components or files (if known).
+      placeholder: e.g., docker-compose.yml, .env files, geth/reth configs
+    validations:
+      required: false
