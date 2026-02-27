@@ -143,3 +143,12 @@ For support please join our [Discord](https://discord.gg/buildonbase) post in `ð
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
 
 For more information, visit [docs.base.org](https://docs.base.org/).
+
+### Environment Variables Overview
+
+Below are the key environment variables used in the configuration:
+
+- `OP_NODE_L1_ETH_RPC`: Your Ethereum Layer 1 RPC endpoint (required for synchronization).
+- `OP_NODE_L1_BEACON`: Your Ethereum Layer 1 Beacon node endpoint.
+- `RETH_CHAIN`: Specifies the network (e.g., `base` for mainnet).
+- `OP_NODE_NETWORK`: The specific network identifier for the OP Stack node.
