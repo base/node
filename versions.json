@@ -14,15 +14,15 @@
 	  	  "tracking": "release"
 	  },
 	  "op_geth": {
-	  	  "tag": "v1.101608.0",
-	  	  "commit": "32cc3b8caf8647dbefbd29b2c3ed862132e53ad2",
+	  	  "tag": "v1.101609.0",
+	  	  "commit": "0c840dff316f690f35676fe0b3521a8768cc2504",
 	  	  "owner": "ethereum-optimism",
 	  	  "repo": "op-geth",
 	  	  "tracking": "release"
 	  },
 	  "op_node": {
-	  	  "tag": "op-node/v1.16.6",
-	  	  "commit": "b66cc587b4185089e6f81bf6a4fc4233f2a7505d",
+	  	  "tag": "op-node/v1.16.7",
+	  	  "commit": "3019251e80aa248e91743addd3e833190acb26f1",
 	  	  "tagPrefix": "op-node",
 	  	  "owner": "ethereum-optimism",
 	  	  "repo": "optimism",
