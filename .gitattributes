@@ -1,0 +1,9 @@
+# Auto-detect text files and perform LF normalization
+* text=auto
+
+# Custom for shell scripts
+*.sh text eol=lf
+
+# Documentation
+*.md text
+*.json text
