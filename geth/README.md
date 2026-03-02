@@ -16,6 +16,14 @@ This is an implementation of the op-geth (optimism-geth) node setup for running 
 
 The Geth client is configured through environment variables in `.env.mainnet` or `.env.sepolia`. Key settings include:
 
+### Verbosity
+
+Control log output verbosity:
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `GETH_VERBOSITY` | 3 | Log verbosity level (0=silent, 1=error, 2=warn, 3=info, 4=debug, 5=detail) |
+
 ### Cache Settings
 
 Optimize cache allocation based on your available RAM:

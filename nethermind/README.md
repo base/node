@@ -19,13 +19,15 @@ The Nethermind client is configured through environment variables in `.env.mainn
 
 ### Key Configuration Options
 
-| Setting | Description |
-|---------|-------------|
-| `NETHERMIND_TAG` | Version tag of Nethermind to use |
-| `NETHERMIND_COMMIT` | Specific commit hash for verification |
-| `OP_NETHERMIND_ETHSTATS_ENABLED` | Enable EthStats monitoring |
-| `OP_NETHERMIND_ETHSTATS_NODE_NAME` | Node name for EthStats |
-| `OP_NETHERMIND_BOOTNODES` | Bootnode addresses for snap sync |
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `NETHERMIND_TAG` | — | Version tag of Nethermind to use |
+| `NETHERMIND_COMMIT` | — | Specific commit hash for verification |
+| `NETHERMIND_LOG_LEVEL` | `Info` | Log verbosity level |
+| `OP_SEQUENCER_HTTP` | — | Sequencer URL (required) |
+| `OP_NETHERMIND_ETHSTATS_ENABLED` | — | Enable EthStats monitoring |
+| `OP_NETHERMIND_ETHSTATS_NODE_NAME` | — | Node name for EthStats |
+| `OP_NETHERMIND_BOOTNODES` | — | Bootnode addresses for snap sync |
 
 ## Running the Node
 
@@ -69,6 +71,10 @@ OP_NETHERMIND_ETHSTATS_NODE_NAME=NethermindNode
 OP_NETHERMIND_ETHSTATS_ENDPOINT=ethstats_endpoint
 ```
 
+### Health Checks
+
+Nethermind enables health checks by default (`--HealthChecks.Enabled=true`). This exposes a health endpoint useful for monitoring and orchestration tools like Docker health checks or Kubernetes liveness probes.
+
 ### Snap Sync
 
 For faster initial sync, enable snap sync by uncommenting the bootnode configuration:
@@ -76,6 +82,9 @@ For faster initial sync, enable snap sync by uncommenting the bootnode configura
 ```bash
 OP_NETHERMIND_BOOTNODES=enode://...
 ```
+
+> [!WARNING]
+> Snap sync is experimental and may lead to syncing issues. Use with caution in production environments.
 
 ## Additional Resources
 
@@ -96,6 +105,21 @@ Nethermind may require adjustment of .NET runtime settings for optimal memory us
 #### Sync Performance
 
 If experiencing slow sync performance:
-- Verify network bandwidth is sufficient
+- Verify network bandwidth is sufficient (recommend 100+ Mbps)
 - Consider using snap sync with bootnodes
-- Check L1 RPC rate limits
+- Check L1 RPC rate limits and connection stability
+- Ensure NVMe storage is properly configured
+
+#### Peer Connection Issues
+
+If the node has difficulty finding peers:
+- Ensure port 30303 (TCP/UDP) is open on your firewall
+- Check that bootnodes are reachable
+- Verify network connectivity from the node
+
+#### Engine API Authentication Errors
+
+If seeing JWT authentication errors:
+- Verify `OP_NODE_L2_ENGINE_AUTH` is correctly set
+- Ensure the JWT secret matches between op-node and Nethermind
+- Check file permissions on the JWT secret file
