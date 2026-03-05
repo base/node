@@ -4,3 +4,4 @@
 /nethermind-data/
 /dependency_updater/dependency_updater
 .DS_Store
+.env.sepolia-alpha
