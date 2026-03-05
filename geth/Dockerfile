@@ -9,7 +9,7 @@ RUN apt-get update && apt-get -y upgrade && \
     rm -rf /var/lib/apt/lists/*
 
 RUN . /tmp/versions.env && git clone $BASE_NODE_REPO . && \
-    git checkout tags/$BASE_NODE_TAG && \
+    git checkout $BASE_NODE_TAG && \
     bash -c '[ "$(git rev-parse HEAD)" = "$BASE_NODE_COMMIT" ]' || (echo "Commit hash verification failed" && exit 1)
 
 RUN cargo build --bin base-consensus --profile maxperf

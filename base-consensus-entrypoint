@@ -33,6 +33,13 @@ until [ "$(curl -s --max-time 10 --connect-timeout 5 -w '%{http_code}' -o /dev/n
   sleep 5
 done
 
+# Write JWT secret to file
+echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
+
+if [[ -n "${BASE_NODE_SOURCE_L2_RPC:-}" ]]; then
+  exec ./base-consensus follow
+fi
+
 # public-facing P2P node, advertise public IP address
 if PUBLIC_IP=$(get_public_ip); then
   echo "fetched public IP is: $PUBLIC_IP"
@@ -41,7 +48,5 @@ else
   exit 8
 fi
 export BASE_NODE_P2P_ADVERTISE_IP=$PUBLIC_IP
-
-echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
 
 exec ./base-consensus node
