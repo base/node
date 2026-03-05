@@ -108,7 +108,7 @@ fi
 
 mkdir -p "$RETH_DATA_DIR"
 echo "Starting reth with additional args: $ADDITIONAL_ARGS"
-echo "$OP_NODE_L2_ENGINE_AUTH_RAW" > "$OP_NODE_L2_ENGINE_AUTH"
+echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
 
 exec "$BINARY" node \
   -$LOG_LEVEL \
@@ -127,7 +127,7 @@ exec "$BINARY" node \
   --ipcpath="$IPC_PATH" \
   --authrpc.addr=0.0.0.0 \
   --authrpc.port="$AUTHRPC_PORT" \
-  --authrpc.jwtsecret="$OP_NODE_L2_ENGINE_AUTH" \
+  --authrpc.jwtsecret="$BASE_NODE_L2_ENGINE_AUTH" \
   --metrics=0.0.0.0:"$METRICS_PORT" \
   --max-outbound-peers=100 \
   --chain "$RETH_CHAIN" \
