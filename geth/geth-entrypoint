@@ -21,14 +21,14 @@ GETH_CACHE_GC="${GETH_CACHE_GC:-12}"
 GETH_CACHE_SNAPSHOT="${GETH_CACHE_SNAPSHOT:-24}"
 GETH_CACHE_TRIE="${GETH_CACHE_TRIE:-44}"
 
-if [[ -z "$OP_NODE_NETWORK" ]]; then
-    echo "expected OP_NODE_NETWORK to be set" 1>&2
+if [[ -z "$BASE_NODE_NETWORK" ]]; then
+    echo "expected BASE_NODE_NETWORK to be set" 1>&2
     exit 1
 fi
 
 mkdir -p $GETH_DATA_DIR
 
-echo "$OP_NODE_L2_ENGINE_AUTH_RAW" > "$OP_NODE_L2_ENGINE_AUTH"
+echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
 
 if [ "${OP_GETH_ETH_STATS+x}" = x ]; then
     ADDITIONAL_ARGS="$ADDITIONAL_ARGS --ethstats=$OP_GETH_ETH_STATS"
@@ -62,7 +62,7 @@ exec ./geth \
     --authrpc.addr=0.0.0.0 \
     --authrpc.port="$AUTHRPC_PORT" \
     --authrpc.vhosts="*" \
-    --authrpc.jwtsecret="$OP_NODE_L2_ENGINE_AUTH" \
+    --authrpc.jwtsecret="$BASE_NODE_L2_ENGINE_AUTH" \
     --ws \
     --ws.addr=0.0.0.0 \
     --ws.port="$WS_PORT" \
@@ -76,7 +76,7 @@ exec ./geth \
     --maxpeers=100 \
     --rollup.sequencerhttp="$OP_GETH_SEQUENCER_HTTP" \
     --rollup.halt=major \
-    --op-network="$OP_NODE_NETWORK" \
+    --op-network="$OP_GETH_OP_NETWORK" \
     --discovery.port="$DISCOVERY_PORT" \
     --port="$P2P_PORT" \
     --rollup.disabletxpoolgossip=true \
