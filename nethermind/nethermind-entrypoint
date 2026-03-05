@@ -23,11 +23,11 @@ fi
 mkdir -p "$NETHERMIND_DATA_DIR"
 
 # Write the JWT secret
-if [[ -z "$OP_NODE_L2_ENGINE_AUTH_RAW" ]]; then
-    echo "Expected OP_NODE_L2_ENGINE_AUTH_RAW to be set" 1>&2
+if [[ -z "$BASE_NODE_L2_ENGINE_AUTH_RAW" ]]; then
+    echo "Expected BASE_NODE_L2_ENGINE_AUTH_RAW to be set" 1>&2
     exit 1
 fi
-echo "$OP_NODE_L2_ENGINE_AUTH_RAW" > "$OP_NODE_L2_ENGINE_AUTH"
+echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
 
 # Additional arguments based on environment variables
 if [[ -n "${OP_NETHERMIND_BOOTNODES:-}" ]]; then
@@ -52,7 +52,7 @@ exec ./nethermind \
     --JsonRpc.Host=0.0.0.0 \
     --JsonRpc.WebSocketsPort="$WS_PORT" \
     --JsonRpc.Port="$RPC_PORT" \
-    --JsonRpc.JwtSecretFile="$OP_NODE_L2_ENGINE_AUTH" \
+    --JsonRpc.JwtSecretFile="$BASE_NODE_L2_ENGINE_AUTH" \
     --JsonRpc.EngineHost=0.0.0.0 \
     --JsonRpc.EnginePort="$AUTHRPC_PORT" \
     --HealthChecks.Enabled=true \
