@@ -21,7 +21,7 @@ GETH_CACHE_GC="${GETH_CACHE_GC:-12}"
 GETH_CACHE_SNAPSHOT="${GETH_CACHE_SNAPSHOT:-24}"
 GETH_CACHE_TRIE="${GETH_CACHE_TRIE:-44}"
 
-if [[ -z "$OP_NODE_NETWORK" ]]; then
+if [[ -z "${OP_NODE_NETWORK:-}" ]]; then
     echo "expected OP_NODE_NETWORK to be set" 1>&2
     exit 1
 fi
