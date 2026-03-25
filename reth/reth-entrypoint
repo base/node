@@ -35,14 +35,18 @@ case "$LOG_LEVEL" in
     "warn")
         LOG_LEVEL="vv"
         ;;
-    "info"|*)
-        LOG_LEVEL="vvv"
-        ;;
     "debug")
         LOG_LEVEL="vvvv"
         ;;
     "trace")
         LOG_LEVEL="vvvvv"
+        ;;
+    "info")
+        LOG_LEVEL="vvv"
+        ;;
+    *)
+        echo "Unknown log level: $LOG_LEVEL"
+        LOG_LEVEL="vvv"
         ;;
 esac
 
