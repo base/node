@@ -51,7 +51,7 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 - Modern Multicore CPU
 - 32GB RAM (64GB Recommended)
 - NVMe SSD drive
-- Storage: (2 \* [current chain size](https://base.org/stats) + [snapshot size](https://basechaindata.vercel.app) + 20% buffer) (to accommodate future growth)
+- Storage: (2 * [current chain size](https://base.org/stats) + [snapshot size](https://basechaindata.vercel.app) + 20% buffer) (to accommodate future growth)
 - Docker and Docker Compose
 
 ### Production Hardware Specifications
@@ -78,6 +78,73 @@ Supported clients:
  - reth (runs vanilla node by default, Flashblocks mode enabled by providing RETH_FB_WEBSOCKET_URL, see [Reth Node README](./reth/README.md))
  - geth
  - nethermind
+
+## Practical Node Operation Guide
+
+### Storage Requirements by Node Type
+
+| Node Type | Snapshot Size | Sync Time | Use Case |
+|-----------|--------------|-----------|----------|
+| Archive | ~8TB | Immediate | Full historical state, debugging |
+| Full (pruned) | ~1.8TB | 20-30 days | Standard RPC, recent state only |
+
+**Important:** Archive nodes require significant storage investment (~$1000+ for SSD). Full nodes with pruned snapshots must re-execute from genesis, which takes 20-30+ days depending on hardware.
+
+### Storage Performance
+
+- **NVMe SSD (Required):** 500+ blocks/min sync speed
+- **HDD (Not Recommended):** ~1.8 blocks/min (277x slower)
+
+HDDs cannot keep up with the chain (1 block every 2 seconds) and are unsuitable for running a Base node.
+
+### Sync Options
+
+1. **Archive Snapshot** - Download pre-synced archive data
+   - Pros: Immediate use, full historical state
+   - Cons: Large download (~8TB), expensive storage
+
+2. **Pruned Snapshot + Execution** - Download pruned data, execute from genesis
+   - Pros: Smaller initial download (~1.8TB)
+   - Cons: 20-30+ day sync time, speed degrades as state grows
+
+3. **Genesis Sync** - Sync from block 0 without snapshot
+   - Pros: No large download
+   - Cons: Longest sync time, highest resource usage
+
+### Snap Sync Status
+
+Snap sync is currently disabled for OP Stack chains. Follow [Enable snap sync #132](https://github.com/base/node/issues/132) for updates.
+
+### Alternatives for Individual Operators
+
+If full node operation is not feasible:
+
+- **Base Public RPC:** Free, rate-limited access for development
+- **Paid RPC Providers:** Various providers offer Base RPC endpoints
+- **Light Clients:** For verification without full state (when available)
+
+### Monitoring Your Node
+
+Monitor sync progress and health:
+
+```bash
+# Check sync status
+docker logs base-node-1 | grep -i sync
+
+# Check peer connections
+docker logs base-node-1 | grep -i peer
+```
+
+### Troubleshooting
+
+**Slow sync after 80%+:**
+This is normal. State execution slows significantly as the state trie grows. Expect 1/8 reduction in sync speed from initial rates.
+
+**Out of disk space:**
+Ensure you have 20% buffer above current requirements. Chain data grows continuously.
+
+**Connection issues:**
+Verify L1 RPC endpoints are accessible and have sufficient rate limits.
 
 ## Configuration
 
