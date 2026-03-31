@@ -150,3 +150,8 @@ This repository is forked and updated for Base network activity.
 
 Contributor: @alicinar462-tech
 Wallet: 0x70B7779b9f6698dc85EcC1F346781709a8356FBF
+
+## Improvements
+
+- Minor documentation improvements
+- Added Base ecosystem context
