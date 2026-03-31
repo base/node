@@ -143,3 +143,10 @@ For support please join our [Discord](https://discord.gg/buildonbase) post in `ð
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
 
 For more information, visit [docs.base.org](https://docs.base.org/).
+
+## Base Ecosystem Contribution
+
+This repository is forked and updated for Base network activity.
+
+Contributor: @alicinar462-tech
+Wallet: 0x70B7779b9f6698dc85EcC1F346781709a8356FBF
