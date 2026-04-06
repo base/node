@@ -20,7 +20,7 @@ WORKDIR /app
 COPY versions.env /tmp/versions.env
 
 RUN apt-get update && apt-get -y upgrade && \
-    apt-get install -y git libclang-dev pkg-config curl build-essential && \
+    apt-get install -y git libclang-dev pkg-config curl build-essential mold && \
     rm -rf /var/lib/apt/lists/*
 
 RUN . /tmp/versions.env && git clone $BASE_RETH_NODE_REPO . && \
