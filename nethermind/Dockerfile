@@ -23,9 +23,9 @@ RUN apt-get update && apt-get -y upgrade && \
     apt-get install -y git libclang-dev pkg-config curl build-essential && \
     rm -rf /var/lib/apt/lists/*
 
-RUN . /tmp/versions.env && git clone $BASE_NODE_REPO . && \
-    git checkout tags/$BASE_NODE_TAG && \
-    bash -c '[ "$(git rev-parse HEAD)" = "$BASE_NODE_COMMIT" ]' || (echo "Commit hash verification failed" && exit 1)
+RUN . /tmp/versions.env && git clone $BASE_RETH_NODE_REPO . && \
+    git checkout tags/$BASE_RETH_NODE_TAG && \
+    bash -c '[ "$(git rev-parse HEAD)" = "$BASE_RETH_NODE_COMMIT" ]' || (echo "Commit hash verification failed" && exit 1)
 
 RUN cargo build --bin base-consensus --profile maxperf
 
