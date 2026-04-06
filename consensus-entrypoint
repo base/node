@@ -3,8 +3,8 @@ set -eu
 
 if [ "${USE_BASE_CONSENSUS:-false}" = "true" ]; then
     echo "Using Base Client"
-    exec base-consensus-entrypoint
+    exec ./base-consensus-entrypoint
 else
     echo "Using OP Node"
-    exec op-node-entrypoint
-end
+    exec ./op-node-entrypoint
+fi
