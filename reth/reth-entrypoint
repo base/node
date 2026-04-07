@@ -72,6 +72,10 @@ if [[ "${RETH_PRUNING_ARGS+x}" = x ]]; then
     ADDITIONAL_ARGS="$ADDITIONAL_ARGS $RETH_PRUNING_ARGS"
 fi
 
+if [[ "${CLEAR_EXEX_WAL:-false}" == "true" ]]; then
+    rm -rf $RETH_DATA_DIR/exex/wal
+fi
+
 if [[ "$RETH_HISTORICAL_PROOFS" == "true" && -n "$RETH_HISTORICAL_PROOFS_STORAGE_PATH" ]]; then
     # reth doesn't like starting an old database in RO mode, so we have to start the reth node, wait for it to start up, then shut it down first
     "$BINARY" node \
