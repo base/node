@@ -44,4 +44,9 @@ export BASE_NODE_P2P_ADVERTISE_IP=$PUBLIC_IP
 
 echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
 
-exec ./base-consensus
+if [[ -n "${BASE_NODE_SOURCE_L2_RPC:-}" ]]; then
+  echo "Running base-consensus in follow mode because BASE_NODE_SOURCE_L2_RPC is set"
+  exec ./base-consensus follow
+else
+  exec ./base-consensus node
+fi
