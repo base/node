@@ -1,7 +1,7 @@
 {
 	  "base_reth_node": {
-	  	  "tag": "v0.6.0",
-	  	  "commit": "50e3bb16233ef7a50070bf16169dc6356fe5dd39",
+	  	  "tag": "v0.7.0",
+	  	  "commit": "2b0d89d4267ae7b2893e1719d2ba026074e4a8b8",
 	  	  "owner": "base",
 	  	  "repo": "base",
 	  	  "tracking": "release"
@@ -14,15 +14,15 @@
 	  	  "tracking": "release"
 	  },
 	  "op_geth": {
-	  	  "tag": "v1.101701.0",
+	  	  "tag": "v1.101702.0",
 	  	  "commit": "d0734fd5f44234cde3b0a7c4beb1256fc6feedef",
 	  	  "owner": "ethereum-optimism",
 	  	  "repo": "op-geth",
 	  	  "tracking": "release"
 	  },
 	  "op_node": {
-	  	  "tag": "op-node/v1.16.9",
-	  	  "commit": "2954d9fd41248a3a95c6d89f57e8d629114c6c70",
+	  	  "tag": "op-node/v1.16.11",
+	  	  "commit": "cba7aba0c98aae22720b21c3a023990a486cb6e0",
 	  	  "tagPrefix": "op-node",
 	  	  "owner": "ethereum-optimism",
 	  	  "repo": "optimism",
