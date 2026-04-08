@@ -28,7 +28,7 @@ fi
 
 mkdir -p $GETH_DATA_DIR
 
-echo "$OP_NODE_L2_ENGINE_AUTH_RAW" > "$OP_NODE_L2_ENGINE_AUTH"
+echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
 
 if [ "${OP_GETH_ETH_STATS+x}" = x ]; then
     ADDITIONAL_ARGS="$ADDITIONAL_ARGS --ethstats=$OP_GETH_ETH_STATS"
@@ -62,7 +62,7 @@ exec ./geth \
     --authrpc.addr=0.0.0.0 \
     --authrpc.port="$AUTHRPC_PORT" \
     --authrpc.vhosts="*" \
-    --authrpc.jwtsecret="$OP_NODE_L2_ENGINE_AUTH" \
+    --authrpc.jwtsecret="$BASE_NODE_L2_ENGINE_AUTH" \
     --ws \
     --ws.addr=0.0.0.0 \
     --ws.port="$WS_PORT" \
