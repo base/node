@@ -45,8 +45,8 @@ case "$LOG_LEVEL" in
         LOG_LEVEL="vvvvv"
         ;;
     *)
-        echo "Unknown log level: $LOG_LEVEL"
-        LOG_LEVEL="vvv"
+        echo "Invalid LOG_LEVEL: $LOG_LEVEL. Valid values: error, warn, info, debug, trace" 1>&2
+        exit 1
         ;;
 esac
 
