@@ -1,7 +1,7 @@
 {
 	  "base_reth_node": {
-	  	  "tag": "v0.7.0",
-	  	  "commit": "2b0d89d4267ae7b2893e1719d2ba026074e4a8b8",
+	  	  "tag": "fix/follow-delegated-safe-finalized",
+	  	  "commit": "ae567e6df41a09306ee019514ec7821b6e87ac54",
 	  	  "owner": "base",
 	  	  "repo": "base",
 	  	  "tracking": "release"
