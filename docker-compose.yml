@@ -2,7 +2,7 @@ services:
   execution:
     build:
       context: .
-      dockerfile: ${CLIENT:-geth}/Dockerfile
+      dockerfile: reth/Dockerfile
     restart: unless-stopped
     ports:
       - "8545:8545" # RPC
@@ -14,13 +14,13 @@ services:
     volumes:
       - ${HOST_DATA_DIR}:/data
     environment:
-      - USE_BASE_CONSENSUS=${USE_BASE_CONSENSUS:-false}
+      - USE_BASE_CONSENSUS=true
     env_file:
-      - ${NETWORK_ENV:-.env.mainnet} # Use .env.mainnet by default, override with .env.sepolia for testnet
+      - .env.sepolia
   node:
     build:
       context: .
-      dockerfile: ${CLIENT:-geth}/Dockerfile
+      dockerfile: reth/Dockerfile
     restart: unless-stopped
     depends_on:
       - execution
@@ -32,6 +32,6 @@ services:
       - "6060:6060" # pprof
     command: ["bash", "./consensus-entrypoint"]
     environment:
-      - USE_BASE_CONSENSUS=${USE_BASE_CONSENSUS:-false}
+      - USE_BASE_CONSENSUS=true
     env_file:
-      - ${NETWORK_ENV:-.env.mainnet} # Use .env.mainnet by default, override with .env.sepolia for testnet
+      - .env.sepolia

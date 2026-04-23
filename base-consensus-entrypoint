@@ -1,6 +1,8 @@
 #!/bin/bash
 set -eu
 
+export $(grep -v '^#' $BN_ENV | xargs)
+
 get_public_ip() {
   # Define a list of HTTP-based providers
   local PROVIDERS=(
@@ -40,13 +42,14 @@ else
   echo "Could not retrieve public IP."
   exit 8
 fi
+
 export BASE_NODE_P2P_ADVERTISE_IP=$PUBLIC_IP
 
-echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
+echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" >"$BASE_NODE_L2_ENGINE_AUTH"
 
 if [[ -n "${BASE_NODE_SOURCE_L2_RPC:-}" ]]; then
   echo "Running base-consensus in follow mode because BASE_NODE_SOURCE_L2_RPC is set"
   exec ./base-consensus follow
 else
-  exec ./base-consensus node
+  exec /home/danyal/code/base/target/debug/base-consensus node
 fi
