@@ -17,11 +17,11 @@ The node determines its mode based on the presence of the `RETH_FB_WEBSOCKET_URL
 
 ## Running the Node
 
-The node follows the standard `docker-compose` workflow in the master README.
+The node follows the standard `docker compose` workflow in the master README.
 
 ```bash
 # To run Reth node with Flashblocks support, set RETH_FB_WEBSOCKET_URL in your .env file
-CLIENT=reth docker-compose up
+CLIENT=reth docker compose up
 ```
 
 ## Testing Flashblocks RPC Methods
