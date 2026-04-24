@@ -130,6 +130,10 @@ mkdir -p "$RETH_DATA_DIR"
 echo "Starting reth with additional args: $ADDITIONAL_ARGS"
 echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
 
+if [[ -n "${RETH_NETWORK:-}" ]]; then
+  ./add-peers.sh --execution-only --network "$RETH_NETWORK" --execution-rpc "http://localhost:${RPC_PORT}" --loop 300 &
+fi
+
 exec "$BINARY" node \
   -$LOG_LEVEL \
   --datadir="$RETH_DATA_DIR" \
