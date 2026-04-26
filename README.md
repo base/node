@@ -24,14 +24,16 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
    ```
 4. Start the node:
 
+   The default [execution client](#supported-clients) is **Geth** unless you set the `CLIENT` environment variable (see the root `.env` and `docker-compose.yml`).
+
    ```bash
-   # For mainnet (default):
+   # For mainnet (default, Geth):
    docker compose up --build
 
    # For testnet:
    NETWORK_ENV=.env.sepolia docker compose up --build
 
-   # To use a specific client (optional):
+   # To use a different client (e.g. Reth):
    CLIENT=reth docker compose up --build
 
    # For testnet with a specific client:
@@ -40,8 +42,10 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 
 ### Supported Clients
 
-- `reth` (default)
-- `geth`
+Execution clients (override with `CLIENT=…`; default is **Geth**):
+
+- `geth` (default)
+- `reth`
 - `nethermind`
 
 ## Requirements
@@ -71,13 +75,7 @@ The following are the hardware specifications we use in production:
 - **Filesystem**: ext4
 
 > [!NOTE]
-To run the node using a supported client, you can use the following command:
-`CLIENT=supported_client docker compose up --build`
- 
-Supported clients:
- - reth (runs vanilla node by default, Flashblocks mode enabled by providing RETH_FB_WEBSOCKET_URL, see [Reth Node README](./reth/README.md))
- - geth
- - nethermind
+The default image is Geth. To use another client, set `CLIENT` and rebuild, for example: `CLIENT=reth docker compose up --build` or `CLIENT=nethermind docker compose up --build`. For Reth-specific options (e.g. Flashblocks via `RETH_FB_WEBSOCKET_URL`), see the [Reth Node README](./reth/README.md).
 
 ## Configuration
 
