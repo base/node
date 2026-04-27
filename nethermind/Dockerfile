@@ -29,7 +29,7 @@ RUN . /tmp/versions.env && git clone $NETHERMIND_REPO --branch $NETHERMIND_TAG -
 RUN TARGETARCH=${TARGETARCH#linux/} && \
     arch=$([ "$TARGETARCH" = "amd64" ] && echo "x64" || echo "$TARGETARCH") && \
     echo "Using architecture: $arch" && \
-    dotnet publish src/Nethermind/Nethermind.Runner -c $BUILD_CONFIG -a $arch -o /publish --sc false
+    dotnet publish src/Nethermind/Nethermind.Runner -c $BUILD_CONFIG -a $arch -o /publish --sc false -p:NuGetAudit=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0-noble
 
