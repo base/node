@@ -2,7 +2,7 @@ services:
   execution:
     build:
       context: .
-      dockerfile: ${CLIENT:-geth}/Dockerfile
+      dockerfile: ${CLIENT:-reth}/Dockerfile
     restart: unless-stopped
     ports:
       - "8545:8545" # RPC
@@ -20,7 +20,7 @@ services:
   node:
     build:
       context: .
-      dockerfile: ${CLIENT:-geth}/Dockerfile
+      dockerfile: ${CLIENT:-reth}/Dockerfile
     restart: unless-stopped
     depends_on:
       - execution
