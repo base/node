@@ -71,5 +71,6 @@ COPY ./reth/reth-entrypoint ./execution-entrypoint
 COPY op-node-entrypoint .
 COPY base-consensus-entrypoint .
 COPY consensus-entrypoint .
+COPY add-peers.sh .
 
 CMD ["/usr/bin/supervisord"]

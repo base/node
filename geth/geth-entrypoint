@@ -50,6 +50,8 @@ if [ "${HOST_IP:+x}" = x ]; then
     ADDITIONAL_ARGS="$ADDITIONAL_ARGS --nat=extip:$HOST_IP"
 fi
 
+./add-peers.sh --execution-only --network "$OP_NODE_NETWORK" --execution-rpc "http://localhost:${RPC_PORT}" --loop 300 &
+
 exec ./geth \
     --datadir="$GETH_DATA_DIR" \
     --verbosity="$VERBOSITY" \

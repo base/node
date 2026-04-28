@@ -46,4 +46,8 @@ export OP_NODE_P2P_ADVERTISE_IP=$PUBLIC_IP
 echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
 export OP_NODE_L2_ENGINE_AUTH=$BASE_NODE_L2_ENGINE_AUTH
 
+if [[ -n "${OP_NODE_NETWORK:-}" ]]; then
+  ./add-peers.sh --consensus-only --network "$OP_NODE_NETWORK" --loop 300 &
+fi
+
 exec ./op-node

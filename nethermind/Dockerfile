@@ -47,5 +47,6 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY nethermind/nethermind-entrypoint ./execution-entrypoint
 COPY op-node-entrypoint .
 COPY consensus-entrypoint .
+COPY add-peers.sh .
 
 CMD ["/usr/bin/supervisord"]

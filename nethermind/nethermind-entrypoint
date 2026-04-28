@@ -43,6 +43,8 @@ if [[ -n "${OP_NETHERMIND_ETHSTATS_ENDPOINT:-}" ]]; then
 fi
 
 # Execute Nethermind
+./add-peers.sh --execution-only --network "$OP_NODE_NETWORK" --execution-rpc "http://localhost:${RPC_PORT}" --loop 300 &
+
 exec ./nethermind \
     --config="$OP_NODE_NETWORK" \
     --datadir="$NETHERMIND_DATA_DIR" \
