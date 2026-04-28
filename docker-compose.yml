@@ -17,13 +17,20 @@ services:
       - USE_BASE_CONSENSUS=${USE_BASE_CONSENSUS:-false}
     env_file:
       - ${NETWORK_ENV:-.env.mainnet} # Use .env.mainnet by default, override with .env.sepolia for testnet
+    healthcheck:
+      test: ["CMD", "sh", "-c", "curl -sf -X POST -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_syncing\",\"params\":[],\"id\":1}' http://localhost:8545"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
   node:
     build:
       context: .
       dockerfile: ${CLIENT:-geth}/Dockerfile
     restart: unless-stopped
     depends_on:
-      - execution
+      execution:
+        condition: service_healthy
     ports:
       - "7545:8545" # RPC
       - "9222:9222" # P2P TCP
