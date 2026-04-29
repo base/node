@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"path/filepath"
 	"slices"
 	"time"
 
@@ -81,6 +82,11 @@ func updater(token string, repoPath string, commit bool, githubAction bool) erro
 	var err error
 	var dependencies Dependencies
 	var updatedDependencies []VersionUpdateInfo
+
+	repoPath, err = filepath.Abs(repoPath)
+	if err != nil {
+		return fmt.Errorf("error resolving repo path: %s", err)
+	}
 
 	f, err := os.ReadFile(repoPath + "/versions.json")
 	if err != nil {
