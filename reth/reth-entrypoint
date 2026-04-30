@@ -3,6 +3,7 @@ set -eu
 
 IPC_PATH="/data/reth.ipc"
 RETH_DATA_DIR=/data
+RETH_HISTORICAL_PROOFS_STORAGE_PATH="$RETH_DATA_DIR/proofs"
 RPC_PORT="${RPC_PORT:-8545}"
 WS_PORT="${WS_PORT:-8546}"
 AUTHRPC_PORT="${AUTHRPC_PORT:-8551}"
@@ -12,7 +13,6 @@ P2P_PORT="${P2P_PORT:-30303}"
 ADDITIONAL_ARGS=""
 BINARY="./base-reth-node"
 RETH_HISTORICAL_PROOFS="${RETH_HISTORICAL_PROOFS:-false}"
-RETH_HISTORICAL_PROOFS_STORAGE_PATH="${RETH_HISTORICAL_PROOFS_STORAGE_PATH:-}"
 LOG_LEVEL="${LOG_LEVEL:-info}"
 
 if [[ -z "${RETH_CHAIN:-}" ]]; then
@@ -117,6 +117,9 @@ if [[ "$RETH_HISTORICAL_PROOFS" == "true" && -n "$RETH_HISTORICAL_PROOFS_STORAGE
 
     ADDITIONAL_ARGS="$ADDITIONAL_ARGS --proofs-history --proofs-history.storage-path=$RETH_HISTORICAL_PROOFS_STORAGE_PATH"
 
+    if [[ "${RETH_PROOFS_HISTORY_WINDOW+x}" = x ]]; then
+        ADDITIONAL_ARGS="$ADDITIONAL_ARGS --proofs-history.window=$RETH_PROOFS_HISTORY_WINDOW"
+    fi
     # in this case, we need to run the init script first (idempotent)
     "$BINARY" proofs init \
         -$LOG_LEVEL \
