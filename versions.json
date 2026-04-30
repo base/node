@@ -7,22 +7,22 @@
 	  	  "tracking": "release"
 	  },
 	  "nethermind": {
-	  	  "tag": "1.36.2",
-	  	  "commit": "f5507dec1c9c7f5e31dadae445c08622be166054",
+	  	  "tag": "1.37.1",
+	  	  "commit": "706ad499d3b1094f4e681424148c0fdfceba1d17",
 	  	  "owner": "NethermindEth",
 	  	  "repo": "nethermind",
 	  	  "tracking": "release"
 	  },
 	  "op_geth": {
-	  	  "tag": "v1.101702.0",
-	  	  "commit": "d0734fd5f44234cde3b0a7c4beb1256fc6feedef",
+	  	  "tag": "v1.101702.1",
+	  	  "commit": "3de88058411dbcb926143bd400023c4236880334",
 	  	  "owner": "ethereum-optimism",
 	  	  "repo": "op-geth",
 	  	  "tracking": "release"
 	  },
 	  "op_node": {
-	  	  "tag": "op-node/v1.16.11",
-	  	  "commit": "cba7aba0c98aae22720b21c3a023990a486cb6e0",
+	  	  "tag": "op-node/v1.17.0",
+	  	  "commit": "484be19f69054f74bc736b5df229e896e338d9a3",
 	  	  "tagPrefix": "op-node",
 	  	  "owner": "ethereum-optimism",
 	  	  "repo": "optimism",
