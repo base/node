@@ -107,7 +107,45 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 
 ## Troubleshooting
 
-For support please join our [Discord](https://discord.gg/buildonbase) and post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
+### Common Issues
+
+#### `AwaitingELSyncCompletion` in consensus client logs
+
+If you see repeated log entries like:
+
+```
+Skipping derivation. derivation_state: AwaitingELSyncCompletion
+```
+
+**This is expected behavior, not an error.** The consensus (rollup) client waits until the execution client has finished its initial sync before it starts deriving L2 blocks. During this time:
+
+- The execution client is downloading and verifying the chain state.
+- The consensus client polls the execution client every few seconds.
+- Once the execution client reports it is synced, derivation resumes automatically.
+
+**Resolution:**
+- Wait for the execution client to finish syncing. On mainnet this can take several hours to days depending on hardware and whether you started from a snapshot.
+- Check execution client logs for sync progress (`eth_syncing` should eventually return `false`).
+- Ensure `OP_NODE_L2_ENGINE_RPC` (or `BASE_NODE_L2_ENGINE_RPC`) points to the correct execution container and port.
+
+#### Consensus and execution clients cannot connect
+
+1. Verify both services are on the same Docker network (they are by default in `docker-compose.yml`).
+2. Check that `OP_NODE_L2_ENGINE_RPC` / `BASE_NODE_L2_ENGINE_RPC` matches the execution client's auth-RPC port (`8551` by default).
+3. Ensure the JWT secret file (`/tmp/engine-auth-jwt` inside the container) is readable by both services.
+
+#### Node stops after Docker daemon restart
+
+If the Docker daemon crashes or is restarted, containers with `restart: unless-stopped` should come back up automatically. If a container does not restart:
+
+1. Check `docker ps -a` to see the container status.
+2. Inspect logs with `docker logs <container-name>`.
+3. If the process exited gracefully (exit code 0), consider using `autorestart=true` in `supervisord.conf` for your setup.
+
+### Getting Help
+
+For additional support please join our [Discord](https://discord.gg/buildonbase) and post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
+
 
 ## Disclaimer
 
