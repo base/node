@@ -8,6 +8,7 @@ WS_PORT="${WS_PORT:-8546}"
 AUTHRPC_PORT="${AUTHRPC_PORT:-8551}"
 METRICS_PORT="${METRICS_PORT:-6060}"
 DISCOVERY_PORT="${DISCOVERY_PORT:-30303}"
+V5_DISCOVERY_PORT="${V5_DISCOVERY_PORT:-9200}"
 P2P_PORT="${P2P_PORT:-30303}"
 ADDITIONAL_ARGS=""
 BINARY="./base-reth-node"
@@ -154,5 +155,6 @@ exec "$BINARY" node \
   --rollup.sequencer-http="$RETH_SEQUENCER_HTTP" \
   --rollup.disable-tx-pool-gossip \
   --discovery.port="$DISCOVERY_PORT" \
+  --discovery.v5.port="$V5_DISCOVERY_PORT" \
   --port="$P2P_PORT" \
   $ADDITIONAL_ARGS
