@@ -2,6 +2,8 @@
 
 # Base Node
 
+[![Tracked on web3-discover](https://web3-discover.vercel.app/badge/base-coinbase-l2.svg)](https://web3-discover.vercel.app/airdrops/base-coinbase-l2)
+
 Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [OP Stack](https://docs.optimism.io/). This repository contains Docker builds to run your own node on the Base network.
 
 [![Website base.org](https://img.shields.io/website-up-down-green-red/https/base.org.svg)](https://base.org)
