@@ -127,6 +127,22 @@ if [[ "$RETH_HISTORICAL_PROOFS" == "true" && -n "$RETH_HISTORICAL_PROOFS_STORAGE
         --proofs-history.storage-path=$RETH_HISTORICAL_PROOFS_STORAGE_PATH
 fi
 
+if [[ "${DISABLE_DISCV4:-false}" == "true" && "${RETH_DISABLE_DISCOVERY:-false}" != "true" ]]; then
+    ADDITIONAL_ARGS="$ADDITIONAL_ARGS --disable-discv4-discovery"
+fi
+
+if [[ "${BASE_DISCOVERY_PROTOCOL:-true}" = "false" ]]; then
+    ADDITIONAL_ARGS="$ADDITIONAL_ARGS --rollup.discovery.v5.base false"
+fi
+
+if [[ -n "${RETH_TRUSTED_PEERS:-}" ]]; then
+    ADDITIONAL_ARGS="$ADDITIONAL_ARGS --trusted-peers=$RETH_TRUSTED_PEERS"
+fi
+
+if [[ "${RETH_DISABLE_DISCOVERY:-false}" == "true" ]]; then
+    ADDITIONAL_ARGS="$ADDITIONAL_ARGS --disable-discovery"
+fi
+
 mkdir -p "$RETH_DATA_DIR"
 echo "Starting reth with additional args: $ADDITIONAL_ARGS"
 echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
