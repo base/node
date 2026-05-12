@@ -16,33 +16,30 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 2. Choose your network:
    - For mainnet: Use `.env.mainnet`
    - For testnet: Use `.env.sepolia`
-3. Configure your L1 endpoints in the appropriate `.env` file:
+3. Configure your L1 endpoints in the appropriate `.env` file. The default setup is `reth` with `base-consensus`:
    ```bash
-   OP_NODE_L1_ETH_RPC=<your-preferred-l1-rpc>
-   OP_NODE_L1_BEACON=<your-preferred-l1-beacon>
-   OP_NODE_L1_BEACON_ARCHIVER=<your-preferred-l1-beacon-archiver>
+   BASE_NODE_L1_ETH_RPC=<your-preferred-l1-rpc>
+   BASE_NODE_L1_BEACON=<your-preferred-l1-beacon>
    ```
 4. Start the node:
 
    ```bash
-   # For mainnet (default):
+   # For mainnet (default reth + base-consensus):
    docker compose up --build
 
    # For testnet:
    NETWORK_ENV=.env.sepolia docker compose up --build
 
-   # To use a specific client (optional):
-   CLIENT=reth docker compose up --build
-
-   # For testnet with a specific client:
-   NETWORK_ENV=.env.sepolia CLIENT=reth docker compose up --build
+   # For the op-node path with geth or nethermind:
+   USE_BASE_CONSENSUS=false CLIENT=geth docker compose up --build
+   USE_BASE_CONSENSUS=false CLIENT=nethermind docker compose up --build
    ```
 
 ### Supported Clients
 
-- `reth` (default)
-- `geth`
-- `nethermind`
+- `reth` (default, with `base-consensus`)
+- `geth` (with `USE_BASE_CONSENSUS=false`)
+- `nethermind` (with `USE_BASE_CONSENSUS=false`)
 
 ## Requirements
 
@@ -71,19 +68,17 @@ The following are the hardware specifications we use in production:
 - **Filesystem**: ext4
 
 > [!NOTE]
-To run the node using a supported client, you can use the following command:
-`CLIENT=supported_client docker compose up --build`
- 
-Supported clients:
- - reth (runs vanilla node by default, Flashblocks mode enabled by providing RETH_FB_WEBSOCKET_URL, see [Reth Node README](./reth/README.md))
- - geth
- - nethermind
+`reth` runs vanilla node by default. Flashblocks mode is enabled by providing `RETH_FB_WEBSOCKET_URL`; see [Reth Node README](./reth/README.md).
 
 ## Configuration
 
 ### Required Settings
 
-- L1 Configuration:
+- Default L1 Configuration (`reth` + `base-consensus`):
+  - `BASE_NODE_L1_ETH_RPC`: Your Ethereum L1 node RPC endpoint
+  - `BASE_NODE_L1_BEACON`: Your L1 beacon node endpoint
+
+- `op-node` L1 Configuration:
   - `OP_NODE_L1_ETH_RPC`: Your Ethereum L1 node RPC endpoint
   - `OP_NODE_L1_BEACON`: Your L1 beacon node endpoint
   - `OP_NODE_L1_BEACON_ARCHIVER`: Your L1 beacon archiver endpoint
