@@ -18,6 +18,11 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
    - For testnet: Use `.env.sepolia`
 3. Configure your L1 endpoints in the appropriate `.env` file:
    ```bash
+   # For base-consensus (default reth client)
+   BASE_NODE_L1_ETH_RPC=<your-preferred-l1-rpc>
+   BASE_NODE_L1_BEACON=<your-preferred-l1-beacon>
+
+   # For op-node (geth/nethermind clients)
    OP_NODE_L1_ETH_RPC=<your-preferred-l1-rpc>
    OP_NODE_L1_BEACON=<your-preferred-l1-beacon>
    OP_NODE_L1_BEACON_ARCHIVER=<your-preferred-l1-beacon-archiver>
@@ -84,9 +89,11 @@ Supported clients:
 ### Required Settings
 
 - L1 Configuration:
-  - `OP_NODE_L1_ETH_RPC`: Your Ethereum L1 node RPC endpoint
-  - `OP_NODE_L1_BEACON`: Your L1 beacon node endpoint
-  - `OP_NODE_L1_BEACON_ARCHIVER`: Your L1 beacon archiver endpoint
+  - `BASE_NODE_L1_ETH_RPC`: Your Ethereum L1 node RPC endpoint (used by base-consensus, default reth client)
+  - `BASE_NODE_L1_BEACON`: Your L1 beacon node endpoint (used by base-consensus, default reth client)
+  - `OP_NODE_L1_ETH_RPC`: Your Ethereum L1 node RPC endpoint (used by op-node with geth/nethermind)
+  - `OP_NODE_L1_BEACON`: Your L1 beacon node endpoint (used by op-node with geth/nethermind)
+  - `OP_NODE_L1_BEACON_ARCHIVER`: Your L1 beacon archiver endpoint (used by op-node with geth/nethermind)
   - `OP_NODE_L1_RPC_KIND`: The type of RPC provider being used (default: "debug_geth"). Supported values:
     - `alchemy`: Alchemy RPC provider
     - `quicknode`: QuickNode RPC provider
