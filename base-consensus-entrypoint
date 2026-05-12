@@ -42,6 +42,11 @@ else
 fi
 export BASE_NODE_P2P_ADVERTISE_IP=$PUBLIC_IP
 
+if [[ -z "${BASE_NODE_L2_ENGINE_AUTH_RAW:-}" ]]; then
+  echo "Expected BASE_NODE_L2_ENGINE_AUTH_RAW to be set" 1>&2
+  exit 1
+fi
+
 echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
 
 if [[ -n "${BASE_NODE_SOURCE_L2_RPC:-}" ]]; then

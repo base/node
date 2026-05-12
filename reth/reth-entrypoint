@@ -129,6 +129,10 @@ fi
 
 mkdir -p "$RETH_DATA_DIR"
 echo "Starting reth with additional args: $ADDITIONAL_ARGS"
+if [[ -z "${BASE_NODE_L2_ENGINE_AUTH_RAW:-}" ]]; then
+    echo "Expected BASE_NODE_L2_ENGINE_AUTH_RAW to be set" 1>&2
+    exit 1
+fi
 echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
 
 exec "$BINARY" node \

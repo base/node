@@ -269,6 +269,10 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 		}
 
 		// Get commit SHA from the tag
+		if selectedTag.Commit == nil || selectedTag.Commit.SHA == nil {
+			log.Printf("Tag %s has no commit object, skipping", *selectedTag.Name)
+			return currentTag, dependencies[dependencyType].Commit, VersionUpdateInfo{}, nil
+		}
 		commit = *selectedTag.Commit.SHA
 	}
 
@@ -292,6 +296,10 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 		)
 		if err != nil {
 			return "", "", VersionUpdateInfo{}, fmt.Errorf("error listing commits for "+dependencyType+": %s", err)
+		}
+		if len(branchCommit) == 0 {
+			log.Printf("No commits found for branch %s, keeping current version", dependencies[dependencyType].Branch)
+			return dependencies[dependencyType].Tag, dependencies[dependencyType].Commit, VersionUpdateInfo{}, nil
 		}
 		commit = *branchCommit[0].SHA
 		if dependencies[dependencyType].Commit != commit {
