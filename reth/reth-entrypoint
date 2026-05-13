@@ -127,6 +127,10 @@ if [[ "$RETH_HISTORICAL_PROOFS" == "true" && -n "$RETH_HISTORICAL_PROOFS_STORAGE
         --proofs-history.storage-path=$RETH_HISTORICAL_PROOFS_STORAGE_PATH
 fi
 
+if [ "${HOST_IP:+x}" = x ]; then
+    ADDITIONAL_ARGS="$ADDITIONAL_ARGS --nat=extip:$HOST_IP"
+fi
+
 mkdir -p "$RETH_DATA_DIR"
 echo "Starting reth with additional args: $ADDITIONAL_ARGS"
 echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
