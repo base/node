@@ -42,6 +42,10 @@ if [[ -n "${OP_NETHERMIND_ETHSTATS_ENDPOINT:-}" ]]; then
     ADDITIONAL_ARGS="$ADDITIONAL_ARGS --EthStats.NodeName=${OP_NETHERMIND_ETHSTATS_NODE_NAME:-NethermindNode} --EthStats.Endpoint=$OP_NETHERMIND_ETHSTATS_ENDPOINT"
 fi
 
+if [ "${HOST_IP:+x}" = x ]; then
+    ADDITIONAL_ARGS="$ADDITIONAL_ARGS --Network.ExternalIp=$HOST_IP"
+fi
+
 # Execute Nethermind
 exec ./nethermind \
     --config="$OP_NODE_NETWORK" \
