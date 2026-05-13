@@ -2,5 +2,6 @@
 /geth-data/
 /reth-data/
 /nethermind-data/
+/data/
 /dependency_updater/dependency_updater
 .DS_Store
