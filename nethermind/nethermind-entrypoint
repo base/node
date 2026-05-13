@@ -3,7 +3,23 @@ set -eu
 
 # Default configurations
 NETHERMIND_DATA_DIR=${NETHERMIND_DATA_DIR:-/data}
-NETHERMIND_LOG_LEVEL=${NETHERMIND_LOG_LEVEL:-Info}
+# NETHERMIND_LOG_LEVEL accepts Nethermind log levels: Trace, Debug, Info, Warn, Error
+# LOG_LEVEL accepts human-readable aliases and takes precedence when set
+if [[ -n "${LOG_LEVEL:-}" ]]; then
+    case "$LOG_LEVEL" in
+        "error") NETHERMIND_LOG_LEVEL="Error" ;;
+        "warn")  NETHERMIND_LOG_LEVEL="Warn" ;;
+        "info")  NETHERMIND_LOG_LEVEL="Info" ;;
+        "debug") NETHERMIND_LOG_LEVEL="Debug" ;;
+        "trace") NETHERMIND_LOG_LEVEL="Trace" ;;
+        *)
+            echo "Invalid LOG_LEVEL: $LOG_LEVEL. Valid values: error, warn, info, debug, trace" 1>&2
+            exit 1
+            ;;
+    esac
+else
+    NETHERMIND_LOG_LEVEL=${NETHERMIND_LOG_LEVEL:-Info}
+fi
 
 RPC_PORT="${RPC_PORT:-8545}"
 WS_PORT="${WS_PORT:-8546}"

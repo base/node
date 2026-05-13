@@ -1,7 +1,23 @@
 #!/bin/bash
 set -eu
 
-VERBOSITY=${GETH_VERBOSITY:-3}
+# GETH_VERBOSITY sets the numeric log level (0=crit, 1=error, 2=warn, 3=info, 4=debug, 5=trace)
+# LOG_LEVEL accepts human-readable aliases and takes precedence when set
+if [[ -n "${LOG_LEVEL:-}" ]]; then
+    case "$LOG_LEVEL" in
+        "error") VERBOSITY=1 ;;
+        "warn")  VERBOSITY=2 ;;
+        "info")  VERBOSITY=3 ;;
+        "debug") VERBOSITY=4 ;;
+        "trace") VERBOSITY=5 ;;
+        *)
+            echo "Invalid LOG_LEVEL: $LOG_LEVEL. Valid values: error, warn, info, debug, trace" 1>&2
+            exit 1
+            ;;
+    esac
+else
+    VERBOSITY=${GETH_VERBOSITY:-3}
+fi
 GETH_DATA_DIR=${GETH_DATA_DIR:-/data}
 RPC_PORT="${RPC_PORT:-8545}"
 WS_PORT="${WS_PORT:-8546}"
