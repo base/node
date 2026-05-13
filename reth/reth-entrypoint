@@ -16,6 +16,28 @@ RETH_HISTORICAL_PROOFS="${RETH_HISTORICAL_PROOFS:-false}"
 RETH_HISTORICAL_PROOFS_STORAGE_PATH="${RETH_HISTORICAL_PROOFS_STORAGE_PATH:-}"
 LOG_LEVEL="${LOG_LEVEL:-info}"
 
+case "$LOG_LEVEL" in
+    "error")
+        LOG_LEVEL="v"
+        ;;
+    "warn")
+        LOG_LEVEL="vv"
+        ;;
+    "info")
+        LOG_LEVEL="vvv"
+        ;;
+    "debug")
+        LOG_LEVEL="vvvv"
+        ;;
+    "trace")
+        LOG_LEVEL="vvvvv"
+        ;;
+    *)
+        echo "Unknown log level: $LOG_LEVEL" >&2
+        exit 1
+        ;;
+esac
+
 if [[ -z "${RETH_CHAIN:-}" ]]; then
     echo "expected RETH_CHAIN to be set" 1>&2
     exit 1
@@ -67,7 +89,17 @@ wait_for_pid() {
     echo "Process $pid has exited."
 }
 
-# Add pruning for base
+# Advertise public IP for better P2P peer discovery behind NAT
+HOST_IP="${HOST_IP:-}"
+NAT_ARG=""
+if [ -n "$HOST_IP" ]; then
+    # Validate IPv4 format to prevent shell injection via malformed input
+    if [[ "$HOST_IP" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        NAT_ARG="--nat=extip:$HOST_IP"
+    else
+        echo "WARNING: HOST_IP='$HOST_IP' is not a valid IPv4 address, ignoring" >&2
+    fi
+fi
 if [[ "${RETH_PRUNING_ARGS+x}" = x ]]; then
     echo "Adding pruning arguments: $RETH_PRUNING_ARGS"
     ADDITIONAL_ARGS="$ADDITIONAL_ARGS $RETH_PRUNING_ARGS"
@@ -83,7 +115,8 @@ if [[ "$RETH_HISTORICAL_PROOFS" == "true" && -n "$RETH_HISTORICAL_PROOFS_STORAGE
         --http.addr=127.0.0.1 \
         --http.port="$RPC_PORT" \
         --http.api=eth \
-        --chain "$RETH_CHAIN" &
+        --chain "$RETH_CHAIN" \
+        $NAT_ARG &
 
     PID=$!
 
@@ -154,6 +187,7 @@ exec "$BINARY" node \
   --chain "$RETH_CHAIN" \
   --rollup.sequencer-http="$RETH_SEQUENCER_HTTP" \
   --rollup.disable-tx-pool-gossip \
+  $NAT_ARG \
   --discovery.port="$DISCOVERY_PORT" \
   --discovery.v5.port="$V5_DISCOVERY_PORT" \
   --port="$P2P_PORT" \
