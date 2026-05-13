@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"path/filepath"
 	"slices"
 	"time"
 
@@ -82,9 +83,28 @@ func updater(token string, repoPath string, commit bool, githubAction bool) erro
 	var dependencies Dependencies
 	var updatedDependencies []VersionUpdateInfo
 
-	f, err := os.ReadFile(repoPath + "/versions.json")
+	// Sanitize repoPath to prevent path traversal (CWE-22)
+	repoPath, err = filepath.Abs(filepath.Clean(repoPath))
 	if err != nil {
-		return fmt.Errorf("error reading versions JSON: %s", err)
+		return fmt.Errorf("error resolving repo path: %w", err)
+	}
+
+	// Ensure the resolved path stays within the workspace (CWE-22)
+	base := os.Getenv("GITHUB_WORKSPACE")
+	if base != "" {
+		absBase, err := filepath.Abs(base)
+		if err != nil {
+			return fmt.Errorf("error resolving workspace base path: %w", err)
+		}
+		rel, err := filepath.Rel(absBase, repoPath)
+		if err != nil || strings.HasPrefix(rel, "..") {
+			return fmt.Errorf("security error: repo path '%s' is outside of workspace '%s'", repoPath, absBase)
+		}
+	}
+
+	f, err := os.ReadFile(filepath.Join(repoPath, "versions.json"))
+	if err != nil {
+		return fmt.Errorf("error reading versions JSON: %w", err)
 	}
 
 	client := github.NewClient(nil).WithAuthToken(token)
@@ -336,7 +356,7 @@ func writeToVersionsJson(repoPath string, dependencies Dependencies) error {
 		return fmt.Errorf("error marshaling dependencies json: %s", err)
 	}
 
-	e := os.WriteFile(repoPath+"/versions.json", updatedJson, 0644)
+	e := os.WriteFile(filepath.Join(repoPath, "versions.json"), updatedJson, 0644)
 	if e != nil {
 		return fmt.Errorf("error writing to versions.json: %s", e)
 	}
@@ -368,13 +388,13 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 
 	slices.Sort(envLines)
 
-	file, err := os.Create(repoPath + "/versions.env")
+	file, err := os.Create(filepath.Join(repoPath, "versions.env"))
 	if err != nil {
 		return fmt.Errorf("error creating versions.env file: %s", err)
 	}
 	defer file.Close()
 
-	_, err = file.WriteString(strings.Join(envLines, "\n"))
+	_, err = file.WriteString(strings.Join(envLines, "\n") + "\n")
 	if err != nil {
 		return fmt.Errorf("error writing to versions.env file: %s", err)
 	}
