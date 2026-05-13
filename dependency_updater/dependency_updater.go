@@ -407,5 +407,9 @@ func writeToGithubOutput(title string, description string, repoPath string) erro
 }
 
 func generateGithubRepoUrl(dependencies Dependencies, dependencyType string) string {
-	return "https://github.com/" + dependencies[dependencyType].Owner + "/" + dependencies[dependencyType].Repo
+	info := dependencies[dependencyType]
+	if info == nil {
+		return ""
+	}
+	return "https://github.com/" + info.Owner + "/" + info.Repo
 }
