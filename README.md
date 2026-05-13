@@ -22,7 +22,12 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
    OP_NODE_L1_BEACON=<your-preferred-l1-beacon>
    OP_NODE_L1_BEACON_ARCHIVER=<your-preferred-l1-beacon-archiver>
    ```
-4. Start the node:
+4. Set the data directory (optional but recommended):
+   ```bash
+   HOST_DATA_DIR=./data
+   ```
+   This path on the host machine is where chain data will be persisted. If not set, Docker may use an anonymous volume.
+5. Start the node:
 
    ```bash
    # For mainnet (default):
