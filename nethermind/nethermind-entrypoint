@@ -46,7 +46,7 @@ fi
 exec ./nethermind \
     --config="$OP_NODE_NETWORK" \
     --datadir="$NETHERMIND_DATA_DIR" \
-    --Optimism.SequencerUrl=$OP_SEQUENCER_HTTP \
+    --Optimism.SequencerUrl="$OP_SEQUENCER_HTTP" \
     --log="$NETHERMIND_LOG_LEVEL" \
     --JsonRpc.Enabled=true \
     --JsonRpc.Host=0.0.0.0 \

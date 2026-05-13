@@ -26,7 +26,7 @@ if [[ -z "$OP_NODE_NETWORK" ]]; then
     exit 1
 fi
 
-mkdir -p $GETH_DATA_DIR
+mkdir -p "$GETH_DATA_DIR"
 
 echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
 
