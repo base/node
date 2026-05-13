@@ -7,7 +7,7 @@ RPC_PORT="${RPC_PORT:-8545}"
 WS_PORT="${WS_PORT:-8546}"
 AUTHRPC_PORT="${AUTHRPC_PORT:-8551}"
 METRICS_PORT="${METRICS_PORT:-6060}"
-HOST_IP="" # put your external IP address here and open port 30303 to improve peer connectivity
+HOST_IP="" # Will be auto-detected; set manually to override
 P2P_PORT="${P2P_PORT:-30303}"
 DISCOVERY_PORT="${DISCOVERY_PORT:-30303}"
 ADDITIONAL_ARGS=""
@@ -26,7 +26,36 @@ if [[ -z "$OP_NODE_NETWORK" ]]; then
     exit 1
 fi
 
-mkdir -p $GETH_DATA_DIR
+# Auto-detect public IP for P2P peer discovery if not manually set
+get_public_ip() {
+  local PROVIDERS=(
+    "http://ifconfig.me"
+    "http://api.ipify.org"
+    "http://ipecho.net/plain"
+    "http://v4.ident.me"
+  )
+  for provider in "${PROVIDERS[@]}"; do
+    local IP
+    IP=$(curl -s --max-time 10 --connect-timeout 5 "$provider")
+    if [[ $IP =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+      echo "$IP"
+      return 0
+    fi
+  done
+  return 1
+}
+
+# If HOST_IP is not manually set (still empty), try auto-detection
+if [[ -z "$HOST_IP" ]]; then
+  if PUBLIC_IP=$(get_public_ip); then
+    echo "Auto-detected public IP: $PUBLIC_IP"
+    HOST_IP="$PUBLIC_IP"
+  else
+    echo "Could not auto-detect public IP. Peer connectivity may be limited." >&2
+  fi
+fi
+
+mkdir -p "$GETH_DATA_DIR"
 
 echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
 
