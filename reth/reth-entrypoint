@@ -15,6 +15,8 @@ BINARY="./base-reth-node"
 RETH_HISTORICAL_PROOFS="${RETH_HISTORICAL_PROOFS:-false}"
 RETH_HISTORICAL_PROOFS_STORAGE_PATH="${RETH_HISTORICAL_PROOFS_STORAGE_PATH:-}"
 LOG_LEVEL="${LOG_LEVEL:-info}"
+RETH_MAX_OUTBOUND_PEERS="${RETH_MAX_OUTBOUND_PEERS:-100}"
+RETH_MAX_INBOUND_PEERS="${RETH_MAX_INBOUND_PEERS:-30}"
 
 if [[ -z "${RETH_CHAIN:-}" ]]; then
     echo "expected RETH_CHAIN to be set" 1>&2
@@ -150,7 +152,7 @@ exec "$BINARY" node \
   --authrpc.port="$AUTHRPC_PORT" \
   --authrpc.jwtsecret="$BASE_NODE_L2_ENGINE_AUTH" \
   --metrics=0.0.0.0:"$METRICS_PORT" \
-  --max-outbound-peers=100 \
+  --max-outbound-peers="$RETH_MAX_OUTBOUND_PEERS" \
   --chain "$RETH_CHAIN" \
   --rollup.sequencer-http="$RETH_SEQUENCER_HTTP" \
   --rollup.disable-tx-pool-gossip \

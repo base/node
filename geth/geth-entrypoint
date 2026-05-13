@@ -11,6 +11,7 @@ HOST_IP="" # put your external IP address here and open port 30303 to improve pe
 P2P_PORT="${P2P_PORT:-30303}"
 DISCOVERY_PORT="${DISCOVERY_PORT:-30303}"
 ADDITIONAL_ARGS=""
+GETH_MAX_PEERS="${GETH_MAX_PEERS:-100}"
 OP_GETH_GCMODE="${OP_GETH_GCMODE:-full}"
 OP_GETH_SYNCMODE="${OP_GETH_SYNCMODE:-full}"
 
@@ -73,7 +74,7 @@ exec ./geth \
     --metrics.port="$METRICS_PORT" \
     --syncmode="$OP_GETH_SYNCMODE" \
     --gcmode="$OP_GETH_GCMODE" \
-    --maxpeers=100 \
+    --maxpeers="$GETH_MAX_PEERS" \
     --rollup.sequencerhttp="$OP_GETH_SEQUENCER_HTTP" \
     --rollup.halt=major \
     --op-network="$OP_NODE_NETWORK" \
