@@ -12,6 +12,7 @@ METRICS_PORT="${METRICS_PORT:-6060}"
 DISCOVERY_PORT="${DISCOVERY_PORT:-30303}"
 P2P_PORT="${P2P_PORT:-30303}"
 ADDITIONAL_ARGS=""
+HOST_IP="${HOST_IP:-}" # Optional: set to your public IP for P2P peer discovery behind NAT
 
 # Check if required variables are set
 if [[ -z "$OP_NODE_NETWORK" ]]; then
@@ -40,6 +41,11 @@ fi
 
 if [[ -n "${OP_NETHERMIND_ETHSTATS_ENDPOINT:-}" ]]; then
     ADDITIONAL_ARGS="$ADDITIONAL_ARGS --EthStats.NodeName=${OP_NETHERMIND_ETHSTATS_NODE_NAME:-NethermindNode} --EthStats.Endpoint=$OP_NETHERMIND_ETHSTATS_ENDPOINT"
+fi
+
+# Advertise public IP for better P2P peer discovery behind NAT
+if [[ -n "$HOST_IP" ]]; then
+    ADDITIONAL_ARGS="$ADDITIONAL_ARGS --Network.ExternalIp=$HOST_IP"
 fi
 
 # Execute Nethermind
