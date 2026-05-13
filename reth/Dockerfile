@@ -68,6 +68,7 @@ COPY --from=reth-base /app/target/maxperf/base-consensus ./
 COPY --from=reth-base /app/target/maxperf/base-reth-node ./
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY ./reth/reth-entrypoint ./execution-entrypoint
+COPY helpers.sh .
 COPY op-node-entrypoint .
 COPY base-consensus-entrypoint .
 COPY consensus-entrypoint .

@@ -29,7 +29,7 @@ FROM ubuntu:24.04
 
 RUN apt-get update && \
     apt-get install -y jq curl supervisor && \
-    rm -rf /var/lib/apt/lists
+    rm -rf /var/lib/apt/lists/*
 RUN mkdir -p /var/log/supervisor
 
 WORKDIR /app
@@ -38,6 +38,7 @@ COPY --from=op /app/op-node/bin/op-node ./
 COPY --from=geth /app/build/bin/geth ./
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY geth/geth-entrypoint ./execution-entrypoint
+COPY helpers.sh .
 COPY op-node-entrypoint .
 COPY consensus-entrypoint .
 

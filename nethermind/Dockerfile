@@ -45,6 +45,7 @@ COPY --from=build /publish ./
 COPY --from=op /app/op-node/bin/op-node ./
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY nethermind/nethermind-entrypoint ./execution-entrypoint
+COPY helpers.sh .
 COPY op-node-entrypoint .
 COPY consensus-entrypoint .
 
