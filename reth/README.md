@@ -4,7 +4,7 @@ This is an implementation of the Reth node setup that supports Flashblocks mode 
 
 ## Setup
 
-- See hardware requirements mentioned in the master README
+- See hardware requirements in the root README
 - For Flashblocks mode: Access to a Flashblocks websocket endpoint (for `RETH_FB_WEBSOCKET_URL`)
   - We provide public websocket endpoints for mainnet and devnet, included in `.env.mainnet` and `.env.sepolia`
 
@@ -17,7 +17,7 @@ The node determines its mode based on the presence of the `RETH_FB_WEBSOCKET_URL
 
 ## Running the Node
 
-The node follows the standard `docker compose` workflow in the master README.
+The node follows the standard `docker compose` workflow in the root README.
 
 ```bash
 # To run Reth node with Flashblocks support, set RETH_FB_WEBSOCKET_URL in your .env file
