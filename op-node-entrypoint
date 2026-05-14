@@ -2,12 +2,12 @@
 set -eu
 
 get_public_ip() {
-  # Define a list of HTTP-based providers
+  # Define a list of HTTPS-based providers
   local PROVIDERS=(
-    "http://ifconfig.me"
-    "http://api.ipify.org"
-    "http://ipecho.net/plain"
-    "http://v4.ident.me"
+    "https://ifconfig.me"
+    "https://api.ipify.org"
+    "https://ipecho.net/plain"
+    "https://v4.ident.me"
   )
   # Iterate through the providers until an IP is found or the list is exhausted
   for provider in "${PROVIDERS[@]}"; do
