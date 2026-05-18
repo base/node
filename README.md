@@ -18,9 +18,14 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
    - For testnet: Use `.env.sepolia`
 3. Configure your L1 endpoints in the appropriate `.env` file:
    ```bash
+   # Required for op-node (all clients)
    OP_NODE_L1_ETH_RPC=<your-preferred-l1-rpc>
    OP_NODE_L1_BEACON=<your-preferred-l1-beacon>
    OP_NODE_L1_BEACON_ARCHIVER=<your-preferred-l1-beacon-archiver>
+
+   # Required for base-consensus (reth default client)
+   BASE_NODE_L1_ETH_RPC=<your-preferred-l1-rpc>
+   BASE_NODE_L1_BEACON=<your-preferred-l1-beacon>
    ```
 4. Start the node:
 
