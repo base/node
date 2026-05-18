@@ -6,7 +6,7 @@ This is an implementation of the Reth node setup that supports Flashblocks mode 
 
 - See hardware requirements mentioned in the master README
 - For Flashblocks mode: Access to a Flashblocks websocket endpoint (for `RETH_FB_WEBSOCKET_URL`)
-  - We provide public websocket endpoints for mainnet and devnet, included in `.env.mainnet` and `.env.sepolia`
+  - We provide public websocket endpoints for mainnet and sepolia, included in `.env.mainnet` and `.env.sepolia`
 
 ## Node Type Selection
 
