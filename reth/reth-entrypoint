@@ -14,6 +14,13 @@ ADDITIONAL_ARGS=""
 BINARY="./base-reth-node"
 RETH_HISTORICAL_PROOFS="${RETH_HISTORICAL_PROOFS:-false}"
 RETH_HISTORICAL_PROOFS_STORAGE_PATH="${RETH_HISTORICAL_PROOFS_STORAGE_PATH:-}"
+# Optional pre-sync phase: when RETH_INITIAL_SYNC_TARGET_BLOCK is set, the
+# entrypoint syncs reth (without proofs ExEx) up to that block, then wipes the
+# proofs storage path, before running the normal `proofs init` and main launch.
+# Used by the gbs 7-day-snapshot job to start from a 14-day snapshot and seed
+# the proofs DB at a freshly chosen block.
+RETH_INITIAL_SYNC_TARGET_BLOCK="${RETH_INITIAL_SYNC_TARGET_BLOCK:-}"
+RETH_INITIAL_SYNC_TARGET_HASH="${RETH_INITIAL_SYNC_TARGET_HASH:-}"
 LOG_LEVEL="${LOG_LEVEL:-info}"
 
 if [[ -z "${RETH_CHAIN:-}" ]]; then
@@ -72,6 +79,126 @@ if [[ "${RETH_PRUNING_ARGS+x}" = x ]]; then
     echo "Adding pruning arguments: $RETH_PRUNING_ARGS"
     ADDITIONAL_ARGS="$ADDITIONAL_ARGS $RETH_PRUNING_ARGS"
 fi
+
+# ---------------------------------------------------------------------------
+# Optional pre-sync phase (used by the gbs 7-day-snapshot job).
+#
+# When RETH_INITIAL_SYNC_TARGET_BLOCK is set, we sync reth WITHOUT the proofs
+# ExEx up to that block, then wipe RETH_HISTORICAL_PROOFS_STORAGE_PATH so the
+# subsequent `proofs init` seeds the proofs DB at the new tip. This is how we
+# turn a 14-day-old snapshot into a 7-day-old proofs snapshot without writing
+# proofs for the 7 days in between.
+#
+# The CL (base-consensus) is "disabled" for this phase by binding authrpc to a
+# random localhost port — base-consensus will keep retrying its configured
+# BASE_NODE_L2_ENGINE_RPC and fail harmlessly. With the CL out of the picture,
+# the staged pipeline + --debug.tip drive sync to the target block hash.
+# ---------------------------------------------------------------------------
+if [[ -n "$RETH_INITIAL_SYNC_TARGET_BLOCK" ]]; then
+    if ! [[ "$RETH_INITIAL_SYNC_TARGET_BLOCK" =~ ^[0-9]+$ ]]; then
+        echo "RETH_INITIAL_SYNC_TARGET_BLOCK must be a decimal block number, got: $RETH_INITIAL_SYNC_TARGET_BLOCK" 1>&2
+        exit 1
+    fi
+    if [[ -n "$RETH_INITIAL_SYNC_TARGET_HASH" ]] && ! [[ "$RETH_INITIAL_SYNC_TARGET_HASH" =~ ^0x[0-9a-fA-F]{64}$ ]]; then
+        echo "RETH_INITIAL_SYNC_TARGET_HASH must be a 0x-prefixed 32-byte hex hash, got: $RETH_INITIAL_SYNC_TARGET_HASH" 1>&2
+        exit 1
+    fi
+    if [[ -z "$RETH_HISTORICAL_PROOFS_STORAGE_PATH" ]]; then
+        echo "RETH_INITIAL_SYNC_TARGET_BLOCK is set but RETH_HISTORICAL_PROOFS_STORAGE_PATH is empty; refusing to pre-sync because the wipe step would have no target" 1>&2
+        exit 1
+    fi
+
+    # Pick a localhost-only port for authrpc during pre-sync so the CL can't
+    # drive the engine API. Port 0 would ask the OS to pick one, but reth does
+    # not expose the chosen port back to us, so we use a fixed high port that
+    # is well outside the standard range used elsewhere in this container.
+    PRESYNC_AUTHRPC_PORT=18551
+
+    PRESYNC_DEBUG_TIP_ARGS=()
+    if [[ -n "$RETH_INITIAL_SYNC_TARGET_HASH" ]]; then
+        PRESYNC_DEBUG_TIP_ARGS+=(--debug.tip="$RETH_INITIAL_SYNC_TARGET_HASH")
+        echo "pre-sync: targeting block $RETH_INITIAL_SYNC_TARGET_BLOCK (hash $RETH_INITIAL_SYNC_TARGET_HASH) via --debug.tip"
+    else
+        echo "pre-sync: targeting block $RETH_INITIAL_SYNC_TARGET_BLOCK (no hash; relying on poll-and-kill only)"
+    fi
+
+    # Write the JWT so reth doesn't refuse to start the authrpc server, even
+    # though we don't intend anyone to talk to it during this phase. The main
+    # exec further down also writes this, but we need it now too.
+    echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
+
+    "$BINARY" node \
+        -$LOG_LEVEL \
+        --datadir="$RETH_DATA_DIR" \
+        --log.stdout.format json \
+        --http \
+        --http.addr=127.0.0.1 \
+        --http.port="$RPC_PORT" \
+        --http.api=eth \
+        --authrpc.addr=127.0.0.1 \
+        --authrpc.port="$PRESYNC_AUTHRPC_PORT" \
+        --authrpc.jwtsecret="$BASE_NODE_L2_ENGINE_AUTH" \
+        --chain "$RETH_CHAIN" \
+        --discovery.port="$DISCOVERY_PORT" \
+        --discovery.v5.port="$V5_DISCOVERY_PORT" \
+        --port="$P2P_PORT" \
+        ${PRESYNC_DEBUG_TIP_ARGS[@]+"${PRESYNC_DEBUG_TIP_ARGS[@]}"} &
+
+    PID=$!
+
+    # 7 days at 1s poll == 604800 iterations. Phase A may legitimately take
+    # multiple days when starting from a 14-day-old snapshot.
+    MAX_WAIT=$((60 * 60 * 24 * 7))
+
+    # poll eth_getBlockByNumber until result.number (hex) >= target (decimal).
+    while true; do
+        RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" \
+            -d '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest", false],"id":1}' \
+            "http://127.0.0.1:$RPC_PORT" 2>/dev/null || true)
+
+        # Extract the hex block number; tolerate missing/malformed responses.
+        BLOCK_HEX=$(echo "$RESPONSE" | grep -oE '"number":"0x[0-9a-fA-F]+"' | head -n1 | sed -E 's/.*"(0x[0-9a-fA-F]+)".*/\1/')
+
+        if [[ -n "$BLOCK_HEX" ]]; then
+            # bash printf understands 0x-prefixed hex via %d with the
+            # arithmetic-expression trick below, but the simplest portable
+            # path is $((BLOCK_HEX)) which handles 0x... literals natively.
+            BLOCK_DEC=$((BLOCK_HEX))
+            if (( BLOCK_DEC >= RETH_INITIAL_SYNC_TARGET_BLOCK )); then
+                echo "pre-sync: reached block $BLOCK_DEC (>= $RETH_INITIAL_SYNC_TARGET_BLOCK), stopping reth"
+                break
+            fi
+            echo "pre-sync: at block $BLOCK_DEC, waiting for >= $RETH_INITIAL_SYNC_TARGET_BLOCK"
+        else
+            echo "pre-sync: waiting for reth json-rpc to come up"
+        fi
+
+        sleep 1
+        MAX_WAIT=$((MAX_WAIT - 1))
+        if (( MAX_WAIT <= 0 )); then
+            echo "pre-sync: timed out waiting to reach target block $RETH_INITIAL_SYNC_TARGET_BLOCK" 1>&2
+            kill "$PID" || true
+            exit 1
+        fi
+    done
+
+    # shut down gracefully and wait for the process to exit before touching
+    # anything on disk.
+    kill "$PID"
+    (wait_for_pid "$PID" && echo "pre-sync: reth node exited cleanly") || echo "pre-sync warning: reth node exited with code $?"
+
+    # Phase B: wipe the proofs storage so the upcoming `proofs init` seeds it
+    # at the new tip. Defensive sanity checks: the path must be non-empty,
+    # absolute, not "/", and not equal to the chain datadir.
+    WIPE_PATH="$RETH_HISTORICAL_PROOFS_STORAGE_PATH"
+    if [[ -z "$WIPE_PATH" || "${WIPE_PATH:0:1}" != "/" || "$WIPE_PATH" == "/" || "$WIPE_PATH" == "$RETH_DATA_DIR" ]]; then
+        echo "refusing to wipe proofs storage path $WIPE_PATH (must be non-empty, absolute, not '/' or \$RETH_DATA_DIR)" 1>&2
+        exit 1
+    fi
+    echo "pre-sync: wiping proofs storage at $WIPE_PATH"
+    rm -rf "$WIPE_PATH"
+fi
+# ---------------------------------------------------------------------------
 
 if [[ "$RETH_HISTORICAL_PROOFS" == "true" && -n "$RETH_HISTORICAL_PROOFS_STORAGE_PATH" ]]; then
     # reth doesn't like starting an old database in RO mode, so we have to start the reth node, wait for it to start up, then shut it down first
