@@ -21,7 +21,7 @@ The node follows the standard `docker compose` workflow in the master README.
 
 ```bash
 # To run Reth node with Flashblocks support, set RETH_FB_WEBSOCKET_URL in your .env file
-CLIENT=reth docker compose up
+docker compose up
 ```
 
 ## Testing Flashblocks RPC Methods

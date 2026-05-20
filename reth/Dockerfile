@@ -1,20 +1,5 @@
 ARG RUST_VERSION=1.93
 
-FROM golang:1.24 AS op
-
-RUN curl -sSfL 'https://just.systems/install.sh' | bash -s -- --to /usr/local/bin
-
-WORKDIR /app
-
-COPY versions.env /tmp/versions.env
-
-RUN . /tmp/versions.env && git clone $OP_NODE_REPO --branch $OP_NODE_TAG --single-branch . && \
-    git switch -c branch-$OP_NODE_TAG && \
-    bash -c '[ "$(git rev-parse HEAD)" = "$OP_NODE_COMMIT" ]'
-
-RUN . /tmp/versions.env && cd op-node && \
-    make VERSION=$OP_NODE_TAG op-node
-
 FROM public.ecr.aws/docker/library/rust:${RUST_VERSION}-trixie AS rust-builder-base
 
 WORKDIR /app
@@ -57,19 +42,16 @@ RUN cargo build --bin base-reth-node --bin base-consensus --profile maxperf
 FROM ubuntu:24.04
 
 RUN apt-get update && \
-    apt-get install -y jq curl supervisor && \
+    apt-get install -y curl supervisor && \
     rm -rf /var/lib/apt/lists/*
 RUN mkdir -p /var/log/supervisor
 
 WORKDIR /app
 
-COPY --from=op /app/op-node/bin/op-node ./
 COPY --from=reth-base /app/target/maxperf/base-consensus ./
 COPY --from=reth-base /app/target/maxperf/base-reth-node ./
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY ./reth/reth-entrypoint ./execution-entrypoint
-COPY op-node-entrypoint .
-COPY base-consensus-entrypoint .
 COPY consensus-entrypoint .
 
 CMD ["/usr/bin/supervisord"]
