@@ -18,6 +18,12 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
    - For testnet: use `.env.sepolia`
 3. Configure your L1 endpoints in the appropriate `.env` file:
    ```bash
+   # For op-node (used by all clients)
+   OP_NODE_L1_ETH_RPC=<your-preferred-l1-rpc>
+   OP_NODE_L1_BEACON=<your-preferred-l1-beacon>
+   OP_NODE_L1_BEACON_ARCHIVER=<your-preferred-l1-beacon-archiver>
+
+   # For base-consensus (required when using reth, the default client)
    BASE_NODE_L1_ETH_RPC=<your-preferred-l1-rpc>
    BASE_NODE_L1_BEACON=<your-preferred-l1-beacon>
    ```
@@ -60,10 +66,24 @@ The following are the hardware specifications we use in production:
 
 ### Required Settings
 
-- `BASE_NODE_L1_ETH_RPC`: your Ethereum L1 node RPC endpoint
-- `BASE_NODE_L1_BEACON`: your L1 beacon node endpoint
-- `BASE_NODE_NETWORK`: `base` or `base-sepolia`
-- `RETH_CHAIN`: `base` or `base-sepolia`
+- L1 Configuration (op-node, used by all clients):
+  - `OP_NODE_L1_ETH_RPC`: Your Ethereum L1 node RPC endpoint
+  - `OP_NODE_L1_BEACON`: Your L1 beacon node endpoint
+  - `OP_NODE_L1_BEACON_ARCHIVER`: Your L1 beacon archiver endpoint
+  - `OP_NODE_L1_RPC_KIND`: The type of RPC provider being used (default: "debug_geth"). Supported values:
+    - `alchemy`: Alchemy RPC provider
+    - `quicknode`: QuickNode RPC provider
+    - `infura`: Infura RPC provider
+    - `parity`: Parity RPC provider
+    - `nethermind`: Nethermind RPC provider
+    - `debug_geth`: Debug Geth RPC provider
+    - `erigon`: Erigon RPC provider
+    - `basic`: Basic RPC provider (standard receipt fetching only)
+    - `any`: Any available RPC method
+    - `standard`: Standard RPC methods including newer optimized methods
+- L1 Configuration (base-consensus, required when using reth — the default client):
+  - `BASE_NODE_L1_ETH_RPC`: Your Ethereum L1 node RPC endpoint
+  - `BASE_NODE_L1_BEACON`: Your L1 beacon node endpoint
 
 ### Network Settings
 
