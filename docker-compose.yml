@@ -2,7 +2,7 @@ services:
   execution:
     build:
       context: .
-      dockerfile: ${CLIENT:-reth}/Dockerfile
+      dockerfile: Dockerfile
     restart: unless-stopped
     ports:
       - "8545:8545" # RPC
@@ -12,15 +12,13 @@ services:
       - "30303:30303/udp" # P2P UDP
     command: ["bash", "./execution-entrypoint"]
     volumes:
-      - ${HOST_DATA_DIR}:/data
-    environment:
-      - USE_BASE_CONSENSUS=${USE_BASE_CONSENSUS:-false}
+      - ${HOST_DATA_DIR:-./reth-data}:/data
     env_file:
       - ${NETWORK_ENV:-.env.mainnet} # Use .env.mainnet by default, override with .env.sepolia for testnet
   node:
     build:
       context: .
-      dockerfile: ${CLIENT:-reth}/Dockerfile
+      dockerfile: Dockerfile
     restart: unless-stopped
     depends_on:
       - execution
@@ -31,7 +29,5 @@ services:
       - "7300:7300" # metrics
       - "6060:6060" # pprof
     command: ["bash", "./consensus-entrypoint"]
-    environment:
-      - USE_BASE_CONSENSUS=${USE_BASE_CONSENSUS:-false}
     env_file:
       - ${NETWORK_ENV:-.env.mainnet} # Use .env.mainnet by default, override with .env.sepolia for testnet
