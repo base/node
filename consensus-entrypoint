@@ -21,39 +21,6 @@ get_public_ip() {
   return 1
 }
 
-fallback_env() {
-  local target="$1"
-  local source="$2"
-
-  if [[ -z "${!target:-}" && -n "${!source:-}" ]]; then
-    export "$target=${!source}"
-  fi
-}
-
-if [[ -z "${BASE_NODE_NETWORK:-}" && -n "${OP_NODE_NETWORK:-}" ]]; then
-  case "$OP_NODE_NETWORK" in
-    base-mainnet)
-      export BASE_NODE_NETWORK=base
-      ;;
-    *)
-      export BASE_NODE_NETWORK="$OP_NODE_NETWORK"
-      ;;
-  esac
-fi
-
-fallback_env BASE_NODE_L1_ETH_RPC OP_NODE_L1_ETH_RPC
-fallback_env BASE_NODE_L1_BEACON OP_NODE_L1_BEACON
-fallback_env BASE_NODE_L1_TRUST_RPC OP_NODE_L1_TRUST_RPC
-fallback_env BASE_NODE_L2_ENGINE_RPC OP_NODE_L2_ENGINE_RPC
-fallback_env BASE_NODE_P2P_LISTEN_IP OP_NODE_P2P_LISTEN_IP
-fallback_env BASE_NODE_P2P_ADVERTISE_TCP_PORT OP_NODE_P2P_LISTEN_TCP_PORT
-fallback_env BASE_NODE_P2P_ADVERTISE_UDP_PORT OP_NODE_P2P_LISTEN_UDP_PORT
-fallback_env BASE_NODE_P2P_BOOTNODES OP_NODE_P2P_BOOTNODES
-fallback_env BASE_NODE_LOG_FORMAT OP_NODE_LOG_FORMAT
-fallback_env BASE_NODE_METRICS_ENABLED OP_NODE_METRICS_ENABLED
-fallback_env BASE_NODE_METRICS_ADDR OP_NODE_METRICS_ADDR
-fallback_env BASE_NODE_METRICS_PORT OP_NODE_METRICS_PORT
-
 if [[ -z "${BASE_NODE_NETWORK:-}" ]]; then
   echo "expected BASE_NODE_NETWORK to be set" 1>&2
   exit 1

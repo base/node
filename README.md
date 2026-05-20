@@ -78,11 +78,21 @@ The following are the hardware specifications we use in production:
 
 ### Optional Features
 
-- Flashblocks: set `RETH_FB_WEBSOCKET_URL`
+- Flashblocks: set `RETH_FB_WEBSOCKET_URL`. When set, the execution client runs in Flashblocks mode; otherwise it runs in vanilla mode.
 - Follow mode: set `BASE_NODE_SOURCE_L2_RPC`
 - Pruning: set `RETH_PRUNING_ARGS`
 
 For full configuration options, see `.env.mainnet` or `.env.sepolia`.
+
+### Testing Flashblocks RPC Methods
+
+When running in Flashblocks mode, you can query a pending block using the Flashblocks RPC:
+
+```bash
+curl -X POST \
+  --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["pending", false],"id":1}' \
+  http://localhost:8545
+```
 
 ## Snapshots
 
@@ -92,12 +102,12 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 
 | Network | Status |
 | ------- | ------ |
-| Mainnet | Supported |
-| Testnet | Supported |
+| Mainnet | ✅ |
+| Testnet | ✅ |
 
 ## Troubleshooting
 
-For support please join our [Discord](https://discord.gg/buildonbase) and post in `node-operators`. You can alternatively open a new GitHub issue.
+For support please join our [Discord](https://discord.gg/buildonbase) and post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
 
 ## Disclaimer
 

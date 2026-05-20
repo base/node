@@ -1,10 +1,8 @@
-x-node-build: &node-build
-  context: .
-  dockerfile: reth/Dockerfile
-
 services:
   execution:
-    build: *node-build
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: unless-stopped
     ports:
       - "8545:8545" # RPC
@@ -18,7 +16,9 @@ services:
     env_file:
       - ${NETWORK_ENV:-.env.mainnet} # Use .env.mainnet by default, override with .env.sepolia for testnet
   node:
-    build: *node-build
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: unless-stopped
     depends_on:
       - execution
