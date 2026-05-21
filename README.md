@@ -64,6 +64,10 @@ The following are the hardware specifications we use in production:
 - `BASE_NODE_L1_BEACON`: your L1 beacon node endpoint
 - `BASE_NODE_NETWORK`: `base` or `base-sepolia`
 - `RETH_CHAIN`: `base` or `base-sepolia`
+- `BASE_NODE_L2_ENGINE_AUTH_RAW`: a 32-byte hex secret shared between the execution and consensus containers — **never use the placeholder value**. Generate with:
+  ```bash
+  openssl rand -hex 32
+  ```
 
 ### Network Settings
 

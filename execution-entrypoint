@@ -129,6 +129,13 @@ fi
 
 mkdir -p "$RETH_DATA_DIR"
 echo "Starting reth with additional args: $ADDITIONAL_ARGS"
+
+if [[ -z "${BASE_NODE_L2_ENGINE_AUTH_RAW:-}" || "${BASE_NODE_L2_ENGINE_AUTH_RAW}" == "<your-secret-jwt>" ]]; then
+    echo "ERROR: BASE_NODE_L2_ENGINE_AUTH_RAW is not set or still uses the placeholder value." >&2
+    echo "Generate a secret and set it in your .env file:" >&2
+    echo "  BASE_NODE_L2_ENGINE_AUTH_RAW=\$(openssl rand -hex 32)" >&2
+    exit 1
+fi
 echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
 
 exec "$BINARY" node \
