@@ -4,6 +4,12 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-s", "-o", "/dev/null", "-w", "%{http_code}", "http://localhost:8545/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     ports:
       - "8545:8545" # RPC
       - "8546:8546" # websocket
@@ -22,6 +28,12 @@ services:
     restart: unless-stopped
     depends_on:
       - execution
+    healthcheck:
+      test: ["CMD", "curl", "-s", "-o", "/dev/null", "-w", "%{http_code}", "http://localhost:8545/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
     ports:
       - "7545:8545" # RPC
       - "9222:9222" # P2P TCP
