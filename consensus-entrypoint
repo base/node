@@ -36,8 +36,10 @@ if [[ -z "${BASE_NODE_L2_ENGINE_AUTH:-}" ]]; then
   exit 1
 fi
 
-if [[ -z "${BASE_NODE_L2_ENGINE_AUTH_RAW:-}" ]]; then
-  echo "expected BASE_NODE_L2_ENGINE_AUTH_RAW to be set" 1>&2
+if [[ -z "${BASE_NODE_L2_ENGINE_AUTH_RAW:-}" || "${BASE_NODE_L2_ENGINE_AUTH_RAW}" == "<your-secret-jwt>" ]]; then
+  echo "ERROR: BASE_NODE_L2_ENGINE_AUTH_RAW is not set or still uses the placeholder value." >&2
+  echo "Generate a secret and set it in your .env file:" >&2
+  echo "  BASE_NODE_L2_ENGINE_AUTH_RAW=\$(openssl rand -hex 32)" >&2
   exit 1
 fi
 
