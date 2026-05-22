@@ -41,10 +41,11 @@ if [[ -z "${BASE_NODE_L2_ENGINE_AUTH_RAW:-}" ]]; then
   exit 1
 fi
 
+
 until curl -s --max-time 10 --connect-timeout 5 \
   -H 'Content-Type: application/json' \
   -d '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' \
-  http://execution:8545 | grep -q '"result":"0x2105"'; do
+  http://execution:8545 | grep -q '"result"'; do
   echo "waiting for execution client RPC to be ready"
   sleep 5
 done
