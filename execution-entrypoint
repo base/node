@@ -10,6 +10,7 @@ METRICS_PORT="${METRICS_PORT:-6060}"
 DISCOVERY_PORT="${DISCOVERY_PORT:-30303}"
 V5_DISCOVERY_PORT="${V5_DISCOVERY_PORT:-9200}"
 P2P_PORT="${P2P_PORT:-30303}"
+MAX_OUTBOUND_PEERS="${MAX_OUTBOUND_PEERS:-100}"
 ADDITIONAL_ARGS=""
 BINARY="./base-reth-node"
 RETH_HISTORICAL_PROOFS="${RETH_HISTORICAL_PROOFS:-false}"
@@ -150,7 +151,7 @@ exec "$BINARY" node \
   --authrpc.port="$AUTHRPC_PORT" \
   --authrpc.jwtsecret="$BASE_NODE_L2_ENGINE_AUTH" \
   --metrics=0.0.0.0:"$METRICS_PORT" \
-  --max-outbound-peers=100 \
+  --max-outbound-peers="$MAX_OUTBOUND_PEERS" \
   --chain "$RETH_CHAIN" \
   --rollup.sequencer-http="$RETH_SEQUENCER_HTTP" \
   --rollup.disable-tx-pool-gossip \
