@@ -23,8 +23,8 @@ fi
 
 # Enable Flashblocks support if websocket URL is provided
 if [[ -n "${RETH_FB_WEBSOCKET_URL:-}" ]]; then
-    ADDITIONAL_ARGS="$ADDITIONAL_ARGS --websocket-url=$RETH_FB_WEBSOCKET_URL"
-    echo "Enabling Flashblocks support with endpoint: $RETH_FB_WEBSOCKET_URL"
+    ADDITIONAL_ARGS="${ADDITIONAL_ARGS} --websocket-url=${RETH_FB_WEBSOCKET_URL}"
+    echo "Enabling Flashblocks support with endpoint: ${RETH_FB_WEBSOCKET_URL}"
 else
     echo "Running in vanilla node mode (no Flashblocks URL provided)"
 fi
@@ -70,7 +70,7 @@ wait_for_pid() {
 # Add pruning for base
 if [[ "${RETH_PRUNING_ARGS+x}" = x ]]; then
     echo "Adding pruning arguments: $RETH_PRUNING_ARGS"
-    ADDITIONAL_ARGS="$ADDITIONAL_ARGS $RETH_PRUNING_ARGS"
+    ADDITIONAL_ARGS="${ADDITIONAL_ARGS} ${RETH_PRUNING_ARGS}"
 fi
 
 if [[ "$RETH_HISTORICAL_PROOFS" == "true" && -n "$RETH_HISTORICAL_PROOFS_STORAGE_PATH" ]]; then
