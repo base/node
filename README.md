@@ -64,6 +64,7 @@ The following are the hardware specifications we use in production:
 - `BASE_NODE_L1_BEACON`: your L1 beacon node endpoint
 - `BASE_NODE_NETWORK`: `base` or `base-sepolia`
 - `RETH_CHAIN`: `base` or `base-sepolia`
+- `BASE_NODE_RPC_PORT`: consensus RPC listen port — must be `8545` to match the `docker-compose.yml` port mapping (`7545:8545`); defaults to `9545` if unset, which makes the consensus RPC unreachable from the host
 
 ### Network Settings
 
