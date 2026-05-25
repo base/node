@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: '30 0 * * *'
   workflow_dispatch:
+permissions:
+  contents: read
+
 jobs:
   stale:
     runs-on: ubuntu-latest
@@ -12,6 +15,11 @@ jobs:
       issues: write
       pull-requests: write
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@5ef0c079ce82195b2a36a210272d6b661572d83e # v2.14.2
+        with:
+          egress-policy: audit
+
       - uses: actions/stale@5f858e3efba33a5ca4407a664cc011ad407f2008 # v10.1.0
         with:
           days-before-stale: 14

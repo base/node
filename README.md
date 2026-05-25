@@ -12,15 +12,14 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 running on the [Base 
 
 ## Quick Start
 
-1. Ensure you have an Ethereum L1 full node RPC available
+1. Ensure you have an Ethereum L1 full node RPC and beacon endpoint available.
 2. Choose your network:
-   - For mainnet: Use `.env.mainnet`
-   - For testnet: Use `.env.sepolia`
+   - For mainnet: use `.env.mainnet`
+   - For testnet: use `.env.sepolia`
 3. Configure your L1 endpoints in the appropriate `.env` file:
    ```bash
-   OP_NODE_L1_ETH_RPC=<your-preferred-l1-rpc>
-   OP_NODE_L1_BEACON=<your-preferred-l1-beacon>
-   OP_NODE_L1_BEACON_ARCHIVER=<your-preferred-l1-beacon-archiver>
+   BASE_NODE_L1_ETH_RPC=<your-preferred-l1-rpc>
+   BASE_NODE_L1_BEACON=<your-preferred-l1-beacon>
    ```
 4. Start the node:
 
@@ -30,28 +29,21 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 running on the [Base 
 
    # For testnet:
    NETWORK_ENV=.env.sepolia docker compose up --build
-
-   # To use a specific client (optional):
-   CLIENT=reth docker compose up --build
-
-   # For testnet with a specific client:
-   NETWORK_ENV=.env.sepolia CLIENT=reth docker compose up --build
    ```
 
-### Supported Clients
+## Supported Clients
 
-- `reth` (default)
-- `geth`
-- `nethermind`
+- Execution: `base-reth-node`
+- Consensus: `base-consensus`
 
 ## Requirements
 
 ### Minimum Requirements
 
-- Modern Multicore CPU
-- 32GB RAM (64GB Recommended)
+- Modern multicore CPU
+- 32GB RAM (64GB recommended)
 - NVMe SSD drive
-- Storage: (2 \* [current chain size](https://base.org/stats) + [snapshot size](https://basechaindata.vercel.app) + 20% buffer) (to accommodate future growth)
+- Storage: (2 * [current chain size](https://base.org/stats) + [snapshot size](https://basechaindata.vercel.app) + 20% buffer) to accommodate future growth
 - Docker and Docker Compose
 
 ### Production Hardware Specifications
@@ -64,64 +56,43 @@ The following are the hardware specifications we use in production:
 - **Storage**: RAID 0 of all local NVMe drives (`/dev/nvme*`)
 - **Filesystem**: ext4
 
-#### Geth Full Node
-
-- **Instance**: AWS i7i.12xlarge
-- **Storage**: RAID 0 of all local NVMe drives (`/dev/nvme*`)
-- **Filesystem**: ext4
-
-> [!NOTE]
-To run the node using a supported client, you can use the following command:
-`CLIENT=supported_client docker compose up --build`
- 
-Supported clients:
- - reth (runs vanilla node by default, Flashblocks mode enabled by providing RETH_FB_WEBSOCKET_URL, see [Reth Node README](./reth/README.md))
- - geth
- - nethermind
-
 ## Configuration
 
 ### Required Settings
 
-- L1 Configuration:
-  - `OP_NODE_L1_ETH_RPC`: Your Ethereum L1 node RPC endpoint
-  - `OP_NODE_L1_BEACON`: Your L1 beacon node endpoint
-  - `OP_NODE_L1_BEACON_ARCHIVER`: Your L1 beacon archiver endpoint
-  - `OP_NODE_L1_RPC_KIND`: The type of RPC provider being used (default: "debug_geth"). Supported values:
-    - `alchemy`: Alchemy RPC provider
-    - `quicknode`: QuickNode RPC provider
-    - `infura`: Infura RPC provider
-    - `parity`: Parity RPC provider
-    - `nethermind`: Nethermind RPC provider
-    - `debug_geth`: Debug Geth RPC provider
-    - `erigon`: Erigon RPC provider
-    - `basic`: Basic RPC provider (standard receipt fetching only)
-    - `any`: Any available RPC method
-    - `standard`: Standard RPC methods including newer optimized methods
+- `BASE_NODE_L1_ETH_RPC`: your Ethereum L1 node RPC endpoint
+- `BASE_NODE_L1_BEACON`: your L1 beacon node endpoint
+- `BASE_NODE_NETWORK`: `base` or `base-sepolia`
+- `RETH_CHAIN`: `base` or `base-sepolia`
 
 ### Network Settings
 
 - Mainnet:
   - `RETH_CHAIN=base`
-  - `OP_NODE_NETWORK=base-mainnet`
+  - `BASE_NODE_NETWORK=base`
   - Sequencer: `https://mainnet-sequencer.base.org`
-
-### Performance Settings
-
-- Cache Settings:
-  - `GETH_CACHE="20480"` (20GB)
-  - `GETH_CACHE_DATABASE="20"` (4GB)
-  - `GETH_CACHE_GC="12"`
-  - `GETH_CACHE_SNAPSHOT="24"`
-  - `GETH_CACHE_TRIE="44"`
+- Sepolia:
+  - `RETH_CHAIN=base-sepolia`
+  - `BASE_NODE_NETWORK=base-sepolia`
+  - Sequencer: `https://sepolia-sequencer.base.org`
 
 ### Optional Features
 
-- EthStats Monitoring (uncomment to enable)
-- Trusted RPC Mode (uncomment to enable)
-- Snap Sync (experimental)
+- Flashblocks: set `RETH_FB_WEBSOCKET_URL`. When set, the execution client runs in Flashblocks mode; otherwise it runs in vanilla mode.
+- Follow mode: set `BASE_NODE_SOURCE_L2_RPC`
+- Pruning: set `RETH_PRUNING_ARGS`
 
-For full configuration options, see the `.env.mainnet` file.
+For full configuration options, see `.env.mainnet` or `.env.sepolia`.
+
+### Testing Flashblocks RPC Methods
+
+When running in Flashblocks mode, you can query a pending block using the Flashblocks RPC:
+
+```bash
+curl -X POST \
+  --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["pending", false],"id":1}' \
+  http://localhost:8545
+```
 
 ## Snapshots
 
@@ -131,12 +102,12 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 
 | Network | Status |
 | ------- | ------ |
-| Mainnet | ✅     |
-| Testnet | ✅     |
+| Mainnet | ✅ |
+| Testnet | ✅ |
 
 ## Troubleshooting
 
-For support please join our [Discord](https://discord.gg/buildonbase) post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
+For support please join our [Discord](https://discord.gg/buildonbase) and post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
 
 ## Disclaimer
 
