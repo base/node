@@ -53,12 +53,13 @@ else
   exit 8
 fi
 export BASE_NODE_P2P_ADVERTISE_IP=$PUBLIC_IP
+METRICS_PORT="${METRICS_PORT:-7300}"
 
 echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
 
 if [[ -n "${BASE_NODE_SOURCE_L2_RPC:-}" ]]; then
   echo "Running base-consensus in follow mode because BASE_NODE_SOURCE_L2_RPC is set"
-  exec ./base-consensus follow
+  exec ./base-consensus follow --metrics=0.0.0.0:"$METRICS_PORT"
 else
-  exec ./base-consensus node
+  exec ./base-consensus node --metrics=0.0.0.0:"$METRICS_PORT"
 fi

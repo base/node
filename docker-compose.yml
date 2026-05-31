@@ -27,7 +27,7 @@ services:
       - "7545:8545" # RPC
       - "9222:9222" # P2P TCP
       - "9222:9222/udp" # P2P UDP
-      - "7300:7300" # metrics
+      - "${METRICS_PORT:-7300}:${METRICS_PORT:-7300}" # metrics
       - "6060:6060" # pprof
     command: ["bash", "./consensus-entrypoint"]
     env_file:
