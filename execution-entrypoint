@@ -68,7 +68,7 @@ wait_for_pid() {
 }
 
 # Add pruning for base
-if [[ "${RETH_PRUNING_ARGS+x}" = x ]]; then
+if [[ -n "${RETH_PRUNING_ARGS:-}" ]]; then
     echo "Adding pruning arguments: $RETH_PRUNING_ARGS"
     ADDITIONAL_ARGS="$ADDITIONAL_ARGS $RETH_PRUNING_ARGS"
 fi
