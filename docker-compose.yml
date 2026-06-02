@@ -1,5 +1,6 @@
 services:
   execution:
+    image: base-node:local
     build:
       context: .
       dockerfile: Dockerfile
@@ -16,9 +17,7 @@ services:
     env_file:
       - ${NETWORK_ENV:-.env.mainnet} # Use .env.mainnet by default, override with .env.sepolia for testnet
   node:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: base-node:local
     restart: unless-stopped
     depends_on:
       - execution
