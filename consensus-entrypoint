@@ -46,13 +46,17 @@ until [ "$(curl -s --max-time 10 --connect-timeout 5 -w '%{http_code}' -o /dev/n
   sleep 5
 done
 
-if PUBLIC_IP=$(get_public_ip); then
-  echo "fetched public IP is: $PUBLIC_IP"
+if [[ -z "${BASE_NODE_P2P_ADVERTISE_IP:-}" ]]; then
+  if PUBLIC_IP=$(get_public_ip); then
+    echo "fetched public IP is: $PUBLIC_IP"
+    export BASE_NODE_P2P_ADVERTISE_IP=$PUBLIC_IP
+  else
+    echo "Could not retrieve public IP and BASE_NODE_P2P_ADVERTISE_IP is not set."
+    exit 8
+  fi
 else
-  echo "Could not retrieve public IP."
-  exit 8
+  echo "using operator-provided BASE_NODE_P2P_ADVERTISE_IP=$BASE_NODE_P2P_ADVERTISE_IP"
 fi
-export BASE_NODE_P2P_ADVERTISE_IP=$PUBLIC_IP
 
 echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
 
