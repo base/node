@@ -24,10 +24,8 @@ jobs:
         settings:
           - arch: linux/amd64
             runs-on: ubuntu-24.04
-            features: jemalloc,asm-keccak,optimism
           - arch: linux/arm64
             runs-on: ubuntu-24.04-arm
-            features: jemalloc,optimism
     runs-on: ${{ matrix.settings.runs-on }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
@@ -63,8 +61,6 @@ jobs:
           file: Dockerfile
           tags: ${{ env.NAMESPACE }}/${{ env.RETH_IMAGE_NAME }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            FEATURES=${{ matrix.settings.features }}
           platforms: ${{ matrix.settings.arch }}
           outputs: type=image,push-by-digest=true,name-canonical=true,push=true
 
