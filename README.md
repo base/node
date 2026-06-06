@@ -2,7 +2,7 @@
 
 # Base Node
 
-Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [OP Stack](https://docs.optimism.io/). This repository contains a Docker build for running a Base node with `base-reth-node` and `base-consensus`.
+Base is a secure, low-cost, developer-friendly Ethereum L2 running on the [Base stack](https://github.com/base/base). This repository contains a Docker build for running a Base node with `base-reth-node` and `base-consensus`.
 
 [![Website base.org](https://img.shields.io/website-up-down-green-red/https/base.org.svg)](https://base.org)
 [![Docs](https://img.shields.io/badge/docs-up-green)](https://docs.base.org/)
