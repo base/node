@@ -21,7 +21,12 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
    BASE_NODE_L1_ETH_RPC=<your-preferred-l1-rpc>
    BASE_NODE_L1_BEACON=<your-preferred-l1-beacon>
    ```
-4. Start the node:
+4. Set the data directory (optional but recommended):
+   ```bash
+   HOST_DATA_DIR=./reth-data
+   ```
+   This path on the host machine is where chain data will be persisted. If not set, Docker will default to `./reth-data`.
+5. Start the node:
 
    ```bash
    # For mainnet (default):
