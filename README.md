@@ -109,6 +109,30 @@ Snapshots are available to help you sync your node more quickly. See [docs.base.
 
 For support please join our [Discord](https://discord.gg/buildonbase) and post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
 
+### Missing L1InfoDeposit error when using pruned snapshots
+
+If you see an error like `EngineReset(SyncStart(FromBlock(MissingL1InfoDeposit(...))))` in the consensus logs after syncing with a pruned snapshot, it means the snapshot does not contain enough historical data for the consensus client to verify the L1 deposit contract initialization.
+
+**Solution:** Use an unpruned (archive) snapshot or a pruned snapshot that includes at least the first ~40 days of history (approximately block 45,000,000 as of mid‑2026). Alternatively, sync from scratch without a snapshot, or use an archive node for the execution client.
+
+**Steps to resolve:**
+
+1. Verify the snapshot age: check the block number associated with the snapshot (provided in the snapshot name or description).
+
+2. If the snapshot is older than ~40 days, download a newer snapshot from the official snapshots page: https://docs.base.org/chain/run-a-base-node#snapshots
+
+3. If you prefer not to use snapshots, remove the snapshot data directory and let the node sync from genesis (this will take longer but guarantees completeness).
+
+4. Ensure that both execution and consensus clients are using the same snapshot data directory (they share `/data` in the default compose setup).
+
+```
+# Example: remove old data and restart
+rm -rf ./reth-data/*
+docker compose up --build
+```
+
+**Note:** This issue is not a bug in the node software but a limitation of pruned snapshots that discard historic state needed for deposit contract verification.
+
 ## Disclaimer
 
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
