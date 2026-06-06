@@ -150,7 +150,7 @@ exec "$BINARY" node \
   --authrpc.port="$AUTHRPC_PORT" \
   --authrpc.jwtsecret="$BASE_NODE_L2_ENGINE_AUTH" \
   --metrics=0.0.0.0:"$METRICS_PORT" \
-  --max-outbound-peers=100 \
+  --max-outbound-peers=${RETH_MAX_OUTBOUND_PEERS:-100} \
   --chain "$RETH_CHAIN" \
   --rollup.sequencer-http="$RETH_SEQUENCER_HTTP" \
   --rollup.disable-tx-pool-gossip \
