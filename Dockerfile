@@ -37,22 +37,32 @@ RUN . /tmp/versions.env && git clone $BASE_RETH_NODE_REPO . && \
     git checkout tags/$BASE_RETH_NODE_TAG && \
     bash -c '[ "$(git rev-parse HEAD)" = "$BASE_RETH_NODE_COMMIT" ]' || (echo "Commit hash verification failed" && exit 1)
 
-RUN cargo build --bin base-reth-node --bin base-consensus --bin basectl --profile maxperf
+# Optimized with BuildKit cache mounts for lightning-fast incremental builds
+RUN --mount=type=cache,target=/usr/local/cargo/registry \
+    --mount=type=cache,target=/app/target \
+    cargo build --bin base-reth-node --bin base-consensus --bin basectl --profile maxperf && \
+    # Move binaries out of the cached target directory so they don't get detached from the stage
+    mkdir -p /app/dist && \
+    cp /app/target/maxperf/basectl /app/dist/ && \
+    cp /app/target/maxperf/base-consensus /app/dist/ && \
+    cp /app/target/maxperf/base-reth-node /app/dist/
 
 FROM ubuntu:24.04
 
 RUN apt-get update && \
-    apt-get install -y curl supervisor && \
+    apt-get install -y --no-install-recommends curl supervisor && \
     rm -rf /var/lib/apt/lists/*
 RUN mkdir -p /var/log/supervisor
 
 WORKDIR /app
 
-COPY --from=reth-base /app/target/maxperf/basectl ./
-COPY --from=reth-base /app/target/maxperf/base-consensus ./
-COPY --from=reth-base /app/target/maxperf/base-reth-node ./
+# Copy binaries smoothly from the decoupled distribution directory
+COPY --from=reth-base /app/dist/basectl ./
+COPY --from=reth-base /app/dist/base-consensus ./
+COPY --from=reth-base /app/dist/base-reth-node ./
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY execution-entrypoint .
 COPY consensus-entrypoint .
 
 CMD ["/usr/bin/supervisord"]
+
