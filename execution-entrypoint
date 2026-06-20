@@ -127,9 +127,19 @@ if [[ "$RETH_HISTORICAL_PROOFS" == "true" && -n "$RETH_HISTORICAL_PROOFS_STORAGE
         --proofs-history.storage-path=$RETH_HISTORICAL_PROOFS_STORAGE_PATH
 fi
 
+if [[ -z "${BASE_NODE_L2_ENGINE_AUTH:-}" || -z "${BASE_NODE_L2_ENGINE_AUTH_RAW:-}" ]]; then
+    echo "expected BASE_NODE_L2_ENGINE_AUTH and BASE_NODE_L2_ENGINE_AUTH_RAW to be set" 1>&2
+    exit 1
+fi
+
+# Ensure the parent directory for the JWT secret file path exists
+JWT_DIR=$(dirname "$BASE_NODE_L2_ENGINE_AUTH")
+mkdir -p "$JWT_DIR"
+
 mkdir -p "$RETH_DATA_DIR"
 echo "Starting reth with additional args: $ADDITIONAL_ARGS"
 echo "$BASE_NODE_L2_ENGINE_AUTH_RAW" > "$BASE_NODE_L2_ENGINE_AUTH"
+
 
 exec "$BINARY" node \
   -$LOG_LEVEL \
