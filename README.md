@@ -81,6 +81,7 @@ The following are the hardware specifications we use in production:
 - Flashblocks: set `RETH_FB_WEBSOCKET_URL`. When set, the execution client runs in Flashblocks mode; otherwise it runs in vanilla mode.
 - Follow mode: set `BASE_NODE_SOURCE_L2_RPC`
 - Pruning: set `RETH_PRUNING_ARGS`
+- Historical Proofs: set `RETH_HISTORICAL_PROOFS=true` and `RETH_HISTORICAL_PROOFS_STORAGE_PATH=<path>`. Enables historical proof generation. Note: initialization may take up to 6 hours on first run.
 
 For full configuration options, see `.env.mainnet` or `.env.sepolia`.
 
