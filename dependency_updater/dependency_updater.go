@@ -293,6 +293,12 @@ func getVersionAndCommit(ctx context.Context, client *github.Client, dependencie
 		if err != nil {
 			return "", "", VersionUpdateInfo{}, fmt.Errorf("error listing commits for "+dependencyType+": %s", err)
 		}
+		if len(branchCommit) == 0 {
+			return "", "", VersionUpdateInfo{}, fmt.Errorf("no commits found for branch %s in %s", dependencies[dependencyType].Branch, dependencies[dependencyType].Repo)
+		}
+		if len(branchCommit) == 0 {
+			return "", "", VersionUpdateInfo{}, fmt.Errorf("no commits found for branch %s in %s", dependencies[dependencyType].Branch, dependencies[dependencyType].Repo)
+		}
 		commit = *branchCommit[0].SHA
 		if dependencies[dependencyType].Commit != commit {
 			from, to := dependencies[dependencyType].Commit, commit
