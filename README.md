@@ -14,9 +14,9 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 
 1. Ensure you have an Ethereum L1 full node RPC and beacon endpoint available.
 2. Choose your network:
-   - For mainnet: use `.env.mainnet`
-   - For testnet: use `.env.sepolia`
-3. Configure your L1 endpoints in the appropriate `.env` file:
+   - For mainnet: copy `.env.mainnet.example` to `.env.mainnet`
+   - For testnet: copy `.env.sepolia.example` to `.env.sepolia`
+3. Generate a unique engine JWT secret and configure your L1 endpoints in the copied `.env` file:
    ```bash
    BASE_NODE_L1_ETH_RPC=<your-preferred-l1-rpc>
    BASE_NODE_L1_BEACON=<your-preferred-l1-beacon>
@@ -82,7 +82,7 @@ The following are the hardware specifications we use in production:
 - Follow mode: set `BASE_NODE_SOURCE_L2_RPC`
 - Pruning: set `RETH_PRUNING_ARGS`
 
-For full configuration options, see `.env.mainnet` or `.env.sepolia`.
+For full configuration options, see `.env.mainnet.example` or `.env.sepolia.example`. The example files never contain a usable engine secret.
 
 ### Testing Flashblocks RPC Methods
 
