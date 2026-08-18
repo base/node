@@ -7,6 +7,8 @@ RPC_PORT="${RPC_PORT:-8545}"
 WS_PORT="${WS_PORT:-8546}"
 AUTHRPC_PORT="${AUTHRPC_PORT:-8551}"
 METRICS_PORT="${METRICS_PORT:-6060}"
+HTTP_API="${RETH_HTTP_API:-web3,eth,net}"
+WS_API="${RETH_WS_API:-web3,eth,net}"
 DISCOVERY_PORT="${DISCOVERY_PORT:-30303}"
 V5_DISCOVERY_PORT="${V5_DISCOVERY_PORT:-9200}"
 P2P_PORT="${P2P_PORT:-30303}"
@@ -20,7 +22,14 @@ if [[ -z "${RETH_CHAIN:-}" ]]; then
     echo "expected RETH_CHAIN to be set" 1>&2
     exit 1
 fi
-
+if [[ -z "${BASE_NODE_L2_ENGINE_AUTH_RAW:-}" ]]; then
+    echo "expected BASE_NODE_L2_ENGINE_AUTH_RAW to be set" 1>&2
+    exit 1
+fi
+if [[ ${#BASE_NODE_L2_ENGINE_AUTH_RAW} -ne 64 ]]; then
+    echo "expected BASE_NODE_L2_ENGINE_AUTH_RAW to contain exactly 64 hexadecimal characters" 1>&2
+    exit 1
+fi
 # Enable Flashblocks support if websocket URL is provided
 if [[ -n "${RETH_FB_WEBSOCKET_URL:-}" ]]; then
     ADDITIONAL_ARGS="$ADDITIONAL_ARGS --websocket-url=$RETH_FB_WEBSOCKET_URL"
@@ -136,15 +145,15 @@ exec "$BINARY" node \
   --datadir="$RETH_DATA_DIR" \
   --log.stdout.format json \
   --ws \
-  --ws.origins="*" \
+  --ws.origins="${RETH_WS_ORIGINS:-http://localhost}" \
   --ws.addr=0.0.0.0 \
   --ws.port="$WS_PORT" \
-  --ws.api=web3,debug,eth,net,txpool \
+  --ws.api="$WS_API" \
   --http \
-  --http.corsdomain="*" \
+  --http.corsdomain="${RETH_HTTP_CORS_DOMAINS:-http://localhost}" \
   --http.addr=0.0.0.0 \
   --http.port="$RPC_PORT" \
-  --http.api=web3,debug,eth,net,txpool,miner \
+  --http.api="$HTTP_API" \
   --ipcpath="$IPC_PATH" \
   --authrpc.addr=0.0.0.0 \
   --authrpc.port="$AUTHRPC_PORT" \
