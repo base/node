@@ -2,3 +2,9 @@
 /reth-data/
 /dependency_updater/dependency_updater
 .DS_Store
+# Local environment files may contain RPC credentials and engine JWT secrets.
+.env
+.env.*
+!.env.example
+!.env.mainnet.example
+!.env.sepolia.example
