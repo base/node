@@ -13,10 +13,10 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 ## Quick Start
 
 1. Ensure you have an Ethereum L1 full node RPC and beacon endpoint available.
-2. Choose your network:
-   - For mainnet: use `.env.mainnet`
-   - For testnet: use `.env.sepolia`
-3. Configure your L1 endpoints in the appropriate `.env` file:
+2. Copy the configuration file for your network to a local, ignored file:
+   - For mainnet: `cp .env.mainnet .env.local.mainnet`
+   - For testnet: `cp .env.sepolia .env.local.sepolia`
+3. Configure your L1 endpoints and `BASE_NODE_L2_ENGINE_AUTH_RAW` in the copied `.env` file:
    ```bash
    BASE_NODE_L1_ETH_RPC=<your-preferred-l1-rpc>
    BASE_NODE_L1_BEACON=<your-preferred-l1-beacon>
@@ -25,10 +25,10 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 
    ```bash
    # For mainnet (default):
-   docker compose up --build
+   NETWORK_ENV=.env.local.mainnet docker compose up --build
 
    # For testnet:
-   NETWORK_ENV=.env.sepolia docker compose up --build
+   NETWORK_ENV=.env.local.sepolia docker compose up --build
    ```
 
 ## Supported Clients
