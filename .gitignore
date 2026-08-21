@@ -2,3 +2,6 @@
 /reth-data/
 /dependency_updater/dependency_updater
 .DS_Store
+# Local operator configuration files may contain credentials.
+.env
+.env.*
