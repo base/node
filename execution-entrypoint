@@ -26,9 +26,10 @@ if [[ -z "${BASE_NODE_L2_ENGINE_AUTH_RAW:-}" ]]; then
     echo "expected BASE_NODE_L2_ENGINE_AUTH_RAW to be set" 1>&2
     exit 1
 fi
-if [[ ${#BASE_NODE_L2_ENGINE_AUTH_RAW} -ne 64 ]]; then
-    echo "expected BASE_NODE_L2_ENGINE_AUTH_RAW to contain exactly 64 hexadecimal characters" 1>&2
+if [[ ! "$BASE_NODE_L2_ENGINE_AUTH_RAW" =~ ^[a-fA-F0-9]{64}$ ]]; then
+    echo "FATAL ERROR: BASE_NODE_L2_ENGINE_AUTH_RAW is missing or not a valid 64-character hex string. Startup aborted." 1>&2
     exit 1
+fi
 fi
 # Enable Flashblocks support if websocket URL is provided
 if [[ -n "${RETH_FB_WEBSOCKET_URL:-}" ]]; then
