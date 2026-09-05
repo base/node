@@ -43,7 +43,7 @@ Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [
 - Modern multicore CPU
 - 32GB RAM (64GB recommended)
 - NVMe SSD drive
-- Storage: (2 * [current chain size](https://base.org/stats) + [snapshot size](https://basechaindata.vercel.app) + 20% buffer) to accommodate future growth
+- Storage: (2 * [current chain size](https://base.org/stats) + [snapshot size](https://docs.base.org/base-chain/node-operators/snapshots) + 20% buffer) to accommodate future growth
 - Docker and Docker Compose
 
 ### Production Hardware Specifications
