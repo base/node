@@ -1,3 +1,7 @@
+> [!CAUTION]
+> # This repository is archived
+> **Use [releases from `base/base`](https://github.com/base/base/releases) for all new installations and upgrades.** Development and releases have moved to [`base/base`](https://github.com/base/base); this repository is no longer maintained.
+
 ![Base](logo.webp)
 
 # Base Node
